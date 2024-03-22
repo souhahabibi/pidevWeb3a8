@@ -36,12 +36,9 @@ class Produit
     private ?string $image = null;
 
 
-    
-     
-    #[ORM\ManyToOne(inversedBy: 'produits')] 
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\JoinColumn(name: 'id_fournisseur', referencedColumnName: 'id_fournisseur')]
     private ?Fournisseur $idFournisseur=null;
-
-  
 
     #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'Produit')]
     private Collection $commandes;

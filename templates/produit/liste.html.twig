@@ -1,0 +1,56 @@
+{# templates/produit/liste.html.twig #}
+
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+    <h1>Liste des produits</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Quantité</th>
+                <th scope="col">Coût</th>
+                <th scope="col">Date d'expiration</th>
+                <th scope="col">Description</th>
+                <th scope="col">Image</th>
+                <th scope="col">Fournisseur</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <th scope="row">{{ produit.getIdProduit }}</th>
+                    <td>{{ produit.nom }}</td>
+                    <td>{{ produit.quantite }}</td>
+                    <td>{{ produit.cout }}</td>
+                    <td>{{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</td>
+                    <td>{{ produit.description }}</td>
+                 
+                    <td>
+                        {% if produit.image %}
+                            <img src="{{ asset('adminSalle/img/' ~ produit.image) }}" alt="Image du produit" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}
+                    </td>
+                    <td>{{ produit.idFournisseur }}</td>
+                    <td>
+                      {#   <a href="{{ path('produit_edit', {'id': produit.getIdProduit}) }}">Modifier</a> #}
+                        {# <a href="{{ path('produit_delete', {'id': produit.getIdProduit}) }}">Supprimer</a> #}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun produit trouvé</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+       <a href="{{ path('produit_ajouter') }}" class="btn btn-primary">Ajouter un produit</a> 
+{% endblock %}

@@ -1,0 +1,22 @@
+{# templates/produit/ajouter.html.twig #}
+
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Ajouter un Produit{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un Produit</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.quantite) }}
+    {{ form_row(form.cout) }}
+    {{ form_row(form.dateExpiration) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.idFournisseur) }}
+   
+
+    <button type="submit">Ajouter</button>
+    {{ form_end(form) }}
+{% endblock %}

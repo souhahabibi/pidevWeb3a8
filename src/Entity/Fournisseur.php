@@ -10,11 +10,11 @@ use App\Repository\FournisseurRepository;
 class Fournisseur
 {
     
-
-     #[ORM\Id]
-     #[ORM\GeneratedValue]
-     #[ORM\Column]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "id_fournisseur")]
     private ?int $idFournisseur=null;
+    
 
     
      #[ORM\Column(length: 150)] 
@@ -82,6 +82,10 @@ class Fournisseur
 
         return $this;
     }
-
+    public function __toString(): string
+    {
+        return $this->nom ?? '';
+    }
+    
 
 }
