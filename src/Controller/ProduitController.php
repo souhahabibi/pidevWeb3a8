@@ -86,4 +86,36 @@ class ProduitController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    // Méthode pour modifier un produit
+#[Route('/produit/modifier/{id}', name: 'produit_modifier', methods: ['GET', 'POST'])]
+public function modifierProduit(Request $request, Produit $produit): Response
+{
+    $form = $this->createForm(ProduitType::class, $produit);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('produits_liste');
+    }
+
+    return $this->render('produit/modifier.html.twig', [
+        'produit' => $produit,
+        'form' => $form->createView(),
+    ]);
+}
+
+// Méthode pour supprimer un produit
+#[Route('/produit/supprimer/{id}', name: 'produit_supprimer', methods: ['DELETE'])]
+public function supprimerProduit(Request $request, Produit $produit): Response
+{
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->remove($produit);
+    $entityManager->flush();
+
+    return $this->redirectToRoute('produits_liste');
+}
+
+
+
 }

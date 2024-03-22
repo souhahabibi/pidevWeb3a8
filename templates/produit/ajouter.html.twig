@@ -1,22 +1,122 @@
-{# templates/produit/ajouter.html.twig #}
-
 {% extends 'admin_base.html.twig' %}
 
 {% block title %}Ajouter un Produit{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .white-text {
+            color: white;
+        }
+
+        .white-background {
+            background-color: white;
+        }
+
+        .custom-input {
+            border: 1px solid #ced4da; /* Ajoute une bordure grise */
+            border-radius: .25rem; /* Ajoute un arrondi aux coins */
+        }
+
+        /* Style pour le focus */
+        .custom-input:focus {
+            border-color: #dc3545; /* Change la couleur de la bordure au focus */
+            box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.25); /* Ajoute une ombre au focus */
+        }
+
+        /* Centrer le contenu */
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Pour centrer verticalement */
+        }
+        .image-container {
+            margin-top: 50px; /* Ajoute une marge en haut pour déplacer l'image */
+            margin-bottom: 50px; /* Ajoute une marge en bas pour déplacer l'image */
+        }
+        .title-spacing {
+            margin-bottom: 20px; /* Ajoute un espacement entre le titre et les champs */
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>Ajouter un Produit</h1>
-
-    {{ form_start(form) }}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.quantite) }}
-    {{ form_row(form.cout) }}
-    {{ form_row(form.dateExpiration) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.image) }}
-    {{ form_row(form.idFournisseur) }}
-   
-
-    <button type="submit">Ajouter</button>
-    {{ form_end(form) }}
+    <body class="center-content"> {# Ajout de la classe center-content ici #}
+        <div class="container">
+            <div class="row justify-content-center mt-4 title-spacing"> {# Ajout de la classe title-spacing ici #}
+                <div class="col-md-12 text-center">
+                    <h1>Ajouter un Produit</h1> {# Modification du titre ici #}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    {{ form_start(form) }}
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.quantite, 'Quantité', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.quantite, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.cout, 'Coût', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.cout, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.dateExpiration, 'Date d\'expiration', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.dateExpiration, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.image, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-3">
+                            {{ form_label(form.idFournisseur, 'ID Fournisseur', {'label_attr': {'class': 'form-label white-text'}}) }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form_widget(form.idFournisseur, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+                <div class="col-md-6 text-center image-container"> {# Ajout de la classe image-container ici #}
+                    <img src="{{ asset('adminSalle/img/fournisseur.jpg') }}" alt="Description de l'image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </body>
 {% endblock %}

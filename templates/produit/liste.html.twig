@@ -30,7 +30,6 @@
                     <td>{{ produit.cout }}</td>
                     <td>{{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</td>
                     <td>{{ produit.description }}</td>
-                 
                     <td>
                         {% if produit.image %}
                             <img src="{{ asset('adminSalle/img/' ~ produit.image) }}" alt="Image du produit" style="max-width: 100px; max-height: 100px;">
@@ -40,8 +39,8 @@
                     </td>
                     <td>{{ produit.idFournisseur }}</td>
                     <td>
-                      {#   <a href="{{ path('produit_edit', {'id': produit.getIdProduit}) }}">Modifier</a> #}
-                        {# <a href="{{ path('produit_delete', {'id': produit.getIdProduit}) }}">Supprimer</a> #}
+                        <a href="{{ path('produit_modifier', {'id': produit.getIdProduit}) }}" class="btn btn-primary">Modifier</a>
+                      <a href="{{ path('produit_supprimer', {'id': produit.getIdProduit}) }}" class="btn btn-primary">Modifier</a>
                     </td>
                 </tr>
             {% else %}
@@ -52,5 +51,5 @@
         </tbody>
     </table>
 
-       <a href="{{ path('produit_ajouter') }}" class="btn btn-primary">Ajouter un produit</a> 
+    <a href="{{ path('produit_ajouter') }}" class="btn btn-primary">Ajouter un produit</a> 
 {% endblock %}

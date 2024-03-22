@@ -24,6 +24,7 @@ class ProduitType extends AbstractType
                 'mapped' => false,
             ])
             ->add('idFournisseur')
+         
         ;
     }
 
