@@ -27,11 +27,12 @@ class ProduitController extends AbstractController
     public function listeProduits(ProduitRepository $produitRepository)
     {
         $produits = $produitRepository->findAll();
-
+    
         return $this->render('produit/liste.html.twig', [
             'produits' => $produits,
         ]);
     }
+    
 
     #[Route('/produit/ajouter', name: 'produit_ajouter', methods: ['GET', 'POST'])]
     public function ajouterProduit(Request $request): Response
@@ -87,35 +88,95 @@ class ProduitController extends AbstractController
         ]);
     }
     // Méthode pour modifier un produit
-#[Route('/produit/modifier/{id}', name: 'produit_modifier', methods: ['GET', 'POST'])]
-public function modifierProduit(Request $request, Produit $produit): Response
-{
-    $form = $this->createForm(ProduitType::class, $produit);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('produits_liste');
-    }
-
-    return $this->render('produit/modifier.html.twig', [
-        'produit' => $produit,
-        'form' => $form->createView(),
-    ]);
+    #[Route('/produit/modifier/{id}', name: 'modifier_produit')]
+    public function modifierProduit(Request $request, int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $produit = $entityManager->getRepository(Produit::class)->find($id);
+    
+        if (!$produit) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+    
+        // Récupérer le chemin de l'image actuel
+        $ancienCheminImage = $produit->getImage();
+    
+        // Créer le formulaire
+        $form = $this->createForm(ProduitType::class, $produit);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Vérifier si un nouveau fichier image a été soumis
+            $nouvelleImage = $form->get('image')->getData();
+            if ($nouvelleImage) {
+                // Télécharger le nouveau fichier image
+                $nouveauNomFichier = uniqid().'.'.$nouvelleImage->guessExtension();
+                try {
+                    $nouvelleImage->move(
+                        $this->getParameter('images_directory'),
+                        $nouveauNomFichier
+                    );
+    
+                    // Redimensionner l'image
+                    $imagine = new Imagine();
+                    $image = $imagine->open($this->getParameter('images_directory').'/'.$nouveauNomFichier);
+                    $image->resize(new Box(50, 50))->save($this->getParameter('images_directory').'/'.$nouveauNomFichier);
+                } catch (FileException $e) {
+                    // Gérer l'exception si le fichier ne peut pas être déplacé ou redimensionné
+                    // ...
+                }
+    
+                // Mettre à jour le chemin de l'image dans l'entité Produit
+                $produit->setImage($nouveauNomFichier);
+    
+                // Supprimer l'ancienne image si nécessaire
+                if ($ancienCheminImage) {
+                    unlink($this->getParameter('images_directory').'/'.$ancienCheminImage);
+                }
+            }
+    
+            // Enregistrer les modifications dans la base de données
+            $entityManager->flush();
+    
+            // Rediriger vers la liste des produits
+            return $this->redirectToRoute('produits_liste');
+        }
+    
+        return $this->render('produit/modifier.html.twig', [
+            'form' => $form->createView(),
+            'produit' => $produit,
+        ]);
+    
+    
 }
 
 // Méthode pour supprimer un produit
-#[Route('/produit/supprimer/{id}', name: 'produit_supprimer', methods: ['DELETE'])]
-public function supprimerProduit(Request $request, Produit $produit): Response
+#[Route('/produit/{id}', name: 'produit_supprimer')]
+public function supprimerProduit(?int $id): Response
 {
     $entityManager = $this->getDoctrine()->getManager();
+    $produit = $entityManager->getRepository(Produit::class)->find($id);
+
+    if (!$produit) {
+        throw $this->createNotFoundException('Produit non trouvé');
+    }
+
     $entityManager->remove($produit);
     $entityManager->flush();
 
-    return $this->redirectToRoute('produits_liste');
+     // Rediriger vers une page de confirmation ou ailleurs
+     return $this->redirectToRoute('produits_liste');
+
 }
+//recherche
+#[Route('/produit/search', name: 'search_produit')]
+public function search(Request $request, ProduitRepository $produitRepository): Response
+{
+    $searchTerm = $request->query->get('search_term');
+    $produits = $produitRepository->search($searchTerm);
 
-
-
+    return $this->render('produit/liste.html.twig', [
+        'produits' => $produits,
+    ]);
+}
 }

@@ -6,4 +6,4 @@
 produit_supprimer:
     path: '/produit/supprimer/{id}'
     controller: 'App\Controller\ProduitController::supprimerProduit'
-    methods: ['DELETE']
+

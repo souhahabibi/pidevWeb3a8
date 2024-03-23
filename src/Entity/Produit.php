@@ -40,13 +40,12 @@ class Produit
     #[ORM\JoinColumn(name: 'id_fournisseur', referencedColumnName: 'id_fournisseur')]
     private ?Fournisseur $idFournisseur=null;
 
-    #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'Produit')]
-    private Collection $commandes;
+
 
     
     public function __construct()
     {
-        $this->commandes = new ArrayCollection();
+        
     }
     public function getIdProduit(): ?int
     {
