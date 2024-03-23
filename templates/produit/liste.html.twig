@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Liste des produits</h1>
     <a href="{{ path('produit_ajouter') }}" class="btn btn-primary">Ajouter un produit</a>
+    <a href="{{ path('prod_piechart') }}" class="btn btn-primary">Statistiques</a>
 
     {# Barre de recherche #}
     <form action="{{ path('search_produit') }}" method="GET" class="mt-3 mb-3">

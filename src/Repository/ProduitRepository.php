@@ -32,6 +32,18 @@ class ProduitRepository extends ServiceEntityRepository
                ->getQuery()
                ->getResult();
        }
+       
+
+public function getQuantiteProduitsParFournisseur()
+{
+    return $this->createQueryBuilder('p')
+        ->select('f.nom as nom, SUM(p.quantite) as quantite')
+        ->leftJoin('p.idFournisseur', 'f')
+        ->groupBy('f.nom')
+        ->getQuery()
+        ->getResult();
+}
+
 
 //    /**
 //     * @return Produit[] Returns an array of Produit objects

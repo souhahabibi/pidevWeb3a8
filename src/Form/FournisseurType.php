@@ -12,24 +12,58 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use Symfony\Component\Validator\Constraints\Regex;
 class FournisseurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('numero')
-            ->add('type', ChoiceType::class, [
-                'choices' => [
-                    'Vêtements' => 'Vêtements',
-                    'Compléments Alimentaires' => 'Compléments Alimentaires',
-                    
-                ],
-                'placeholder' => 'Type',
-            ]);
-        ;
+        ->add('nom', TextType::class, [
+            'constraints' => [
+                new Regex([
+                    'pattern' => '/^\pL+$/u',
+                    'message' => 'Le nom ne doit contenir que des lettres.'
+                ]),
+                new NotBlank([
+                    'message' => 'Le nom ne peut pas être vide.'
+                ]),
+            ]
+        ])
+        ->add('prenom', TextType::class, [
+            'constraints' => [
+                new Regex([
+                    'pattern' => '/^\pL+$/u',
+                    'message' => 'Le prénom ne doit contenir que des lettres.'
+                ]),
+                new NotBlank([
+                    'message' => 'Le prénom ne peut pas être vide.'
+                ]),
+            ]
+        ])
+        ->add('numero', IntegerType::class, [
+            'constraints' => [
+                new Length([
+                    'min' => 8,
+                    'max' => 8,
+                    'exactMessage' => 'Le numéro doit contenir exactement {{ limit }} chiffres.'
+                ]),
+                new NotBlank([
+                    'message' => 'Le numéro ne peut pas être vide.'
+                ]),
+            ]
+        ])
+        ->add('type', ChoiceType::class, [
+            'choices' => [
+                'Vêtements' => 'Vêtements',
+                'Compléments Alimentaires' => 'Compléments Alimentaires',
+            ],
+            'placeholder' => 'Type',
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Le type ne peut pas être vide.'
+                ]),
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

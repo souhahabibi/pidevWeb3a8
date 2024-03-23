@@ -179,4 +179,35 @@ public function search(Request $request, ProduitRepository $produitRepository): 
         'produits' => $produits,
     ]);
 }
+
+//client 
+#[Route('/produitClient/list', name: 'produitsClient_liste')]
+public function listeProduitsClient(ProduitRepository $produitRepository)
+{
+    $produits = $produitRepository->findAll();
+
+    return $this->render('produit/listeClient.html.twig', [
+        'produits' => $produits,
+    ]);
+}
+ //stat
+
+ #[Route('/produit/piechart', name: 'prod_piechart')]
+public function pieChart(ProduitRepository $produitRepository): Response
+{
+    // Récupérer les fournisseurs avec la quantité totale de produits pour chaque fournisseur
+    $data = [];
+    $produitsParFournisseur = $produitRepository->getQuantiteProduitsParFournisseur();
+
+    foreach ($produitsParFournisseur as $result) {
+        $fournisseurNom = $result['nom'];
+        $quantiteProduits = $result['quantite'];
+        $data[] = ['fournisseur' => $fournisseurNom, 'quantite' => $quantiteProduits];
+    }
+
+    return $this->render('produit/piechart.html.twig', [
+        'data' => $data
+    ]);
+}
+
 }

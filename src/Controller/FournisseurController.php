@@ -114,4 +114,6 @@ public function search(Request $request, FournisseurRepository $fournisseurRepos
         'fournisseurs' => $fournisseurs,
     ]);
 }
+
+
 }
