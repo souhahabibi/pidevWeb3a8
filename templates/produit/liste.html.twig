@@ -4,8 +4,12 @@
 
 {% block body %}
     <h1>Liste des produits</h1>
-    <a href="{{ path('produit_ajouter') }}" class="btn btn-primary">Ajouter un produit</a>
-    <a href="{{ path('prod_piechart') }}" class="btn btn-primary">Statistiques</a>
+  <a href="{{ path('produit_ajouter') }}" class="btn btn-primary mr-2">Ajouter un produit</a>
+    <a href="{{ path('prod_piechart') }}">
+        <img src="{{ asset('adminSalle/img/statistiques.png') }}" alt="Statistiques" class="btn-img" width="40" height="40">
+    </a>
+
+    </a>
 
     {# Barre de recherche #}
     <form action="{{ path('search_produit') }}" method="GET" class="mt-3 mb-3">
@@ -50,8 +54,12 @@
                         </td>
                         <td>{{ produit.idFournisseur }}</td>
                         <td>
-                            <a href="{{ path('modifier_produit', {'id': produit.idProduit}) }}" class="btn btn-primary">Modifier</a>
-                            <a href="{{ path('produit_supprimer', {'id': produit.idProduit}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">Supprimer</a>
+                             <a href="{{ path('modifier_produit', {'id': produit.idProduit}) }}">
+                                 <img src="{{ asset('adminSalle/img/modifier.png') }}" alt="Modifier" class="btn-img" width="40" height="40">
+                             </a>
+                             <a href="{{ path('produit_supprimer', {'id': produit.idProduit}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
+                                 <img src="{{ asset('adminSalle/img/supprimer.png') }}" alt="Supprimer" class="btn-img" width="40" height="40">
+                             </a>
                         </td>
                     </tr>
                 {% endfor %}
