@@ -1,49 +1,48 @@
 {% extends 'admin_base.html.twig' %}
 {% block body %}
- <div class="container-fluid pt-3 px-3">
-   <div class="row  bg-secondary rounded align-items-center justify-content-center mx-0">
-    {{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}
-    <table class="table-responsive">
-        <tr>
-            <td></td>
-            <td><h1>ADD COMPETITION</h1></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>{{ form_label(f.nom,"Name") }}</td>
-            <td>{{ form_widget(f.nom) }}</td>
-            <td>{{ form_errors(f.nom) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form_label(f.date,"date") }}</td>
-            <td>{{ form_widget(f.date) }}</td>
-            <td>{{ form_errors(f.date) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form_label(f.description,"description") }}</td>
-            <td>{{ form_widget(f.description) }}</td>
-            <td>{{ form_errors(f.description) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form_label(f.capacite,"capacite") }}</td>
-            <td>{{ form_widget(f.capacite) }}</td>
-            <td>{{ form_errors(f.capacite) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form_label(f.videourl,"videourl") }}</td>
-            <td>{{ form_widget(f.videourl) }}</td>
-            <td>{{ form_errors(f.videourl) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form_label(f.fkOrganisateur,"fkOrganisateur") }}</td>
-            <td>{{ form_widget(f.fkOrganisateur) }}</td>
-            <td>{{ form_errors(f.fkOrganisateur) }}</td>
-        </tr>
-    </table>
-    <div style="padding-left: 500px;">
-    {{ form_widget(f.Submit) }}
+ <div class="container-fluid pt-4 px-4">
+    <div class="row g-4" style="padding-left: 50px;">
+        <div class="col-sm-12 col-xl-10">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h5 class="mb-4">Add Competition</h5>
+                {{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}
+                    <div class="mb-3">
+                        {{ form_label(f.nom,"Name") }}
+                        {{ form_widget(f.nom) }}
+                        {{ form_errors(f.nom) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(f.date,"date") }}
+                        {{ form_widget(f.date) }}
+                        {{ form_errors(f.date) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(f.description,"description") }}
+                        {{ form_widget(f.description) }}
+                        {{ form_errors(f.description) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(f.capacite,"capacite") }}
+                        {{ form_widget(f.capacite) }}
+                        {{ form_errors(f.capacite) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(f.videourl,"videourl") }}
+                        <span class="input-group-text" id="basic-addon3">https://www.youtube.com/embed/.....</span>
+                        {{ form_widget(f.videourl) }}
+                        {{ form_errors(f.videourl) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(f.fkOrganisateur,"fkOrganisateur") }}
+                        {{ form_widget(f.fkOrganisateur) }}
+                        {{ form_errors(f.fkOrganisateur) }}
+                    </div>
+                    <div style="padding-left: 350px;">
+                        {{ form_widget(f.Submit) }}
+                    </div>
+                {{form_end(f)}}
+            </div>
+        </div>
     </div>
-    {{form_end(f)}}
-  </div>
- </div>
+ </div>       
 {% endblock %}

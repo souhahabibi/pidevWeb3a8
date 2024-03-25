@@ -16,7 +16,7 @@ class Competition
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Can't be Empty")]
     #[Assert\Length(min:3,minMessage:" 3 characters minimum")]
-    #[Assert\Length(max:10)]
+    #[Assert\Length(max:35)]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -26,7 +26,7 @@ class Competition
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Can't be Empty")]
-    #[Assert\Length(min:100,minMessage:" 100 characters minimum")]
+    #[Assert\Length(min:50,minMessage:" 100 characters minimum")]
     #[Assert\Length(max:200)]
     private ?string $description = null;
 
