@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Competition;
+use App\Entity\Reservation;
 use App\Form\CompetitionType;
 use App\Repository\CompetitionRepository;
+use App\Repository\ReservationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +55,7 @@ class CompetitionController extends AbstractController
         $em = $manager->getManager();
  
         $form->handleRequest($req);
-        if($form->isSubmitted())
+        if($form->isSubmitted() && $form->isValid())
         {
         $em->persist($competition);
         $em->flush();
@@ -78,6 +80,16 @@ class CompetitionController extends AbstractController
     {
         return $this->render('competition/stat.html.twig', [
             'controller_name' => 'TestController',
+        ]);
+    }
+    #[Route('/competition/scores{id}', name: 'app_competition_scores')]
+    public function scores(ReservationRepository $repo,$id): Response
+    {
+        $competition = $repo->find($id);
+        $list = $repo->findByCompetition($id); 
+        return $this->render('reservation/index.html.twig', [
+            'competition'=>$competition,
+            'list' => $list
         ]);
     }
 }

@@ -20,7 +20,15 @@ class ReservationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Reservation::class);
     }
-
+    public function findByCompetition($competitionId)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.fkCompetition = :competitionId')
+            ->setParameter('competitionId', $competitionId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */
