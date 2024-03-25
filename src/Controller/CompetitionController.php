@@ -5,12 +5,17 @@ namespace App\Controller;
 use App\Entity\Competition;
 use App\Entity\Reservation;
 use App\Form\CompetitionType;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompetitionRepository;
 use App\Repository\ReservationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CompetitionController extends AbstractController
@@ -92,4 +97,48 @@ class CompetitionController extends AbstractController
             'list' => $list
         ]);
     }
-}
+
+    //////////////////////////////////////////////////////////////////////////////
+    ///////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^////////////////
+    ////////////////////////////////ADMIN_ADMIN_ADMIN/////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////CLIENT_CLIENT_CLIENT////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+    #[Route('/competition', name: 'app_competition_Client')]
+    public function indexClient(Request $request,CompetitionRepository $competitionRepository, EntityManagerInterface $entityManager): Response
+    {
+        
+        $form = $this->createFormBuilder(null)
+            ->setMethod('GET')
+            ->add('name', TextType::class, [
+                'required' => false,
+            ])
+            ->add('ongoing', CheckboxType::class, [
+                'label' => 'Ongoing',
+                'required' => false,
+            ])
+            ->add('search', SubmitType::class, [
+                'attr' => ['class' => 'primary-btn']
+            ])
+            ->getForm();
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                // Now pass the name and ongoing status to findBySearchCriteria
+                $competitions = $competitionRepository->findBySearchCriteria($data['name'], $data['ongoing']);
+            } else {
+                $competitions = $competitionRepository->findAll();
+            }
+    
+            return $this->render('competition/client_index.html.twig', [
+                'form' => $form->createView(),
+                'list' => $competitions,
+            ]);
+    }
+ }
+

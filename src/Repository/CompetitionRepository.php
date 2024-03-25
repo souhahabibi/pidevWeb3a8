@@ -20,6 +20,22 @@ class CompetitionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Competition::class);
     }
+    public function findBySearchCriteria($name, $ongoing)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+    if ($name) {
+        $qb->andWhere('c.nom LIKE :name')
+           ->setParameter('name', '%'.$name.'%');
+    }
+
+    if ($ongoing) {
+        $qb->andWhere('c.date > :today')
+           ->setParameter('today', new \DateTime()); // Let Doctrine infer the type
+    }
+
+    return $qb->getQuery()->getResult();
+    }
 
 //    /**
 //     * @return Competition[] Returns an array of Competition objects
