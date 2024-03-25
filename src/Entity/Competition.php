@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CompetitionRepository;
 use Doctrine\DBAL\Types\Types;
@@ -13,18 +14,32 @@ class Competition
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Can't be Empty")]
+    #[Assert\Length(min:3,minMessage:" 3 characters minimum")]
+    #[Assert\Length(max:10)]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "Can't be Empty")]
+    #[Assert\GreaterThan("today", message: "The date must be after today.")]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Can't be Empty")]
+    #[Assert\Length(min:100,minMessage:" 100 characters minimum")]
+    #[Assert\Length(max:200)]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Can't be Empty")]
+    #[Assert\Positive(message: "Capacite must be a positive number.")]
+    #[Assert\Range(min: 11,max: 100,notInRangeMessage: 'Capacite must be greater than 10 and less than 101.',)]
     private ?int $capacite = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Can't be Empty")]
+    #[Assert\Length(min:4,minMessage:" 3 characters minimum")]
+    #[Assert\Length(max:50)]
     private ?string $videourl = null;
 
     #[ORM\ManyToOne(inversedBy: "competitions")]

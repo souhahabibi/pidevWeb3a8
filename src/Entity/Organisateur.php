@@ -26,6 +26,7 @@ class Organisateur
     #[Assert\Length(max:8)]
     #[Assert\Type(type:'digit',message:"numbers only")]
     private $numero = null;
+    
     public function getId(): ?int
     {
         return $this->id;
