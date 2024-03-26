@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Twilio\Rest\Client;
 class CompetitionController extends AbstractController
 {
     #[Route('/competitionAdmin', name: 'app_competition_Admin')]
@@ -44,6 +44,7 @@ class CompetitionController extends AbstractController
        {
        $em->persist($competition);
        $em->flush();
+       //$this->sendSmsAction("a new competition has been Added : "+$competition->getNom(),'+21623061687');
        return $this->redirectToRoute('app_competition_Admin');
        }
 
@@ -76,7 +77,6 @@ class CompetitionController extends AbstractController
     {
         $competition = $repo->find($id);
         $em = $manager->getManager();
- 
         $em->remove($competition);
         $em->flush();
         return $this->redirectToRoute('app_competition_Admin');
@@ -156,6 +156,38 @@ class CompetitionController extends AbstractController
             'exist' => $exist,
             'topReservations' => $topReservations
         ]);
+    }
+    //////////////////////////////////////////////////////////////////////////////
+    ///////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^////////////////
+    //////////////////////////////CLIENT_CLIENT_CLIENT////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////METIER//////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+    public function sendSmsAction($msg,$to): void
+    {
+        $accountSid = $_ENV['TWILIO_ACCOUNT_SID']; // Use environment variable
+        $authToken = $_ENV['TWILIO_AUTH_TOKEN']; // Use environment variable
+        $fromNumber = $_ENV['TWILIO_NUMBER']; // Use environment variable
+        $toNumber = $to; // Replace with the recipient's phone number
+        $message = $msg;
+
+        $client = new Client($accountSid, $authToken);
+
+        try {
+            $client->messages->create(
+                $toNumber,
+                [
+                    'from' => $fromNumber,
+                    'body' => $message,
+                ]
+            );
+            $response = 'SMS sent successfully.';
+        } catch (\Exception $e) {
+            $response = 'Failed to send SMS: ' . $e->getMessage();
+        }
     }
  }
 
