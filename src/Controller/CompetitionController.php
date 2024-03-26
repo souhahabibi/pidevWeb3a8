@@ -140,5 +140,16 @@ class CompetitionController extends AbstractController
                 'list' => $competitions,
             ]);
     }
+    #[Route('/competition/view{id}', name: 'app_competition_view')]
+    public function view(CompetitionRepository $repo, ReservationRepository $reservationRepo, $id): Response
+    {
+        $competition = $repo->find($id);
+        $topReservations = $reservationRepo->findTopReservationsByCompetition($id);
+
+        return $this->render('competition/competitionView.html.twig', [
+            'competition' => $competition,
+            'topReservations' => $topReservations
+        ]);
+    }
  }
 

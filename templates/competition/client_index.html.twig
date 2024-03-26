@@ -65,7 +65,7 @@ Competitions
                         <div class="trainer-social row" style="align-items: center;">
                             <h6 class="col text-start">Capacity:{{a.capacite}}</h6>
                             <h6 class="col text-center">Date:{{ a.date|date('Y-m-d') }}</h6>
-                            <a href="#" class="primary-btn text-end" style="color:white; width:220px;">View Competition</a>
+                            <a href="{{ path('app_competition_view', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Competition</a>
                         </div>
                     </div>
                 </div>

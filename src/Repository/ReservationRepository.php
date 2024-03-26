@@ -29,6 +29,16 @@ class ReservationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findTopReservationsByCompetition($competitionId)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.fkCompetition = :compId')
+            ->setParameter('compId', $competitionId)
+            ->orderBy('r.score', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */
