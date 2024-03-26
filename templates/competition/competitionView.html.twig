@@ -24,7 +24,11 @@ Competitions
                             <h2>{{competition.nom}}</h2>
                             {% set today = "now"|date("Y-m-d") %}
                             {% if competition.date|date("Y-m-d") > today %}
-                                <a href="{{ path('app_competition_view', {'id': competition.id}) }}" class="primary-btn text-end" style="color:white; width:220px;background-color: green;">JOIN</a>
+                               {% if exist==0 %}
+                                <a href="{{ path('app_reservation_add', {'id': competition.id}) }}" class="primary-btn text-end" style="color:white; width:220px;background-color: green;">JOIN</a>
+                               {% else %}
+                                <a href="{{ path('app_reservation_delete', {'id': competition.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">EXIT</a>
+                               {% endif %} 
                                 <br>
                             {% endif %}
                             <iframe src="https://www.youtube.com/embed/{{competition.videourl}}" style="width: 680px;height: 400px;"></iframe>

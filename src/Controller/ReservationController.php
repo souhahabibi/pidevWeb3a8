@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Repository\CompetitionRepository;
 use App\Repository\ReservationRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,4 +44,52 @@ class ReservationController extends AbstractController
         ['f' => $form]     
       );
     }
+    #[Route('/reservation/add{id}', name: 'app_reservation_add')]
+    public function add(ManagerRegistry $manager,CompetitionRepository $repo,UserRepository $repou,ReservationRepository $repor,$id) : Response
+    {
+        $competition = $repo->find($id);
+        $client = $repou->find(7);
+       
+        $reservation = new Reservation();
+        $reservation->setFkCompetition($competition);
+        $reservation->setFkClient($client);
+        $reservation->setScore(0);
+        $em = $manager->getManager();
+        $em->persist($reservation);
+        $em->flush();
+        $exist=1;
+
+       $topReservations = $repor->findTopReservationsByCompetition($id);
+
+       return $this->render('competition/competitionView.html.twig', [
+        'competition' => $competition,
+        'exist' => $exist,
+        'topReservations' => $topReservations
+    ]);
+    }
+    #[Route('/reservation/delete{id}', name: 'app_reservation_delete')]
+    public function delete(ManagerRegistry $manager,CompetitionRepository $repo,UserRepository $repou,ReservationRepository $repor,$id) : Response
+    {
+        $competition = $repo->find($id);
+        $client = $repou->find(7);
+       
+        $reservationToDelete = $repor->findOneBy([
+            'fkCompetition' => $competition,
+            'fkClient' => $client
+        ]);
+        if ($reservationToDelete) {
+            $em = $manager->getManager();
+            $em->remove($reservationToDelete);
+            $em->flush();
+            $exist = 0;
+        }
+       $topReservations = $repor->findTopReservationsByCompetition($id);
+
+       return $this->render('competition/competitionView.html.twig', [
+        'competition' => $competition,
+        'exist' => $exist,
+        'topReservations' => $topReservations
+    ]);
+    }
+
 }

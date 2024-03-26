@@ -8,6 +8,7 @@ use App\Form\CompetitionType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompetitionRepository;
 use App\Repository\ReservationRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -143,11 +144,16 @@ class CompetitionController extends AbstractController
     #[Route('/competition/view{id}', name: 'app_competition_view')]
     public function view(CompetitionRepository $repo, ReservationRepository $reservationRepo, $id): Response
     {
+        $clientId = 7; 
         $competition = $repo->find($id);
         $topReservations = $reservationRepo->findTopReservationsByCompetition($id);
-
+    
+        // Check if the client has a reservation
+        $exist = $reservationRepo->clientHasReservation($clientId, $id) ? 1 : 0;
+    
         return $this->render('competition/competitionView.html.twig', [
             'competition' => $competition,
+            'exist' => $exist,
             'topReservations' => $topReservations
         ]);
     }
