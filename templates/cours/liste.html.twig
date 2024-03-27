@@ -1,0 +1,40 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}Liste des cours{% endblock %}
+
+{% block body %}
+    <h1>Liste des cours</h1>
+    <a href="{{ path('ajouter_cours') }}" class="btn btn-primary">Ajouter un cours</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Niveau</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cours in cours %}
+                <tr>
+                    <td>{{ cours.nom }}</td>
+                    <td>{{ cours.description }}</td>
+                    <td>{{ cours.niveau }}</td>
+                    <td>
+                        {% if cours.image %}
+                            <img src="{{ asset('adminSalle/img/' ~ cours.image) }}" alt="Image du cours" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('modifier_cours', {'id': cours.id}) }}" class="btn btn-primary">Modifier</a>
+                        <a href="{{ path('cours_supprimer', {'id': cours.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
