@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity;
-use App\Repository\MaterialRepository;
+use App\Repository\MaterielRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass:MaterialRepository::class)]
-class Material
+#[ORM\Entity(repositoryClass:MaterielRepository::class)]
+class Materiel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +26,7 @@ class Material
     #[ORM\Column(length: 150) ]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Materials') ]
+    #[ORM\ManyToOne(inversedBy: 'Materiels') ]
     private ?Salle $fkIdsalle = null;
 
    

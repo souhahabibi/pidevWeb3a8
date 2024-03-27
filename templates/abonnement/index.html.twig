@@ -1,0 +1,54 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block body %}
+
+<div class="container-fluid pt-4 px-4">
+   <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
+      <div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+
+
+
+            <h6 class="mb-4">GYMS Table</h6>
+<a href="{{ path('app_abonnement_add', {'id': list[0].fkIdsalle.id}) }}">
+    <button type="button" class="btn btn-success m-2">ADD</button>
+</a>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        
+                            <th scope="col">#</th>
+                            <th scope="col">montant</th>
+                            <th scope="col">duree</th>
+                            <th scope="col">description</th>
+                            <th scope="col">Modify</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in list %}
+                        <tr>
+                            <th scope="row">{{loop.index}}</th>
+                           
+                        <td>{{a.montant}}</td>
+                        <td>{{a.duree}}</td>
+                        <td>{{a.description}}</td>
+                        <td><a href="{{ path('app_salle_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
+                        <td><a href="{{ path('app_salle_delete', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Delete</button></a></td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
