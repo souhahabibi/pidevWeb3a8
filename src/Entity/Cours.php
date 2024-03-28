@@ -24,9 +24,12 @@ class Cours
     private ?string $nom = null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le description doit être une chaîne alphabétique.")]
     private ?string $description=null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message:"Veuillez sélectionner un niveau.")]
     private ?string $niveau=null;
 
     #[ORM\Column(type: "string", length: 255)]

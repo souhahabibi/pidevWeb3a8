@@ -9,6 +9,7 @@ use App\Entity\Cours;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CoursType extends AbstractType
 {
@@ -17,9 +18,24 @@ class CoursType extends AbstractType
         $builder
         ->add('image', FileType::class, [
             'label' => 'Image du cours',
-            'required' => false, // La rend facultative
+            'required' => true, // La rend obligatoire
             'mapped' => false,
+            'constraints' => [
+                new Assert\NotBlank([
+                    'message' => 'Veuillez télécharger une image.',
+                ]),
+                new Assert\File([
+                    'maxSize' => '1024k',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif',
+                    ],
+                    'mimeTypesMessage' => 'Veuillez télécharger une image valide.',
+                ]),
+            ],
         ])
+        
         ->add('nom')
         ->add('description')
         ->add('niveau', ChoiceType::class, [
