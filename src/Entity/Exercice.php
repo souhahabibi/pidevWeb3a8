@@ -29,6 +29,7 @@ class Exercice
     
     #[ORM\ManyToOne(targetEntity:Cours::class, inversedBy: "exercice")]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "id")]
+
     private ?Cours $cours=null;
     
     #[ORM\ManyToOne(inversedBy: "exercice")]
