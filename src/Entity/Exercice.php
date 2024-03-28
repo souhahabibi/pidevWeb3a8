@@ -14,9 +14,12 @@ class Exercice
     private ?int $idE=null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le nom doit être une chaîne alphabétique.")]
     private ?string $nom=null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
     private ?string $etape=null;
 
     #[ORM\Column(type: "string", length: 255)]
@@ -24,11 +27,11 @@ class Exercice
 
 
     
-    #[ORM\ManyToOne(targetEntity:Cours::class, inversedBy: "exercices")]
+    #[ORM\ManyToOne(targetEntity:Cours::class, inversedBy: "exercice")]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "id")]
     private ?Cours $cours=null;
     
-    #[ORM\ManyToOne(inversedBy: "exercices")]
+    #[ORM\ManyToOne(inversedBy: "exercice")]
     private ?User $user=null;
 
 

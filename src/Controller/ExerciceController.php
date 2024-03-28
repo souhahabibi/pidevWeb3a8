@@ -119,7 +119,8 @@ class ExerciceController extends AbstractController
                 try {
                     $imageFile->move(
                         $this->getParameter('images_directory'),
-                        $newFilename
+                        $newFilename 
+                    
                     );
                 } catch (FileException $e) {
                     // Handle exception if something happens during file upload
