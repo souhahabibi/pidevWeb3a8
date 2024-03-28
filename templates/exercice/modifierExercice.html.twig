@@ -1,0 +1,95 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}Modifier un Exercice{% endblock %}
+
+{% block body %}
+  <body class="center-content">
+    <div class="container">
+      <div class="row justify-content-center mt-4 title-spacing">
+        <div class="col-md-12 text-center">
+          <h1>Modifier un Exercice</h1>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+           {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+       <div class="mb-3 row align-items-center">
+
+
+<div class="col-md-3">
+    {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}
+</div>
+<div class="col-md-9">
+    {{ form_errors(form.nom, {'attr': {'class': 'text-danger'}}) }}
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+</div>
+
+
+
+</div>
+
+
+          <div class="mb-3 row align-items-center">
+            <div class="col-md-3">
+              {{ form_label(form.etape, 'etape', {'label_attr': {'class': 'form-label white-text'}}) }}
+            </div>
+            <div class="col-md-9">
+               {{ form_errors(form.etape, {'attr': {'class': 'text-danger'}}) }}
+              {{ form_widget(form.etape, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+          
+            </div>
+          </div>
+
+       
+
+               <div class="mb-3 row align-items-center">
+            <div class="col-md-3">
+              {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label white-text'}}) }}
+            </div>
+            <div class="col-md-9">
+              {{ form_errors(form.image, {'attr': {'class': 'text-danger'}}) }}
+              {{ form_widget(form.image, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+   
+            </div>
+          </div>
+
+
+          <div class="mb-3 row align-items-center">
+            <div class="col-md-3">
+            {{ form_label(form.cours, 'Nom de cours', {'label_attr': {'class': 'form-label white-text'}}) }}
+            </div>
+            <div class="col-md-9">
+             
+              {{ form_widget(form.cours, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+        
+            </div>
+          </div>
+
+               <div class="mb-3 row align-items-center">
+            <div class="col-md-3">
+            {{ form_label(form.user, 'User', {'label_attr': {'class': 'form-label white-text'}}) }}
+            </div>
+            <div class="col-md-9">
+             
+              {{ form_widget(form.user, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+        
+            </div>
+          </div>
+
+        
+
+       
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Modifier</button>
+          </div>
+          {{ form_end(form) }}
+        </div>
+        <div class="col-md-6 text-center image-container">
+                    <img src="{{ asset('adminSalle/img/muscle.png') }}" alt="Description de l'image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}
