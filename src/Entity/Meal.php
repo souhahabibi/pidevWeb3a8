@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MealRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass:MealRepository::class)]
@@ -17,16 +18,24 @@ class Meal
   
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Length(min:3,minMessage:" 3 characters minimum")]
+    #[Assert\Length(max:15)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $imgurl = null;
+    #[ORM\Column(name:"image_url",length: 255,nullable:false)]
+    private ?string  $imageUrl;
 
   
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Length(min:30,minMessage:" 100 characters minimum")]
+    #[Assert\Length(max:200)]
     private ?string $recipe = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Positive(message:"Please enter a valid number")]
     private ?int $calories = null;
 
     public function getId(): ?int
@@ -78,18 +87,6 @@ class Meal
     public function setCalories(int $calories): static
     {
         $this->calories = $calories;
-
-        return $this;
-    }
-
-    public function getImgurl(): ?string
-    {
-        return $this->imgurl;
-    }
-
-    public function setImgurl(string $imgurl): static
-    {
-        $this->imgurl = $imgurl;
 
         return $this;
     }

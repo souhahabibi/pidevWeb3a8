@@ -45,4 +45,27 @@ class IngredientMealRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+public function findByMealId(int $mealId): array
+{
+    return $this->createQueryBuilder('im')
+        ->join('im.meal', 'm')
+        ->andWhere('m.id = :mealId')
+        ->setParameter('mealId', $mealId)
+        ->getQuery()
+        ->getResult();
+}
+
+public function findByMealAndIngredient($mealId, $ingredientId): ?IngredientMeal
+    {
+        return $this->createQueryBuilder('im')
+            ->andWhere('im.meal = :mealId')
+            ->andWhere('im.ingredients = :ingredientId')
+            ->setParameter('mealId', $mealId)
+            ->setParameter('ingredientId', $ingredientId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    
 }

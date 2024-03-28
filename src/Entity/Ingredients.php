@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\IngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass:IngredientsRepository::class)]
 class Ingredients
 {
@@ -14,22 +16,31 @@ class Ingredients
 
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Length(min:4,minMessage:" 4 characters minimum")]
+    #[Assert\Length(max:15)]
     private ?string $name = null;
    
 
     
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Positive(message:"Please enter a valid number")]
     private ?int $calories = null;
 
     
 
     
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Positive(message:"Please enter a valid number")]
     private ?int $totalFat = null;
 
    
     
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Positive(message:"Please enter a valid number")]
     private ?int $protein = null;
 
     

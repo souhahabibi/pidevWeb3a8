@@ -1,0 +1,17 @@
+{% extends 'coach_base.html.twig' %}
+{% block css %}
+ {{ parent() }}
+<style>
+.content {
+    background: #8B0000 !important;
+}
+</style> {% endblock %}
+{% block title %}New Meal {% endblock %}
+
+{% block body %}
+    <h1>Create new Meal</h1>
+
+    {{ include('meal/_form.html.twig') }}
+
+    <a href="{{ path('app_meal_index') }}">back to list</a>
+{% endblock %}

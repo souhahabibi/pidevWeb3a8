@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RegimeRepository;
 
+
 #[ORM\Entity(repositoryClass:RegimeRepository::class)]
 class Regime
 {
@@ -15,13 +16,13 @@ class Regime
     private ?int $id = null;
 
     
-    #[ORM\Column]
-    private ?DateTime $startdate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $startdate = null;
 
     
     
-    #[ORM\Column]
-    private ?DateTime $enddate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $enddate = null;
 
     #[ORM\Column]
     private ?int $duration = null;
@@ -36,7 +37,8 @@ class Regime
 
    
     #[ORM\ManyToOne(inversedBy: 'regimes')]
-    private ?User $clientid = null;
+    #[ORM\JoinColumn(name:"clientId", referencedColumnName:"id", nullable:true)]
+    private ?User $clientId ;
 
     public function getId(): ?int
     {
@@ -103,14 +105,14 @@ class Regime
         return $this;
     }
 
-    public function getClientid(): ?User
+    public function getClientId(): ?User
     {
-        return $this->clientid;
+        return $this->clientId;
     }
 
-    public function setClientid(?User $clientid): static
+    public function setClientId(?User $clientId): static
     {
-        $this->clientid = $clientid;
+        $this->clientId = $clientId;
 
         return $this;
     }
