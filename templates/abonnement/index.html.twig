@@ -34,8 +34,8 @@
                         <td>{{a.montant}}</td>
                         <td>{{a.duree}}</td>
                         <td>{{a.description}}</td>
-                        <td><a href="{{ path('app_salle_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
-                        <td><a href="{{ path('app_salle_delete', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Delete</button></a></td>
+                        <td><a href="{{ path('app_abonnement_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
+                        <td><a href="{{ path('app_abonnement_delete', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Delete</button></a></td>
 
                         </tr>
                         {% endfor %}
