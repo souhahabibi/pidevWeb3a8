@@ -25,6 +25,14 @@ class SalleController extends AbstractController
             'list' => $list
         ]);
     }
+    #[Route('/salleClient', name: 'app_salleClient')]
+    public function indexC(SalleRepository $repo): Response
+    {
+        $list = $repo->findAll(); 
+        return $this->render('salle/salleClient.html.twig', [
+            'list' => $list
+        ]);
+    }
     #[Route('/salle/add', name: 'app_salle_add')]
     public function add(Request $req,ManagerRegistry $manager): Response
     {
@@ -109,7 +117,8 @@ class SalleController extends AbstractController
     {
         $list = $repo->findAbonnementsByGymId($id); 
         return $this->render('abonnement/index.html.twig', [
-            'list' => $list
+            'list' => $list,
+            'id' => $id
         ]);
     }
     #[Route('/salle/materiel{id}', name: 'app_salle_materiel')]
@@ -117,7 +126,27 @@ class SalleController extends AbstractController
     {
         $list = $repo->findMaterielByGymId($id); 
         return $this->render('materiel/materiel.html.twig', [
-            'list' => $list
+            'list' => $list,
+            'id' => $id
+        ]);
+    }
+    #[Route('/salleClient/abonnementC{id}', name: 'app_salleClient_abonnement')]
+    public function goToAbonnementsC(AbonnementRepository $repo,$id): Response
+    {
+    
+        $list = $repo->findAbonnementsByGymId($id); 
+        return $this->render('abonnement/abonnementClient.html.twig', [
+            'list' => $list,
+            'id' => $id
+        ]);
+    }
+    #[Route('/salleClient/materielC{id}', name: 'app_salleClient_materiel')]
+    public function goToMaterielsC(MaterielRepository $repo, $id): Response
+    {
+        $list = $repo->findMaterielByGymId($id); 
+        return $this->render('materiel/materielClient.html.twig', [
+            'list' => $list,
+            'id' => $id
         ]);
     }
 }

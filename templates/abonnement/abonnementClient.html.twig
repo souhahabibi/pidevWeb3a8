@@ -1,0 +1,44 @@
+{% extends 'client_base.html.twig' %}
+{% block title %}
+Abonnements
+{% endblock %}
+
+{% block page %}
+{{list[0].fkIdsalle.nom}} > Abonnements
+{% endblock %}
+
+{% block body %}
+<section class="about-page-trainer spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Our Subscriptions</h2>
+                        <p>Unlock your fitness potential with our gym subscription. Gain access to state-of-the-art equipment, expert-led classes, and personalized training programs tailored to your goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+       {% for a in list %}
+        <div class="col-lg-3 col-sm-6 mb-4" >
+            <div class="single-trainer-item" style="border-radius: 1px; border: 1px solid gray;">
+                <div class="trainer-social">
+                    <h6>Duration: {{ a.duree }} Months</h6>
+                </div>
+                <div class="trainer-text">
+                    <h5>Price: {{ a.montant }} DT</h5>
+                    <span style="min-width: 200px; min-height: 225px; max-width: 200px; max-height: 225px;align-self:center;">{{ a.description }}</span >
+                    <div class="trainer-social">
+                        <td><a href="#"><button type="button" class="primary-btn text-end">Contact Us</button></a></td>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+
+        </div>
+    </div>
+</section>
+{% endblock %}
