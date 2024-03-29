@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Salle;
 use App\Form\SalleType;
+use App\Entity\Materiel;
 use App\Entity\Abonnement;
 use App\Repository\SalleRepository;
+use App\Repository\MaterielRepository;
 use App\Repository\AbonnementRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,5 +112,12 @@ class SalleController extends AbstractController
             'list' => $list
         ]);
     }
-    
+    #[Route('/salle/materiel{id}', name: 'app_salle_materiel')]
+    public function goToMateriels(MaterielRepository $repo, $id): Response
+    {
+        $list = $repo->findMaterielByGymId($id); 
+        return $this->render('materiel/materiel.html.twig', [
+            'list' => $list
+        ]);
+    }
 }

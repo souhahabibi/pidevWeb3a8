@@ -27,6 +27,7 @@ class Materiel
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'Materiels') ]
+    #[ORM\JoinColumn(name: 'FK_idSalle')]
     private ?Salle $fkIdsalle = null;
 
    

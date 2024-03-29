@@ -20,6 +20,15 @@ class MaterielRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Materiel::class);
     }
+    public function findMaterielByGymId(int $gymId): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.fkIdsalle', 's') // Use the correct association name
+            ->andWhere('s.id = :gymId')
+            ->setParameter('gymId', $gymId)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Materiel[] Returns an array of Materiel objects
