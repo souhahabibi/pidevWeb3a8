@@ -58,6 +58,44 @@ class MaterielController extends AbstractController
          ['f' => $form]     
         );
     }
+    #[Route('/materiel/modify{id}', name: 'app_materiel_modify')]
+    public function modify(Request $req,ManagerRegistry $manager,MaterielRepository $repo,$id): Response
+    {
+        $materiel = new Materiel();
+        $materiel = $repo->find($id);
+        $salle = $repo->find($id);
+        $form = $this->createForm(MaterielType::class,$materiel);
+ 
+        $em = $manager->getManager();
+ 
+        $form->handleRequest($req); 
+ 
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $file = $form->get('image')->getData();
+            if ($file) 
+            {
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+                // Move the file to the desired directory
+                $file->move(
+                    $this->getParameter('images_directory'), // Specify your target directory
+                    $fileName
+                );
+
+                // Update the image property of salle entity
+                $materiel->setImage($fileName);
+                $em->persist($materiel);
+                $em->flush();
+                return $this->redirectToRoute('app_salle_materiel',['id' => $materiel->getFkIdsalle()->getId()]);
+            }
+        }
+ 
+        return $this->renderForm('materiel/materielForm.html.twig',
+        ['f' => $form]     
+      );
+    }
+
     #[Route('/materiel/delete{id}', name: 'app_materiel_delete')]
     public function delete(ManagerRegistry $manager,MaterielRepository $repo,$id): Response
     {

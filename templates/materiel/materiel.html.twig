@@ -9,7 +9,7 @@
 
 
 
-            <h6 class="mb-4">GYMS Table</h6>
+            <h6 class="mb-4">MATERIELS Table</h6>
             <a href="{{ path('app_materiel_add', {'id': list[0].fkIdsalle.id}) }}">
                 <button type="button" class="btn btn-success m-2">ADD</button>
             </a>          
@@ -45,7 +45,7 @@
                         <td>{{a.quantite}}</td>
                         <td>{{a.prix}}</td>
 
-                        <td><a href="{{ path('app_salle_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
+                        <td><a href="{{ path('app_materiel_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
                         <td><a href="{{ path('app_materiel_delete', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Delete</button></a></td>
                         </tr>
                         {% endfor %}
