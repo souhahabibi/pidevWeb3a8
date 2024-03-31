@@ -92,4 +92,86 @@ class RegimeController extends AbstractController
 
         return $this->redirectToRoute('app_regime_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/client', name: 'client_app', methods: ['GET'])]
+   /* public function clientCours(RegimeRepository $regimeRepository, Request $request)
+    {
+        // Assuming you calculate BMI based on user input
+        $height = $request->query->get('height');
+        $weight = $request->query->get('weight');
+    
+        // Calculate BMI here
+        $bmi = // calculate BMI based on height and weight
+    
+        // You can also retrieve additional data from the repository if needed
+        $additionalData = $regimeRepository->findAll(); // Or any other method to fetch data
+    
+        return $this->render('client-BMI.html.twig', [
+            'controller_name' => 'RegimeController',
+            'bmi' => $bmi,
+            'additional_data' => $additionalData,
+        ]);
+    }*/
+    public function clientByRegimes(RegimeRepository $regimeRepository): Response
+    {
+        return $this->render('regime/client-BMI.html.twig', [
+            'regimes' => $regimeRepository->findAll(),
+        ]);
+    }
+
+
+    #[Route('/show/stats', name: 'stats', methods: ['GET'])]
+    public function statistiques()
+    { 
+        $repository = $this->getDoctrine()->getRepository(Regime::class);
+        $regime = $repository->findAll();
+
+        /* you can also inject "FooRepository $repository" using autowire */
+
+       /* $count = $repository->count();
+        dd($count); */
+
+           /*  $countbydate= $repository->createQueryBuilder('a')
+            ->select('SUBSTRING(datefin,1,10) As datedufin, COUNT(a) as count')
+            ->groupby('datedufin')
+            ->getQuery()
+            ->getResult(); */
+       //
+      
+       $count= $repository->createQueryBuilder('u')
+            ->select('count(u.goal)')
+            ->groupby('u.goal')
+            ->getQuery()
+            ->getResult();
+
+            $countdate= $repository->createQueryBuilder('a')
+            ->select('(a.goal)')
+            ->groupby('a.goal')
+            ->getQuery()
+            ->getResult();
+        foreach($regime as $regime){
+
+            $date[] = $regime->getGoal();
+
+        }
+
+
+            for ($i = 0; $i < count($count); ++$i){
+
+                $count1[] = $count[$i][1] ;
+                $countdate1[] = $countdate[$i][1];
+            }
+
+
+        return $this->render('regime/stats.html.twig', [
+            'date' => json_encode($date ),
+            'count1' => json_encode($count1),
+            'countdate1' => json_encode($countdate1),
+            
+
+
+        ]);
+    }
+
+
 }

@@ -13,20 +13,30 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\IngredientsRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
 
 #[Route('/meal')]
 class MealController extends AbstractController
 {
     #[Route('/', name: 'app_meal_index', methods: ['GET','POST'])]
-    public function index(MealRepository $mealRepository): Response
+    public function index(Request $request,PaginatorInterface $paginator, MealRepository $mealRepository): Response
     {
+        $meals = $mealRepository->findAll();
+        $meals = $paginator->paginate(
+            $meals, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+        5 /*limit per page*/
+        );
         return $this->render('meal/index.html.twig', [
-            'meals' => $mealRepository->findAll(),
+            'meals' => $meals,
         ]);
     }
 
     #[Route('/new', name: 'app_meal_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $meal = new Meal();
         $form = $this->createForm(MealType::class, $meal);
@@ -35,13 +45,20 @@ class MealController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('imageUrl')->getData();
 
-
             $filename = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move($this->getParameter('upload_directory'), $filename);
             $meal->setImageUrl($filename);
 
+            $email = (new Email())
+            ->from('mailtrap@demomailtrap.com')
+            ->to('selmi_yosri@outlook.fr') // Primary recipient
+            ->subject('Your subject here')
+            ->text('This is the text version of the email.')
+            ->html('<p>This is the HTML version of the email.</p>');
+
             $entityManager->persist($meal);
             $entityManager->flush();
+            $mailer->send($email);
 
             return $this->redirectToRoute('app_meal_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -132,4 +149,9 @@ class MealController extends AbstractController
     
         return $this->redirectToRoute('app_meal_show_ingredient_ingredient', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
-}
+
+} 
+    
+
+    
+
