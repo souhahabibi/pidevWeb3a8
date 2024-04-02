@@ -1,11 +1,11 @@
 {% extends 'client_base.html.twig' %}
 
 {% block title %}
-<title>Regime index</title>
+<title>client Regimes</title>
 {% endblock %}
 
 {% block body %}
-    <h1>Regime index</h1>
+    <h1>These are your Regimes</h1>
 
     <table class="table">
         <thead>
@@ -21,6 +21,7 @@
         </thead>
         <tbody>
         {% for regime in regimes %}
+        {% if regime.getVerified() == true %}
             <tr>
               
                 <td>{{ regime.startdate|date("m/d/Y")  }}</td>
@@ -33,10 +34,8 @@
                     <a href="{{ path('app_regime_edit', {'id': regime.id}) }}">edit</a>
                 </td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
+        
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

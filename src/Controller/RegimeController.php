@@ -173,5 +173,37 @@ class RegimeController extends AbstractController
         ]);
     }
 
+    
+    #[Route('/coach/show', name: 'regime-coach', methods: ['GET'])]
+    public function indexCoach(): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Regime::class);
+        $regime = $repository->findAll();
+        return $this->render('regime/coach.html.twig', [
+            'regimes' => $regime,
+        ]);
+    }
+
+   
+    #[Route('/coach/{id}', name: 'regime-validate', methods: ['GET'])]
+    public function validate(RegimeRepository $regimeRepository, $id, EntityManagerInterface $entityManager): Response
+    {
+        $regime = $this->getDoctrine()->getRepository(Regime::class)->find($id);
+       
+
+        $regime->setVerified(true);
+        $entityManager->persist($regime);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('regime-coach');
+    }
+
+    #[Route('/bmi/show', name: 'bmi-calcul', methods: ['GET'])]
+    public function indexBMI(): Response
+    {
+        return $this->render('regime/client-BMI.html.twig', [
+        ]);
+    }
+
 
 }

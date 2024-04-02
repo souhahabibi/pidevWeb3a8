@@ -95,7 +95,8 @@
                 </a>
                 
                 <div class="navbar-nav align-items-center ms-auto">
-                    
+                     <label class="form-label">Type here...</label>
+                            <input id="myInput" type="text" class="form-control">
                     
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -154,6 +155,20 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('js/main.js')}}"></script>
+     <script type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    //console.log(value);
+                    $("#myTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+        </script>
 </body>
 
 </html>

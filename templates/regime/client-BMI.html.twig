@@ -4,21 +4,7 @@
 
 {% block body %}
   <!-- Site Breadcrumb Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="img/about-breadcrumb-bg.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="site-text">
-                        <h2>BMI Calculator</h2>
-                        <div class="site-breadcrumb">
-                            <a href="./home.html" class="sb-item">Home</a>
-                            <span class="sb-item">BMI Calculator</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   
     <!-- Site Breadcrumb End -->
  <!-- BMI Calculator Section Begin -->
  <section class="bmi-calculator-section spad">
@@ -75,12 +61,6 @@
                             <div class="col-sm-6">
                                 <input type="text" placeholder="Weight / kg">
                             </div>
-                            <div class="col-sm-6">
-                                <input type="text" placeholder="Age">
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="text" placeholder="Sex">
-                            </div>
                             <div class="col-lg-12">
                                 <button type="submit">Calculate</button>
                             </div>
@@ -94,32 +74,53 @@
 <!-- BMI Calculator Section End -->
 
 <!-- Get In Touch Section Begin -->
-<div class="gettouch-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="gt-text">
-                    <i class="fa fa-map-marker"></i>
-                    <p>333 Middle Winchendon Rd, Rindge,<br/> NH 03461</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gt-text">
-                    <i class="fa fa-mobile"></i>
-                    <ul>
-                        <li>125-711-811</li>
-                        <li>125-668-886</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="gt-text email">
-                    <i class="fa fa-envelope"></i>
-                    <p>Support.gymcenter@gmail.com</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Get In Touch Section End -->
+
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get form and input elements
+            var form = document.querySelector('.chart-calculate-form form');
+            var heightInput = document.querySelector('input[placeholder="Height / cm"]');
+            var weightInput = document.querySelector('input[placeholder="Weight / kg"]');
+            var resultDiv = document.createElement('div');
+            resultDiv.style.marginTop = '10px'; // Example margin top
+resultDiv.style.padding = '10px'; // Example padding
+resultDiv.style.backgroundColor = '#f0f0f0'; // Example background color
+resultDiv.style.border = '1px solid #ccc'; // Example border
+resultDiv.style.borderRadius = '5px'; // Example border radius
+resultDiv.style.fontFamily = 'Arial, sans-serif'; // Example font family
+resultDiv.style.fontSize = '16px'; // Example font size
+resultDiv.style.color = '#333'; // Example text color
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent form submission
+
+                // Get input values
+                var height = parseFloat(heightInput.value);
+                var weight = parseFloat(weightInput.value);
+
+                // Check if inputs are valid numbers
+                if (isNaN(height) || isNaN(weight)) {
+                    resultDiv.textContent = "Please enter valid height and weight.";
+                    return;
+                }
+
+                // Calculate BMI
+                var bmi = calculateBMI(height, weight);
+
+                // Display result
+                resultDiv.textContent = "Your BMI is: " + bmi.toFixed(2); // Displaying BMI with 2 decimal places
+            });
+
+            // Helper function to calculate BMI
+            function calculateBMI(height, weight) {
+                // Formula for BMI: weight (kg) / (height (m))^2
+                var heightMeters = height / 100; // Convert height from cm to meters
+                return weight / (heightMeters * heightMeters);
+            }
+
+            // Append result div to the form
+            form.appendChild(resultDiv);
+        });
+    </script>
 {% endblock %}

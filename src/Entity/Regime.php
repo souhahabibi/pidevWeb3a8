@@ -35,6 +35,10 @@ class Regime
     #[ORM\Column]
     private ?string $goal = null;
 
+  
+    #[ORM\Column]
+    private ?bool $verified = false;
+
    
     #[ORM\ManyToOne(inversedBy: 'regimes')]
     #[ORM\JoinColumn(name:"clientId", referencedColumnName:"id", nullable:true)]
@@ -104,6 +108,19 @@ class Regime
 
         return $this;
     }
+
+    public function getVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(?bool $verified): static
+    {
+        $this->verified = $verified;
+
+        return $this;
+    }
+
 
     public function getClientId(): ?User
     {

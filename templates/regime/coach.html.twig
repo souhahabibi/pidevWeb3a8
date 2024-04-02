@@ -1,7 +1,7 @@
 {% extends 'coach_base.html.twig' %}
 
 {% block title %}
-<title>Regime index</title>
+Regime index
 {% endblock %}
 
 {% block body %}
@@ -32,7 +32,9 @@
                 <td>{{ regime.clientId.nom }}</td>
                 <td>
                     <a href="{{ path('app_regime_show', {'id': regime.id}) }}">show</a>
-                    <a href="{{ path('app_regime_edit', {'id': regime.id}) }}">edit</a>
+                    {% if regime.getVerified() != true %}
+                <a  href="{{ path('regime-validate', {id: regime.id}) }}">Validate</a>
+                {% endif %}
                 </td>
             </tr>
         {% else %}
