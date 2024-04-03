@@ -2,6 +2,8 @@
 namespace App\Entity;
 use App\Repository\MaterielRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Assert\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass:MaterielRepository::class)]
 class Materiel
@@ -12,19 +14,30 @@ class Materiel
     private ?int $id = null;
 
     #[ORM\Column(length: 150) ]
+    #[Assert\NotBlank(message: "name is required") ] 
+    #[Assert\Length(min: 1,max: 30,minMessage:"The name '{{ value }}' is too short", maxMessage: "The name '{{ value }}' is too long")]
     private ?string $nom = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Machine age is required")]
+    #[Assert\Range( min: 0, max: 50, minMessage: "The machine age must be at least {{ limit }} years", maxMessage: "The machine age cannot exceed {{ limit }} years")]
     private ?int $age = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Quantity is required")]
+    #[Assert\Type(type: "integer", message: "Quantity must be an integer")]
+    #[Assert\Range(min: 1, max: 9999, minMessage: "Quantity must be at least 1", maxMessage: "Quantity cannot exceed 9999")]
     private ?int $quantite = null;
     
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Price is required")]
+#[Assert\Type(type: "integer", message: "Price must be an integer")]
+#[Assert\Range(min: 1, max: 999999, minMessage: "Price must be at least 1", maxMessage: "Price cannot exceed 9999999")]
+
     private ?int $prix = null;
 
     #[ORM\Column(length: 150) ]
-    private ?string $image = null;
+     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'Materiels') ]
     #[ORM\JoinColumn(name: 'FK_idSalle')]

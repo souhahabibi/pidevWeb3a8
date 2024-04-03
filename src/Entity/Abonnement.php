@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AbonnementRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AbonnementRepository::class)] 
 class Abonnement
@@ -14,12 +15,20 @@ class Abonnement
     private ?int $id = null;
     
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Quantity is required")]
+    #[Assert\Type(type: "integer", message: "Quantity must be an integer")]
+    #[Assert\Range(min: 1, max: 9999, minMessage: "Quantity must be at least 1", maxMessage: "Quantity cannot exceed 9999")]
     private ?int $montant = null;
     
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Quantity is required")]
+    #[Assert\Type(type: "integer", message: "Quantity must be an integer")]
+    #[Assert\Range(min: 1, max: 9999, minMessage: "Quantity must be at least 1", maxMessage: "Quantity cannot exceed 9999")]
     private ?int $duree = null;
 
     #[ORM\Column(length: 150) ]
+    #[Assert\NotBlank(message: "name is required") ] 
+    #[Assert\Length(min: 1,max: 30,minMessage:"The name '{{ value }}' is too short", maxMessage: "The name '{{ value }}' is too long")]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'abonnement') ]

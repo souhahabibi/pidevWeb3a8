@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SalleRepository;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: SalleRepository::class)] 
 
 class Salle
@@ -15,16 +15,22 @@ class Salle
     private ?int $id = null;
 
     #[ORM\Column(length: 150) ]
+    #[Assert\NotBlank(message: "name is required") ] 
+    #[Assert\Length(min: 1,max: 30,minMessage:"The name '{{ value }}' is too short", maxMessage: "The name '{{ value }}' is too long")]
     private ?string $nom = null;
     
     #[ORM\Column(length: 150) ]
+    #[Assert\NotBlank(message: "description is required") ] 
+    #[Assert\Length(min: 1,max: 30,minMessage:"The description '{{ value }}' is too short", maxMessage: "The description '{{ value }}' is too long")]
     private ?string $description = null;
 
     #[ORM\Column(length: 150) ]
+    #[Assert\NotBlank(message: "place is required") ] 
+    #[Assert\Length(min: 1,max: 30,minMessage:"The place '{{ value }}' is too short", maxMessage: "The place '{{ value }}' is too long")]
     private ?string $lieu = null;
    
     #[ORM\Column(length: 150) ]
-    private ?string $image = null;
+   private ?string $image = null;
     
 
     public function getId(): ?int

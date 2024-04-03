@@ -34,7 +34,7 @@
                             <th scope="row">{{loop.index}}</th>
                             <td>
                                 {% if a.image is not null %}
-                                <img src="{{ asset('uploads/images/' ~ a.image) }}" alt="Salle Image">
+                                <img src="{{ asset('uploads/images/' ~ a.image) }}" alt="Salle Image" style="max-width:300px; max-height:200px;min-width:300px;min-height:200px;">
                                 {% else %}
                                 <!-- Handle case where no image is available -->
                                 <span>No image available</span>

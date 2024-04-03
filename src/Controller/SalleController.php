@@ -13,7 +13,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class SalleController extends AbstractController
 {    
@@ -34,39 +36,43 @@ class SalleController extends AbstractController
         ]);
     }
     #[Route('/salle/add', name: 'app_salle_add')]
-    public function add(Request $req,ManagerRegistry $manager): Response
+    public function add(Request $req, ManagerRegistry $manager): Response
     {
-       $salle = new Salle();
-
-       $form = $this->createForm(SalleType::class,$salle);
-
-       $em = $manager->getManager();
-
-       $form->handleRequest($req);
-
-       if ($form->isSubmitted() && $form->isValid())
-        {
+        $salle = new Salle();
+        $form = $this->createForm(SalleType::class, $salle);
+        $em = $manager->getManager();
+        $form->handleRequest($req);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('image')->getData();
-            if ($file) 
-            {
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
-                // Move the file to the desired directory
-                $file->move(
-                    $this->getParameter('images_directory'), // Specify your target directory
-                    $fileName
-                );
-
-                // Update the image property of salle entity
-                $salle->setImage($fileName);
-                $em->persist($salle);
-                $em->flush();
-                return $this->redirectToRoute('app_salleAdmin');
+            if ($file instanceof UploadedFile) {
+                // Vérifie si c'est une image
+                if (!in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
+                    $this->addFlash('error', 'Le fichier doit être une image (JPEG, PNG, GIF)');
+                    return $this->redirectToRoute('app_salle_add');
+                }
+    
+                
+    
+                try {
+                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                    $file->move($this->getParameter('images_directory'), $fileName);
+                    $salle->setImage($fileName);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Une erreur s\'est produite lors du téléchargement du fichier');
+                    return $this->redirectToRoute('app_salle_add');
+                }
+            } else {
+                $this->addFlash('error', 'Veuillez sélectionner un fichier');
+                return $this->redirectToRoute('app_salle_add');
             }
+    
+            $em->persist($salle);
+            $em->flush();
+            return $this->redirectToRoute('app_salleAdmin');
         }
-        return $this->renderForm('salle/salleForm.html.twig',
-         ['f' => $form]     
-        );
+    
+        return $this->renderForm('salle/salleForm.html.twig', ['f' => $form]);
     }
     #[Route('/salle/modify{id}', name: 'app_salle_modify')]
     public function modify(Request $req,ManagerRegistry $manager,SalleRepository $repo,$id): Response
