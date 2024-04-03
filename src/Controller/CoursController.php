@@ -23,12 +23,45 @@ class CoursController extends AbstractController
         ]);
     }
 
+    #[Route('/client', name: 'client_app')]
+    public function clientCours(CoursRepository $coursRepository)
+    {
+        $cours = $coursRepository->findAll();
+    
+        return $this->render('client_base.html.twig', [
+            'cours' => $cours,
+        ]);
+    }
+
+    #[Route('/client/cours', name: 'client_cours')]
+    public function clientCours2(CoursRepository $coursRepository)
+    {
+        $cours = $coursRepository->findAll();
+    
+        return $this->render('client_cours.html.twig', [
+            'cours' => $cours,
+        ]);
+    }
+
+
+    #[Route('/Client_Acceuil', name: 'app_Acceuil')]
+    public function Acceuil(): Response
+    {
+        return $this->render('client_index.html.twig', [
+            'controller_name' => 'CoursController',
+        ]);
+    }
+
+
+
     #[Route('/coach' ,name: 'cours_coach')]
     public function coach(): Response
     {
         return $this->render('coach_base.html.twig', [
             'controller_name' => 'CoursController']);
     }
+
+
 
 
 

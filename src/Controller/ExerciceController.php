@@ -24,6 +24,17 @@ class ExerciceController extends AbstractController
         ]);
     }
 
+#[Route('/client/exercice/{courseId}', name: 'client_exercices')]
+public function clientCours2(ExerciceRepository $exerciceRepository, int $courseId)
+{
+    $exercices = $exerciceRepository->findBy(['cours' => $courseId]);
+
+    return $this->render('client_exercice.html.twig', [
+        'exercices' => $exercices,
+    ]);
+}
+
+
 
     #[Route('/exercice/list', name: 'exercice_liste')]
     public function listeExercice(ExerciceRepository $exerciceRepository)

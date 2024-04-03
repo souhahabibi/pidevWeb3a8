@@ -15,11 +15,5 @@ class TestController extends AbstractController
             'controller_name' => 'TestController',
         ]);
     }
-    #[Route('/Client_Acceuil', name: 'app_Acceuil')]
-    public function Acceuil(): Response
-    {
-        return $this->render('./client_index.html.twig', [
-            'controller_name' => 'TestController',
-        ]);
-    }
+ 
 }
