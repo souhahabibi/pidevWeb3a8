@@ -17,22 +17,31 @@ class Regime
 
     
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
+    #[Assert\GreaterThan("today" ,message:"Input Date must be in the future")]
     private ?\DateTimeInterface $startdate = null;
 
     
     
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
+    #[Assert\GreaterThan("today" ,message:"Input Date must be in the future")]
     private ?\DateTimeInterface $enddate = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
     private ?int $duration = null;
 
     
     #[ORM\Column] 
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
+    #[Assert\Length(min:7,minMessage:" 7 characters minimum")]
+    #[Assert\Length(max:40)]
     private ?string $description = null;
 
   
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
     private ?string $goal = null;
 
   

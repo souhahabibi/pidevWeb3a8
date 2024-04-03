@@ -2,12 +2,12 @@
 
 {% block title %}Meal index{% endblock %}
 {% block body %}
-    <h1>Meal index</h1>
+    <h1>Meals </h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+            
                 <th>Name</th>
                 <th>Image</th>
                 <th>Recipe</th>
@@ -18,7 +18,7 @@
         <tbody id="myTable">
         {% for meal in meals %}
             <tr>
-                <td>{{ meal.id }}</td>
+               
                 <td>{{ meal.name }}</td>
                 <td> {% if meal.imageUrl %}
                             <img src="{{ asset('uploads/image/' ~ meal.imageUrl) }}" style="max-width: 100px; max-height: 100px;">
@@ -28,9 +28,13 @@
                 <td>{{ meal.recipe }}</td>
                 <td>{{ meal.calories }}</td>
                 <td>
-                    <a href="{{ path('app_meal_show', {'id': meal.id}) }}">show</a>
-                    <a href="{{ path('app_meal_edit', {'id': meal.id}) }}">edit</a>
-                    <a href="{{ path('app_meal_show_ingredient_ingredient', {'id': meal.id}) }}">add ingredient</a>
+                
+                    <a href="{{ path('app_meal_edit', {'id': meal.id}) }}"class="btn btn-primary">edit</a>
+                    <a href="{{ path('app_meal_show', {'id': meal.id}) }}"class="btn btn-primary">show</a><br><br>
+                
+                  
+                    <a href="{{ path('app_meal_show_ingredient_ingredient', {'id': meal.id}) }}"class="btn btn-danger">add ingredient</a>
+                 
                 </td>
             </tr>
         {% else %}
@@ -46,5 +50,5 @@
 
 </div>
 </div>
-    <a href="{{ path('app_meal_new') }}">Create new</a>
+    <a href="{{ path('app_meal_new') }}"class="btn btn-primary">Create new meal</a>
 {% endblock %}

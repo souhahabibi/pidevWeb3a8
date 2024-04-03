@@ -3,12 +3,12 @@
 {% block title %}Ingredients index{% endblock %}
 
 {% block body %}
-    <h1>Ingredients index</h1>
+    <h1>Ingredients </h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                
                 <th>Name</th>
                 <th>Calories</th>
                 <th>TotalFat</th>
@@ -20,7 +20,7 @@
         <tbody>
         {% for ingredient in ingredients %}
             <tr>
-                <td>{{ ingredient.id }}</td>
+               
                 <td>{{ ingredient.name }}</td>
                 <td>{{ ingredient.calories }}</td>
                 <td>{{ ingredient.totalFat }}</td>
@@ -31,8 +31,8 @@
                             Pas d'image
                         {% endif %}</td>
                 <td>
-                    <a href="{{ path('app_ingredients_show', {'id': ingredient.id}) }}">show</a>
-                    <a href="{{ path('app_ingredients_edit', {'id': ingredient.id}) }}">edit</a>
+                    <a href="{{ path('app_ingredients_show', {'id': ingredient.id}) }}"class="btn btn-danger">show</a>
+                    <a href="{{ path('app_ingredients_edit', {'id': ingredient.id}) }}"class="btn btn-danger">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_ingredients_new') }}">Create new</a>
+    <a href="{{ path('app_ingredients_new') }}"class="btn btn-danger">Create new ingredient</a>
 {% endblock %}

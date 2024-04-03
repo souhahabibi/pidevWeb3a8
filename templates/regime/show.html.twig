@@ -7,17 +7,14 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ regime.id }}</td>
-            </tr>
+           
             <tr>
                 <th>Startdate</th>
-                <td>{{ regime.startdate }}</td>
+                <td>{{ regime.startdate|date("m/d/Y") }}</td>
             </tr>
             <tr>
                 <th>Enddate</th>
-                <td>{{ regime.enddate }}</td>
+                <td>{{ regime.enddate|date("m/d/Y") }}</td>
             </tr>
             <tr>
                 <th>Duration</th>
