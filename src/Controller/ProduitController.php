@@ -179,7 +179,36 @@ public function search(Request $request, ProduitRepository $produitRepository): 
         'produits' => $produits,
     ]);
 }
+//recherche client
+#[Route('/produit/searchClient', name: 'search_produitClient')]
+public function searchClient(Request $request, ProduitRepository $produitRepository): Response
+{
+    $searchTerm = $request->query->get('search_term');
+    $produits = $produitRepository->search($searchTerm);
 
+    return $this->render('produit/listeClient.html.twig', [
+        'produits' => $produits,
+    ]);
+}
+//triii
+#[Route('/produitClient/list', name: 'produitsClient_liste')]
+public function listeProduitsTriesParCout(ProduitRepository $produitRepository)
+{
+    $produits = $produitRepository->trierParCoutDecroissant();
+    return $this->render('produit/listeClient.html.twig', [
+        'produits' => $produits,
+    ]);
+}
+
+
+#[Route('/produit/liste-tri-date-expiration', name: 'produits_liste_tri_date_expiration')]
+public function listeProduitsTriesParDateExpiration(ProduitRepository $produitRepository)
+{
+    $produits = $produitRepository->trierParDateExpiration();
+    return $this->render('produit/listeClient.html.twig', [
+        'produits' => $produits,
+    ]);
+}
 //client 
 #[Route('/produitClient/list', name: 'produitsClient_liste')]
 public function listeProduitsClient(ProduitRepository $produitRepository)

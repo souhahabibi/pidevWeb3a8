@@ -32,6 +32,25 @@ class ProduitRepository extends ServiceEntityRepository
                ->getQuery()
                ->getResult();
        }
+       // Ajouter ces méthodes à votre ProduitRepository
+
+       public function trierParCoutDecroissant()
+       {
+           return $this->createQueryBuilder('p')
+               ->orderBy('p.cout', 'DESC')
+               ->getQuery()
+               ->getResult();
+       }
+        
+
+public function trierParDateExpiration()
+{
+    return $this->createQueryBuilder('p')
+        ->orderBy('p.dateExpiration', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
        
 
 public function getQuantiteProduitsParFournisseur()

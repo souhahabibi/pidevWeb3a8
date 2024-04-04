@@ -37,14 +37,8 @@
                         <td>{{ fournisseur.numero }}</td>
                         <td>{{ fournisseur.type }}</td>
                         <td>
-                         
-                             <a href="{{ path('edit_fournisseur', {'id': fournisseur.idFournisseur}) }}">
-                                 <img src="{{ asset('adminSalle/img/modifier.png') }}" alt="Modifier" class="btn-img" width="40" height="40">
-                             </a>
-                             <a href="{{ path('delete_fournisseur', {'id': fournisseur.idFournisseur}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
-                                 <img src="{{ asset('adminSalle/img/supprimer.png') }}" alt="Supprimer" class="btn-img" width="40" height="40">
-                             </a>
-                           
+                            <a href="{{ path('edit_fournisseur', {'id': fournisseur.idFournisseur}) }}" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path('delete_fournisseur', {'id': fournisseur.idFournisseur}) }}" class="btn btn-primary" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">Supprimer</a>
                         </td>
                     </tr>
                 {% endfor %}

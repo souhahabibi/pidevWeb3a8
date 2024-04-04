@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
@@ -16,23 +17,36 @@ class Produit
     private ?int $idProduit=null;
     
     #[ORM\Column(length: 150)] 
+    #[Assert\NotBlank(message: 'Veuillez fournir un nom.')]
+     #[Assert\Regex(
+         pattern: '/^[a-zA-Z\s]*$/',
+         message: 'Le nom  ne doit contenir que des lettres .'
+     )]
     private ?string $nom = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Veuillez fournir une quantité.')]
+    #[Assert\Type(type: 'integer', message: 'La quantité doit être un nombre entier.')]
+    #[Assert\Range(min: 20, max: 100, minMessage: 'La quantité doit être au moins {{ limit }}.', maxMessage: 'La quantité ne peut pas dépasser {{ limit }}.')]
     private ?int $quantite = null;
    
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Veuillez fournir un coût.')]
+    #[Assert\Type(type: 'integer', message: 'Le coût doit être un nombre entier.')]
     private ?int $cout = null;
 
     #[ORM\Column(type: "date")]
+   
     private ?\DateTimeInterface $dateExpiration = null;
    
     #[ORM\Column(length: 150)] 
+    #[Assert\NotBlank(message: 'Veuillez fournir une description.')]
     private ?string $description = null;
    
 
     
     #[ORM\Column(length: 150)] 
+    
     private ?string $image = null;
 
 

@@ -52,6 +52,9 @@
                         </div>
                         <div class="col-md-9">
                             {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                            {% if form_errors(form.nom) %}
+                                <span class="text-danger">{{ form_errors(form.nom) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
@@ -60,14 +63,20 @@
                         </div>
                         <div class="col-md-9">
                             {{ form_widget(form.prenom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                            {% if form_errors(form.prenom) %}
+                                <span class="text-danger">{{ form_errors(form.prenom) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <div class="col-md-3">
                             {{ form_label(form.numero, 'Numéro', {'label_attr': {'class': 'form-label white-text'}}) }}
                         </div>
-                        <div class="col-md-9">
+                         <div class="col-md-9">
                             {{ form_widget(form.numero, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                            {% if form_errors(form.numero) %}
+                                <span class="text-danger">{{ form_errors(form.numero) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">

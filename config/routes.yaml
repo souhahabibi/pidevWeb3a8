@@ -7,3 +7,6 @@ produit_supprimer:
     path: '/produit/supprimer/{id}'
     controller: 'App\Controller\ProduitController::supprimerProduit'
 
+produits_tries_par_cout:
+    path: '/produitClient/liste-tri-cout'
+    controller: 'App\Controller\ProduitController::listeProduitsTriesParCout'

@@ -27,17 +27,6 @@ class FournisseurController extends AbstractController
     
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer le numéro depuis l'entité Fournisseur
-            $numero = $fournisseur->getNumero();
-            
-            // Valider que le numéro contient exactement 8 chiffres
-            if (strlen($numero) !== 8 || !ctype_digit($numero)) {
-                $this->addFlash('error', 'Le numéro doit contenir exactement 8 chiffres.');
-                return $this->render('fournisseur/add.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
-    
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($fournisseur);
             $entityManager->flush();
