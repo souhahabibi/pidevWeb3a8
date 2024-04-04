@@ -51,13 +51,19 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    {{ form_start(form) }}
+            
+            
+            
+ 
                     <div class="mb-3 row align-items-center">
                         <div class="col-md-3">
                             {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}
                         </div>
-                        <div class="col-md-9">
+                          <div class="col-md-9">
                             {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                            {% if form_errors(form.nom) %}
+                                <span class="text-danger">{{ form_errors(form.nom) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
@@ -66,6 +72,9 @@
                         </div>
                         <div class="col-md-9">
                             {{ form_widget(form.quantite, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                             {% if form_errors(form.quantite) %}
+                                <span class="text-danger">{{ form_errors(form.quantite) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
@@ -74,22 +83,31 @@
                         </div>
                         <div class="col-md-9">
                             {{ form_widget(form.cout, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                             {% if form_errors(form.cout) %}
+                                <span class="text-danger">{{ form_errors(form.cout) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <div class="col-md-3">
                             {{ form_label(form.dateExpiration, 'Date d\'expiration', {'label_attr': {'class': 'form-label white-text'}}) }}
                         </div>
-                        <div class="col-md-9">
+                         <div class="col-md-9">
                             {{ form_widget(form.dateExpiration, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                             {% if form_errors(form.dateExpiration) %}
+                                <span class="text-danger">{{ form_errors(form.dateExpiration) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <div class="col-md-3">
                             {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label white-text'}}) }}
                         </div>
-                        <div class="col-md-9">
+                           <div class="col-md-9">
                             {{ form_widget(form.description, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                             {% if form_errors(form.description) %}
+                                <span class="text-danger">{{ form_errors(form.description) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">

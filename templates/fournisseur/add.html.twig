@@ -44,7 +44,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    {{ form_start(form) }}
+                  {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
                     <div class="mb-3 row align-items-center">
                         <div class="col-md-3">
                             {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}

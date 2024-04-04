@@ -201,14 +201,7 @@ public function listeProduitsTriesParCout(ProduitRepository $produitRepository)
 }
 
 
-#[Route('/produit/liste-tri-date-expiration', name: 'produits_liste_tri_date_expiration')]
-public function listeProduitsTriesParDateExpiration(ProduitRepository $produitRepository)
-{
-    $produits = $produitRepository->trierParDateExpiration();
-    return $this->render('produit/listeClient.html.twig', [
-        'produits' => $produits,
-    ]);
-}
+
 //client 
 #[Route('/produitClient/list', name: 'produitsClient_liste')]
 public function listeProduitsClient(ProduitRepository $produitRepository)

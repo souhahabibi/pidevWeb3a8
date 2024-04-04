@@ -43,13 +43,7 @@ class ProduitRepository extends ServiceEntityRepository
        }
         
 
-public function trierParDateExpiration()
-{
-    return $this->createQueryBuilder('p')
-        ->orderBy('p.dateExpiration', 'ASC')
-        ->getQuery()
-        ->getResult();
-}
+
 
        
 

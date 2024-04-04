@@ -36,7 +36,8 @@ class Produit
     private ?int $cout = null;
 
     #[ORM\Column(type: "date")]
-   
+    #[Assert\NotBlank(message: 'Veuillez fournir une date d\'expiration.')]
+    #[Assert\GreaterThan(value: "+10 days", message: 'La date d\'expiration doit être au moins 10 jours après la date d\'aujourd\'hui.')]
     private ?\DateTimeInterface $dateExpiration = null;
    
     #[ORM\Column(length: 150)] 
