@@ -1,10 +1,152 @@
 {% extends 'admin_base.html.twig' %}
 
 {% block body %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
+     <div class="col-12">
+         <div class="bg-secondary rounded h-100 p-4">
+            <canvas id="statisticsChart" width="400" height="400"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var ctx = document.getElementById('statisticsChart').getContext('2d');
+                    var statisticsRaw = {{ statistics|json_encode|raw }};
+                    
+                    // Since your structure seems to be an array of objects, let's assume that part is correct.
+                    var statistics = statisticsRaw.map(stat => {
+                        return {
+                            dayOfWeekString: stat.dayOfWeek, // Adjust these keys based on your actual data structure
+                            avgReservationsPerCompetition: stat.avgReservationsPerCompetition
+                        };
+                    });
+                    
+                    console.log(statistics); // Debugging line to see if data is correctly processed
 
-<div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Single Line Chart</h6>
-                            
-                        </div>
+                    var labels = statistics.map(stat => stat.dayOfWeekString);
+                    var data = statistics.map(stat => stat.avgReservationsPerCompetition);
 
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Average Reservations per Day',
+                                data: data,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+            <canvas id="monthlyStatsChart" width="400" height="400"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var ctx = document.getElementById('monthlyStatsChart').getContext('2d');
+                    var monthlyStats = {{ monthlyStats|json_encode|raw }};
+
+                    // Convert month numbers to names, e.g., 1 -> 'January'
+                    var labels = monthlyStats.map(stat => new Date(0, stat.month - 1).toLocaleString('en-US', {month: 'long'}));
+                    var data = monthlyStats.map(stat => stat.avgReservationsPerCompetition);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Average Reservations per Month',
+                                data: data,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+            <canvas id="monthlyReservationsChart" width="400" height="400"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const rawData = {{ data|json_encode|raw }};
+                    const ctx = document.getElementById('monthlyReservationsChart').getContext('2d');
+
+                    function transformDataForChart(rawData) {
+                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                        let organizersData = {};
+
+                        // Initialize organizersData with organizers as keys and empty arrays as values
+                        rawData.forEach(item => {
+                            if (!organizersData[item.organizerName]) {
+                                organizersData[item.organizerName] = new Array(12).fill(0); // Assuming data for all 12 months
+                            }
+                        });
+
+                        // Populate the data
+                        rawData.forEach(item => {
+                            let monthIndex = item.month - 1; // Assuming 'month' is 1-based (e.g., January = 1)
+                            organizersData[item.organizerName][monthIndex] = item.avgReservations;
+                        });
+
+                        // Convert organizersData into datasets suitable for Chart.js
+                        let datasets = Object.keys(organizersData).map(organizerName => {
+                            return {
+                                label: organizerName,
+                                data: organizersData[organizerName],
+                                backgroundColor: getRandomColor(), // Assign random colors or customize as needed
+                                borderColor: getRandomColor(),
+                                borderWidth: 1
+                            };
+                        });
+
+                        return {
+                            labels: months,
+                            datasets: datasets
+                        };
+                    }
+
+                    function getRandomColor() {
+                        var letters = '0123456789ABCDEF';
+                        var color = '#';
+                        for (var i = 0; i < 6; i++) {
+                            color += letters[Math.floor(Math.random() * 16)];
+                        }
+                        return color;
+                    }
+
+                    const transformedData = transformDataForChart(rawData);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: transformedData,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+         </div>
+     </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use App\Entity\Competition;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
+use App\Repository\UserRepository;
 use App\Repository\CompetitionRepository;
 use App\Repository\ReservationRepository;
-use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +47,7 @@ class ReservationController extends AbstractController
       );
     }
     #[Route('/reservation/add{id}', name: 'app_reservation_add')]
-    public function add(ManagerRegistry $manager,CompetitionRepository $repo,UserRepository $repou,ReservationRepository $repor,$id) : Response
+    public function add(ManagerRegistry $manager,CompetitionRepository $repo,UserRepository $repou,ReservationRepository $repor,MailerInterface $mailer,$id) : Response
     {
         $competition = $repo->find($id);
         $client = $repou->find(7);
@@ -57,6 +59,14 @@ class ReservationController extends AbstractController
         $em = $manager->getManager();
         $em->persist($reservation);
         $em->flush();
+        // Send email
+        $email = (new Email())
+        ->from('Khemiri.Oussema@esprit.tn') // Replace with your email
+        ->to($client->getEmail()) // Assuming getClient() returns the email
+        ->subject('Reservation Confirmation'."for".$competition->getNom())
+        ->text('Your reservation has been confirmed.');
+
+        $mailer->send($email);
         $exist=1;
 
        $topReservations = $repor->findTopReservationsByCompetition($id);
@@ -91,5 +101,4 @@ class ReservationController extends AbstractController
         'topReservations' => $topReservations
     ]);
     }
-
 }

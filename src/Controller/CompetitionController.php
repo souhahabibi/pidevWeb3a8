@@ -82,10 +82,15 @@ class CompetitionController extends AbstractController
         return $this->redirectToRoute('app_competition_Admin');
     }
     #[Route('/competition/stat', name: 'app_competition_stat')]
-    public function stat(): Response
+    public function stat(CompetitionRepository $competitionRepository): Response
     {
+        $statistics = $competitionRepository->getAverageReservationsPerDayOfWeek();
+        $monthlyStats = $competitionRepository->getAverageReservationsPerMonth();
+        $data = $competitionRepository->getMonthlyReservationsByOrganizer();
         return $this->render('competition/stat.html.twig', [
-            'controller_name' => 'TestController',
+            'statistics' => $statistics,
+            'monthlyStats' => $monthlyStats,
+            'data' => $data,
         ]);
     }
     #[Route('/competition/scores{id}', name: 'app_competition_scores')]
