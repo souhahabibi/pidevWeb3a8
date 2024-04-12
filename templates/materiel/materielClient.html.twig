@@ -1,12 +1,38 @@
 {% extends 'client_base.html.twig' %}
 {% block title %}
-Abonnements
+MATERIELS
 {% endblock %}
 
 {% block page %}
- Abonnements
+ MATERIELS
 {% endblock %}
 
 {% block body %}
+
+<!-- Gallery Section Begin -->
+<section class="gallery-section spad">
+    <div class="container" >
+        <div class="row gallery-filter">
+            {% for material in list %}
+            <div class="col-lg-3 col-md-6 mix all" >
+                <div class="gallery-item">
+                    <div class="gi-img">
+                        <img src="{{ asset('uploads/images/' ~ material.image) }}" alt="{{ material.nom }}">
+                    </div>
+                    <div class="gi-text">
+                        <h5>{{ material.nom }}</h5>
+                        <p>Quantity: {{ material.quantite }}</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No materials found for this gym.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Gallery Section End -->
+
+
 
 {% endblock %}

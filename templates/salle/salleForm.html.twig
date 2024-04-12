@@ -8,23 +8,23 @@
                 {{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}
                 <div class="mb-3">
                         {{ form_label(f.image,"image") }}
-                        {{ form_widget(f.image) }}
+                        {{ form_widget(f.image, {'attr': {'class': 'form-control'}}) }}
                         {{ form_errors(f.image) }}
                     </div>
                     <div class="mb-3">
                         {{ form_label(f.nom,"Name") }}
-                        {{ form_widget(f.nom) }}
+                        {{ form_widget(f.nom, {'attr': {'class': 'form-control'}}) }}
                         {{ form_errors(f.nom) }}
                     </div>
                     <div class="mb-3">
                         {{ form_label(f.description,"description ") }}
-                        {{ form_widget(f.description) }}
+                        {{ form_widget(f.description, {'attr': {'class': 'form-control'}}) }}
                         {{ form_errors(f.description) }}
                     </div>
                    
                     <div class="mb-3">
                         {{ form_label(f.lieu," lieu ") }}
-                        {{ form_widget(f.lieu) }}
+                        {{ form_widget(f.lieu, {'attr': {'class': 'form-control'}}) }}
                         {{ form_errors(f.lieu) }}
                     </div>
                     <div style="padding-left: 350px;">

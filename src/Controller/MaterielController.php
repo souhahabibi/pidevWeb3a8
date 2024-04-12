@@ -106,4 +106,5 @@ class MaterielController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_salle_materiel', ['id' => $materiel->getFkIdsalle()->getId()]); 
     }
+
 } 

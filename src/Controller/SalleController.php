@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+
 class SalleController extends AbstractController
 {    
     #[Route('/salleAdmin', name: 'app_salleAdmin')]
@@ -136,16 +137,21 @@ class SalleController extends AbstractController
             'id' => $id
         ]);
     }
-    #[Route('/salleClient/abonnementC{id}', name: 'app_salleClient_abonnement')]
-    public function goToAbonnementsC(AbonnementRepository $repo,$id): Response
-    {
-    
-        $list = $repo->findAbonnementsByGymId($id); 
-        return $this->render('abonnement/abonnementClient.html.twig', [
-            'list' => $list,
-            'id' => $id
-        ]);
-    }
+
+
+///////////////////////////////////////////////////CLIENT/////////////////////////////////////////
+
+
+#[Route('/salleClient/abonnementC{id}', name: 'app_salleClient_abonnement')]
+public function goToAbonnementsC(AbonnementRepository $repo,$id): Response
+{
+
+    $list = $repo->findAbonnementsByGymId($id); 
+    return $this->render('abonnement/abonnementClient.html.twig', [
+        'list' => $list,
+        'id' => $id
+    ]);
+}
     #[Route('/salleClient/materielC{id}', name: 'app_salleClient_materiel')]
     public function goToMaterielsC(MaterielRepository $repo, $id): Response
     {

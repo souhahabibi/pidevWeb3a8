@@ -31,9 +31,8 @@ class Materiel
     
     #[ORM\Column]
     #[Assert\NotBlank(message: "Price is required")]
-#[Assert\Type(type: "integer", message: "Price must be an integer")]
-#[Assert\Range(min: 1, max: 999999, minMessage: "Price must be at least 1", maxMessage: "Price cannot exceed 9999999")]
-
+    #[Assert\Type(type: "integer", message: "Price must be an integer")]
+    #[Assert\Range(min: 1, max: 999999, minMessage: "Price must be at least 1", maxMessage: "Price cannot exceed 9999999")]
     private ?int $prix = null;
 
     #[ORM\Column(length: 150) ]
