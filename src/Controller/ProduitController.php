@@ -233,6 +233,7 @@ public function pieChart(ProduitRepository $produitRepository): Response
     ]);
 }
 //pdf
+
 #[Route('/produit/download-pdf', name: 'produit_download_pdf')]
 public function downloadproduitPdf(Pdf $snappy, ProduitRepository $repository): Response
 {
