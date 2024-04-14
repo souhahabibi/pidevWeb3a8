@@ -12,6 +12,7 @@ use Imagine\Gd\Imagine;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Imagine\Image\Box;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Knp\Snappy\Pdf;
 
 class ProduitController extends AbstractController
 {
@@ -231,5 +232,25 @@ public function pieChart(ProduitRepository $produitRepository): Response
         'data' => $data
     ]);
 }
+//pdf
+#[Route('/produit/download-pdf', name: 'produit_download_pdf')]
+public function downloadproduitPdf(Pdf $snappy, ProduitRepository $repository): Response
+{
+    $produits = $repository->findAll();
 
+    $html = $this->renderView('produit/pdf.html.twig', [
+        'produits' => $produits,
+    ]);
+
+    $pdfContent = $snappy->getOutputFromHtml($html);
+
+    return new Response(
+        $pdfContent,
+        Response::HTTP_OK,
+        [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="produits.pdf"'
+        ]
+    );
+}
 }

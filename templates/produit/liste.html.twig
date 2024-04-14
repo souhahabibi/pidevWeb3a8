@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Liste des produits</h1>
   <a href="{{ path('produit_ajouter') }}" class="btn btn-primary mr-2">Ajouter un produit</a>
+    <a href="{{ path('produit_download_pdf') }}" class="btn btn-primary" style="    margin-top: 20px; margin-left: 550px;">Télécharger les produits en PDF</a>
     <a href="{{ path('prod_piechart') }}">
         <img src="{{ asset('adminSalle/img/statistiques.png') }}" alt="Statistiques" class="btn-img" width="40" height="40">
     </a>

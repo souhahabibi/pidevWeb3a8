@@ -40,33 +40,30 @@
         }
     </style>
 {% endblock %}
-
 {% block body %}
-    <body class="center-content"> {# Ajout de la classe center-content ici #}
+    <body class="center-content">
         <div class="container">
-            <div class="row justify-content-center mt-4 title-spacing"> {# Ajout de la classe title-spacing ici #}
+            <div class="row justify-content-center mt-4 title-spacing">
                 <div class="col-md-12 text-center">
-                    <h1>Ajouter un Produit</h1> {# Modification du titre ici #}
+                    <h1>Ajouter un Produit</h1>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
-            
-            
-            
- 
-                    <div class="mb-3 row align-items-center">
-                        <div class="col-md-3">
-                            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}
+                    <form method="post" action="{{ path('produit_ajouter') }}" enctype="multipart/form-data">
+                        {{ form_start(form) }}
+                        <div class="mb-3 row align-items-center">
+                            <div class="col-md-3">
+                                {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}
+                            </div>
+                            <div class="col-md-9">
+                                {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                                {% if form_errors(form.nom) %}
+                                    <span class="text-danger">{{ form_errors(form.nom) }}</span>
+                                {% endif %}
+                            </div>
                         </div>
-                          <div class="col-md-9">
-                            {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
-                            {% if form_errors(form.nom) %}
-                                <span class="text-danger">{{ form_errors(form.nom) }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="mb-3 row align-items-center">
+                      <div class="mb-3 row align-items-center">
                         <div class="col-md-3">
                             {{ form_label(form.quantite, 'Quantité', {'label_attr': {'class': 'form-label white-text'}}) }}
                         </div>
@@ -126,12 +123,15 @@
                             {{ form_widget(form.idFournisseur, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
                         </div>
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </div>
-                    {{ form_end(form) }}
+
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </form>
                 </div>
-                <div class="col-md-6 text-center image-container"> {# Ajout de la classe image-container ici #}
+                <div class="col-md-6 text-center image-container">
                     <img src="{{ asset('adminSalle/img/fournisseur.jpg') }}" alt="Description de l'image" class="img-fluid">
                 </div>
             </div>

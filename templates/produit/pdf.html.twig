@@ -1,0 +1,81 @@
+
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+            <meta charset="UTF-8">
+            <title>Liste des Produits</title>
+            <!-- Ajoutez ici les styles CSS nécessaires pour le PDF -->
+
+            <style type="text/css">
+                * {
+                    font-family: Verdana, Arial, sans-serif;
+                }
+                table{
+                    font-size: small;
+                }
+                tfoot tr td{
+                    font-weight: bold;
+                    font-size: x-small;
+                }
+                td{
+                    text-align: center;
+                    height: 50px;
+                }
+            </style>
+
+        </head>
+
+        <body>
+
+        <div>
+        <img src="{{ absolute_url(asset('img/logo.png')) }}" alt="Logo" style="width:200px;"> <!-- Ajustez le chemin et la taille selon vos besoins -->
+        </div>
+        <hr>
+        <br><br>
+
+
+        {% for produit in produits %}
+        <table width="100%" border="1">
+            <thead style="background-color: lightblue;">
+            <tr>
+                <th>Labels</th>
+                <th>Information</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr>
+
+                <th scope="row">nom</th>
+                <td>{{ produit.nom  }}</td>
+            </tr>
+            <tr>
+                <th scope="row">quantite</th>
+                <td>{{  produit.quantite }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">cout</th>
+                <td>{{ produit.cout  }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Descrption</th>
+                <td>{{ produit.description }}</td>
+            </tr>
+
+             <tr>
+                <th scope="row">Date</th>
+                <td>{{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</td>
+            </tr>
+            </tbody>
+
+        </table>
+            <br>
+        {% endfor %}
+        <br><br><hr>
+
+        </body>
+        </html>
+
+
