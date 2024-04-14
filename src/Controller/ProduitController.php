@@ -48,40 +48,42 @@ class ProduitController extends AbstractController
 
         // Vérifiez si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-             // Gérer le téléchargement de l'image
-             $imageFile = $form->get('image')->getData();
-             if ($imageFile) {
-                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                 // Cela garantit que le nom du fichier est unique
-                 $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-     
-                 // Déplacer le fichier dans le répertoire ousont stockées les images
-                 try {
-                     $imageFile->move(
-                         $this->getParameter('images_directory'),
-                         $newFilename
-                     );
-                    // Redimensionner l'image
-                 $imagine = new Imagine();
-                 $image = $imagine->open($this->getParameter('images_directory').'/'.$newFilename);
-                 $image->resize(new Box(50, 50))->save($this->getParameter('images_directory').'/'.$newFilename);
-                 } catch (FileException $e) {
-                     // Gérer l'exception 
-                 }
-     
-                 // Mettre à jour le chemin de l'image dans l'entité Produit
-                 $produit->setImage($newFilename);
+            $imageFile = $form->get('image')->getData();
+        
+            // Vérifie si un fichier a été téléchargé
+            if ($imageFile) {
+                // Vérifie si c'est une image
+                if (!in_array($imageFile->getMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
+                    $this->addFlash('error', 'Le fichier doit être une image (JPEG, PNG, GIF)');
+                    return $this->redirectToRoute('produit_ajouter');
                 }
+        
+                try {
+                    // Générez un nom de fichier unique
+                    $newFilename = md5(uniqid()) . '.' . $imageFile->guessExtension();
+                    // Déplacez le fichier téléchargé vers le répertoire approprié
+                    $imageFile->move($this->getParameter('images_directory'), $newFilename);
+                    // Redimensionnez l'image si nécessaire (ajoutez cette partie si nécessaire)
+                    // Mettez à jour le chemin de l'image dans l'entité Produit
+                    $produit->setImage($newFilename);
+                } catch (FileException $e) {
+                    // Gérer l'exception en cas d'erreur de téléchargement
+                    $this->addFlash('error', 'Une erreur s\'est produite lors du téléchargement du fichier');
+                    return $this->redirectToRoute('produit_ajouter');
+                }
+            }
+        
             // Récupérez l'EntityManager
             $entityManager = $this->getDoctrine()->getManager();
-
+        
             // Persistez et flush l'entité
             $entityManager->persist($produit);
             $entityManager->flush();
-
+        
             // Redirigez vers une autre page ou affichez un message de réussite, par exemple
             return $this->redirectToRoute('produits_liste');
         }
+        
 
         // Si le formulaire n'est pas soumis ou n'est pas valide, affichez simplement le formulaire
         return $this->render('produit/ajouter.html.twig', [
@@ -89,67 +91,64 @@ class ProduitController extends AbstractController
         ]);
     }
     // Méthode pour modifier un produit
-    #[Route('/produit/modifier/{id}', name: 'modifier_produit')]
-    public function modifierProduit(Request $request, int $id): Response
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $produit = $entityManager->getRepository(Produit::class)->find($id);
-    
-        if (!$produit) {
-            throw $this->createNotFoundException('Produit non trouvé');
-        }
-    
-        // Récupérer le chemin de l'image actuel
-        $ancienCheminImage = $produit->getImage();
-    
-        // Créer le formulaire
-        $form = $this->createForm(ProduitType::class, $produit);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Vérifier si un nouveau fichier image a été soumis
-            $nouvelleImage = $form->get('image')->getData();
-            if ($nouvelleImage) {
-                // Télécharger le nouveau fichier image
-                $nouveauNomFichier = uniqid().'.'.$nouvelleImage->guessExtension();
-                try {
-                    $nouvelleImage->move(
-                        $this->getParameter('images_directory'),
-                        $nouveauNomFichier
-                    );
-    
-                    // Redimensionner l'image
-                    $imagine = new Imagine();
-                    $image = $imagine->open($this->getParameter('images_directory').'/'.$nouveauNomFichier);
-                    $image->resize(new Box(50, 50))->save($this->getParameter('images_directory').'/'.$nouveauNomFichier);
-                } catch (FileException $e) {
-                    // Gérer l'exception si le fichier ne peut pas être déplacé ou redimensionné
-                    // ...
-                }
-    
+#[Route('/produit/modifier/{id}', name: 'modifier_produit')]
+public function modifierProduit(Request $request, int $id): Response
+{
+    $entityManager = $this->getDoctrine()->getManager();
+    $produit = $entityManager->getRepository(Produit::class)->find($id);
+
+    if (!$produit) {
+        throw $this->createNotFoundException('Produit non trouvé');
+    }
+
+    // Récupérer le chemin de l'image actuel
+    $ancienCheminImage = $produit->getImage();
+
+    // Créer le formulaire
+    $form = $this->createForm(ProduitType::class, $produit);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Vérifier si un nouveau fichier image a été soumis
+        $nouvelleImage = $form->get('image')->getData();
+        if ($nouvelleImage) {
+            // Télécharger le nouveau fichier image
+            $nouveauNomFichier = uniqid().'.'.$nouvelleImage->guessExtension();
+            try {
+                $nouvelleImage->move(
+                    $this->getParameter('images_directory'),
+                    $nouveauNomFichier
+                );
+
+                // Redimensionner l'image si nécessaire
+                // Note : Vous pouvez ajouter cette fonctionnalité ici
+
                 // Mettre à jour le chemin de l'image dans l'entité Produit
                 $produit->setImage($nouveauNomFichier);
-    
+
                 // Supprimer l'ancienne image si nécessaire
                 if ($ancienCheminImage) {
                     unlink($this->getParameter('images_directory').'/'.$ancienCheminImage);
                 }
+            } catch (FileException $e) {
+                // Gérer l'exception si le fichier ne peut pas être déplacé
+                // ...
             }
-    
-            // Enregistrer les modifications dans la base de données
-            $entityManager->flush();
-    
-            // Rediriger vers la liste des produits
-            return $this->redirectToRoute('produits_liste');
         }
-    
-        return $this->render('produit/modifier.html.twig', [
-            'form' => $form->createView(),
-            'produit' => $produit,
-        ]);
-    
-    
+
+        // Enregistrer les modifications dans la base de données
+        $entityManager->flush();
+
+        // Rediriger vers la liste des produits
+        return $this->redirectToRoute('produits_liste');
+    }
+
+    return $this->render('produit/modifier.html.twig', [
+        'form' => $form->createView(),
+        'produit' => $produit,
+    ]);
 }
+
 
 // Méthode pour supprimer un produit
 #[Route('/produit/{id}', name: 'produit_supprimer')]

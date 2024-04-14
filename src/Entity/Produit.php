@@ -27,7 +27,7 @@ class Produit
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Veuillez fournir une quantité.')]
     #[Assert\Type(type: 'integer', message: 'La quantité doit être un nombre entier.')]
-    #[Assert\Range(min: 20, max: 100, minMessage: 'La quantité doit être au moins {{ limit }}.', maxMessage: 'La quantité ne peut pas dépasser {{ limit }}.')]
+    #[Assert\Range(min: 20, max: 100, minMessage: 'La quantité doit être au moins {{ 20 }}.', maxMessage: 'La quantité ne peut pas dépasser {{ limit }}.')]
     private ?int $quantite = null;
    
     #[ORM\Column]
