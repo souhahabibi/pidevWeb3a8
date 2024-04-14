@@ -13,7 +13,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Imagine\Image\Box;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Knp\Snappy\Pdf;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use App\Entity\PdfGeneratorService;
 class ProduitController extends AbstractController
 {
     #[Route('/produit', name: 'app_produit')]
@@ -36,7 +38,7 @@ class ProduitController extends AbstractController
     
 
     #[Route('/produit/ajouter', name: 'produit_ajouter', methods: ['GET', 'POST'])]
-    public function ajouterProduit(Request $request): Response
+    public function ajouterProduit(Request $request , MailerInterface $mailer): Response
     {
         $produit = new Produit();
 
@@ -79,7 +81,27 @@ class ProduitController extends AbstractController
             // Persistez et flush l'entité
             $entityManager->persist($produit);
             $entityManager->flush();
-        
+         // Récupérer les détails du produit
+$nomProduit = $produit->getNom();
+$descriptionProduit = $produit->getDescription();
+$coutProduit = $produit->getCout();
+
+// Construire le corps de l'e-mail avec les informations du produit
+$emailBody = "<p>Un nouveau produit a été ajouté :</p>";
+$emailBody .= "<p><strong>Nom du produit :</strong> $nomProduit</p>";
+$emailBody .= "<p><strong>Description :</strong> $descriptionProduit</p>";
+$emailBody .= "<p><strong>Coût :</strong> $coutProduit</p>";
+
+// Créer l'e-mail avec le corps mis à jour
+$email = (new Email())
+    ->from('trabelsi.dali484@gmail.com')
+    ->to('souhahabibi.ing@gmail.com')
+    ->subject('Nouveau produit ajouté')
+    ->html($emailBody);
+
+// Envoyer l'e-mail
+$mailer->send($email);
+
             // Redirigez vers une autre page ou affichez un message de réussite, par exemple
             return $this->redirectToRoute('produits_liste');
         }
@@ -233,24 +255,23 @@ public function pieChart(ProduitRepository $produitRepository): Response
 }
 //pdf
 
-#[Route('/produit/download-pdf', name: 'produit_download_pdf')]
-public function downloadproduitPdf(Pdf $snappy, ProduitRepository $repository): Response
-{
-    $produits = $repository->findAll();
+#[Route('/pdf/produit', name: 'generator_service')]
+    public function pdfproduit(): Response
+    { 
+        $produit= $this->getDoctrine()
+        ->getRepository(Produit::class)
+        ->findAll();
 
-    $html = $this->renderView('produit/pdf.html.twig', [
-        'produits' => $produits,
-    ]);
+   
 
-    $pdfContent = $snappy->getOutputFromHtml($html);
+        $html =$this->renderView('pdf/index.html.twig', ['produit' => $produit]);
+        $pdfGeneratorService=new PdfGeneratorService();
+        $pdf = $pdfGeneratorService->generatePdf($html);
 
-    return new Response(
-        $pdfContent,
-        Response::HTTP_OK,
-        [
+        return new Response($pdf, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="produits.pdf"'
-        ]
-    );
-}
+            'Content-Disposition' => 'inline; filename="document.pdf"',
+        ]);
+       
+    }
 }

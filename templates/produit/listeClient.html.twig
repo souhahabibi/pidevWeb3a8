@@ -48,7 +48,7 @@
                             <p class="card-text"><small class="text-muted">Prix: {{ produit.cout }}</small></p>
                             <p class="card-text"><small class="text-muted">Date d'expiration: {{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</small></p>
                             <div class="text-right">
-                            <a href="#" class="btn btn-danger">QR Code</a>
+                            <a href="{{ path('app_qr_codes', {'id': produit.idProduit}) }}" class="btn btn-danger">QR Code</a>
                                 <a href="#" class="btn btn-danger">Acheter</a>
                                 
                             </div>
