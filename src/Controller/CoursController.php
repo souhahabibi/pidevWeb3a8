@@ -128,6 +128,12 @@ class CoursController extends AbstractController
         ]);
     }
     
+    
+
+
+
+
+
     #[Route('/cours/{id}/modifier', name: 'modifier_cours')]
     public function edit(Request $request, $id, CoursRepository $coursRepository): Response
     {
@@ -169,7 +175,6 @@ class CoursController extends AbstractController
         }
     
         return $this->render('cours/modifierCours.html.twig', [
-            'cours' => $cours,
             'form' => $form->createView(),
         ]);
     }
