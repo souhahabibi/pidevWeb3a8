@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<title>User index</title>
+
+{% block body %}
+    <h1>User index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Motdepasse</th>
+                <th>Specialite</th>
+                <th>Numero</th>
+                <th>Recommandation</th>
+                <th>Poids</th>
+                <th>Taille</th>
+                <th>Niveau</th>
+                <th>Role</th>
+                <th>Mailcode</th>
+                <th>IsVerified</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.motdepasse }}</td>
+                <td>{{ user.specialite }}</td>
+                <td>{{ user.numero }}</td>
+                <td>{{ user.recommandation }}</td>
+                <td>{{ user.poids }}</td>
+                <td>{{ user.taille }}</td>
+                <td>{{ user.niveau }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.mailcode }}</td>
+                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_new') }}">Create new</a>
+{% endblock %}

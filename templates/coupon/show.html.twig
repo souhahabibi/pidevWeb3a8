@@ -1,0 +1,39 @@
+{% extends 'admin_base.html.twig'%}
+
+
+{% block title %}Afficher Coupon{% endblock %}
+
+{% block body %}
+    <h1>Coupon</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ coupon.id }}</td>
+            </tr>
+            <tr>
+                <th>Nomsociete</th>
+                <td>{{ coupon.nomsociete }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ coupon.code }}</td>
+            </tr>
+            <tr>
+                <th>Valeur</th>
+                <td>{{ coupon.valeur }}</td>
+            </tr>
+            <tr>
+                <th>Dateexpiration</th>
+                <td>{{ coupon.dateexpiration }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_coupon_index') }}">back to list</a>
+
+    <a href="{{ path('app_coupon_edit', {'id': coupon.id}) }}">edit</a>
+
+    {{ include('coupon/_delete_form.html.twig') }}
+{% endblock %}
