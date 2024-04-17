@@ -42,12 +42,16 @@ class Produit
    
     #[ORM\Column(length: 150)] 
     #[Assert\NotBlank(message: 'Veuillez fournir une description.')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z\s]*$/',
+        message: 'Le description ne doit contenir que des lettres .'
+    )]
     private ?string $description = null;
    
 
     
     #[ORM\Column(length: 150)] 
-    
+    #[Assert\NotBlank(message: 'Veuillez fournir une image.')]
     private ?string $image = null;
 
 

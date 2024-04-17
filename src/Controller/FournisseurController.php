@@ -49,33 +49,45 @@ class FournisseurController extends AbstractController
             'fournisseurs' => $fournisseurs,
         ]);
     }
+    //ediiit
     #[Route('/fournisseur/{id}/edit', name: 'edit_fournisseur')]
     public function edit(Request $request, int $id): Response
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $fournisseur = $entityManager->getRepository(Fournisseur::class)->find($id);
-    
-        if (!$fournisseur) {
-            throw $this->createNotFoundException('Fournisseur non trouvé');
-        }
-    
-        $form = $this->createForm(FournisseurType::class, $fournisseur);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-    
-            // Rediriger vers une page de confirmation ou ailleurs
-            return $this->redirectToRoute('fournisseur_liste');
-        }
-    
-        return $this->render('fournisseur/edit.html.twig', [
-            'fournisseur' => $fournisseur,
-            'form' => $form->createView(),
-        ]);
+{
+    $entityManager = $this->getDoctrine()->getManager();
+    $fournisseur = $entityManager->getRepository(Fournisseur::class)->find($id);
+
+    if (!$fournisseur) {
+        throw $this->createNotFoundException('Fournisseur non trouvé');
     }
 
-#[Route('/fournisseur/{id}/delete', name: 'delete_fournisseur')]
+    // Sauvegarde de l'ancien type de fournisseur
+    $ancienTypeFournisseur = $fournisseur->getType();
+
+    $form = $this->createForm(FournisseurType::class, $fournisseur);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Restaurer l'ancien type de fournisseur s'il n'est pas modifié dans le formulaire
+        if (!$fournisseur->getType()) {
+            $fournisseur->setType($ancienTypeFournisseur);
+        }
+        $entityManager->persist($fournisseur);
+        $entityManager->flush();
+
+        // Rediriger vers une page de confirmation ou ailleurs
+        return $this->redirectToRoute('fournisseur_liste');
+    }
+
+    return $this->render('fournisseur/edit.html.twig', [
+        'fournisseur' => $fournisseur,
+        'form' => $form->createView(),
+    ]);
+}
+
+
+
+
+    #[Route('/fournisseur/{id}/delete', name: 'delete_fournisseur')]
 public function delete(Request $request, int $id): Response
 {
     $entityManager = $this->getDoctrine()->getManager();
@@ -91,7 +103,6 @@ public function delete(Request $request, int $id): Response
     // Rediriger vers une page de confirmation ou ailleurs
     return $this->redirectToRoute('fournisseur_liste');
 }
-
 //recherche
 #[Route('/fournisseur/search', name: 'search_fournisseur')]
 public function search(Request $request, FournisseurRepository $fournisseurRepository): Response

@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Entity;
-
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FournisseurRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
  #[ORM\Entity(repositoryClass: FournisseurRepository::class)]
  
@@ -46,6 +47,8 @@ class Fournisseur
 
     #[ORM\Column(length: 150)] 
     private ?string $type = null;
+       
+    
 
     public function getIdFournisseur(): ?int
     {
@@ -104,5 +107,5 @@ class Fournisseur
         return $this->nom ?? '';
     }
     
-
+    
 }

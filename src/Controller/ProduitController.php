@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Knp\Snappy\Pdf;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use App\Entity\PdfGeneratorService;
+ use App\Entity\PdfGeneratorService;
 class ProduitController extends AbstractController
 {
     #[Route('/produit', name: 'app_produit')]
