@@ -55,13 +55,31 @@ new RememberMeBadge(),
 }
 
 public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+//{
+//if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+//return new RedirectResponse($targetPath);
+//}
+//
+//return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
+//}
 {
-if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-return new RedirectResponse($targetPath);
-}
+$user = $token->getUser();
 
-return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
-}
+        // Get the user's roles
+        $roles = $user->getRoles();
+
+        // Redirect based on the user's roles
+        if (in_array('admin', $roles)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
+        } elseif (in_array('coach', $roles)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_user_new'));
+        } elseif (in_array('client', $roles)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_user_new'));
+        }
+
+        // Default redirect if no matching role is found
+        return new RedirectResponse($this->urlGenerator->generate('default_dashboard'));
+    }
 
 protected function getLoginUrl(Request $request): string
 {
