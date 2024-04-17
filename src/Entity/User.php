@@ -24,15 +24,24 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
     private string $nom;
 
     #[ORM\Column(name: "email", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: 'Email cannot be blank')]
+    #[Assert\Email(message: 'Invalid email format')]
     private string $email;
 
     #[ORM\Column(name: "motDePasse", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: 'Password cannot be blank')]
+    #[Assert\Length(min: 8, minMessage: 'Password must be at least 8 characters long')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/',
+        message: 'Password must contain at least one uppercase letter, one digit, and one special character'
+    )]
     private string $motdepasse;
 
     #[ORM\Column(name: "specialite", type: "string", length: 255, nullable: true)]
     private ?string $specialite;
 
     #[ORM\Column(name: "numero", type: "integer", nullable: false)]
+    #[Assert\NotBlank(message:"Phone number cannot be blank")]
     private int $numero;
 
     #[ORM\Column(name: "recommandation", type: "string", length: 3, nullable: false)]
