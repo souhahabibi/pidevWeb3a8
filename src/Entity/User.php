@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @method string getUserIdentifier()
@@ -21,6 +22,7 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
     private int $id;
 
     #[ORM\Column(name: "nom", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: 'Nom cannot be blank')]
     private string $nom;
 
     #[ORM\Column(name: "email", type: "string", length: 255, nullable: false)]
@@ -40,8 +42,13 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
     #[ORM\Column(name: "specialite", type: "string", length: 255, nullable: true)]
     private ?string $specialite;
 
-    #[ORM\Column(name: "numero", type: "integer", nullable: false)]
-    #[Assert\NotBlank(message:"Phone number cannot be blank")]
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Phone number cannot be blank")]
+    #[Assert\Range(
+        min: 10000000,
+        max: 99999999,
+        notInRangeMessage: "Phone number must be exactly 8 digits"
+    )]
     private int $numero;
 
     #[ORM\Column(name: "recommandation", type: "string", length: 3, nullable: false)]
