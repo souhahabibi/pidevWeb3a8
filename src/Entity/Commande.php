@@ -29,7 +29,9 @@ class Commande
 
     
     #[ORM\ManyToMany(targetEntity: Produit::class, mappedBy: 'commandes')]
-    private Collection $produit;
+#[ORM\JoinTable(name: "commande_produit")]
+private Collection $produit;
+
 
     public function __construct()
     {

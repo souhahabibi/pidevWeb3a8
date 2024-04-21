@@ -19,6 +19,9 @@
 {% endblock %}
 
 {% block body %}
+<a href="{{ path('app_panier') }}">
+        <img src="{{ asset('clientSalle/img/panier.png') }}" alt="panier" class="btn-img" width="40" height="40">
+    </a>
     <div class="row">
         <div class="col-lg-12">
             <div class="col-lg-12">
@@ -27,6 +30,7 @@
                     <input type="text" id="searchInput" placeholder="Search " oninput="search()">
                 </div>  
             </div>
+            
         </div>
     </div>
 
@@ -49,7 +53,7 @@
                             <p class="card-text"><small class="text-muted">Date d'expiration: {{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</small></p>
                             <div class="text-right">
                             <a href="{{ path('app_qr_codes', {'id': produit.idProduit}) }}" class="btn btn-danger">QR Code</a>
-                                <a href="#" class="btn btn-danger">Acheter</a>
+                                <a href="{{ path('add_panier', {'id': produit.idProduit}) }}" class="btn btn-danger">Ajouter panier</a>
                                 
                             </div>
                         </div>

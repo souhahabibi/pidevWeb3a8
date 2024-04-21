@@ -59,13 +59,23 @@ class Produit
     #[ORM\JoinColumn(name: 'id_fournisseur', referencedColumnName: 'id_fournisseur')]
     private ?Fournisseur $idFournisseur=null;
 
+#[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produit')]
+#[ORM\JoinTable(name: "produit_commande")]
+#[ORM\JoinColumn(name: "produits_id", referencedColumnName: "id_produit")]
+#[ORM\InverseJoinColumn(name: "commande_id", referencedColumnName: "id_commande")]
+
+private Collection $commandes;
+
+
 
 
     
+
     public function __construct()
     {
-        
+        $this->commandes = new ArrayCollection();
     }
+   
     public function getIdProduit(): ?int
     {
         return $this->idProduit;
@@ -160,13 +170,13 @@ class Produit
      */
     public function getCommande(): Collection
     {
-        return $this->commande;
+        return $this->commandes;
     }
 
     public function addCommande(Commande $commande): static
     {
-        if (!$this->commande->contains($commande)) {
-            $this->commande->add($commande);
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
         }
 
         return $this;
@@ -174,7 +184,7 @@ class Produit
 
     public function removeCommande(Commande $commande): static
     {
-        $this->commande->removeElement($commande);
+        $this->commandes->removeElement($commande);
 
         return $this;
     }
