@@ -51,7 +51,7 @@ class Produit
 
     
     #[ORM\Column(length: 150)] 
-    #[Assert\NotBlank(message: 'Veuillez fournir une image.')]
+
     private ?string $image = null;
 
 
