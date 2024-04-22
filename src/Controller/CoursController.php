@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Cours;
+use App\Service\SmsGenerator;
 use App\Form\CoursType;
 use App\Repository\CoursRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -76,8 +77,16 @@ class CoursController extends AbstractController
     }
 
 
+    private $smsGenerator;
+
+    public function __construct(SmsGenerator $smsGenerator)
+    {
+        $this->smsGenerator = $smsGenerator;
+    }
+    
+
     #[Route('/ajoutercours', name: 'ajouter_cours')]
-    public function ajoutercours(Request $request): Response
+    public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Response
     {
         $cours = new Cours();
     
@@ -117,6 +126,17 @@ class CoursController extends AbstractController
             // Persist and flush the entity
             $entityManager->persist($cours);
             $entityManager->flush();
+           // Le numéro de téléphone auquel envoyer le SMS
+          
+       
+           
+          
+           $name = 'ESPRAT';
+           $text = 'Un nouveau cours a été ajouté : ' . $cours->getNom();
+           $smsGenerator->SendSms('+21624019297',$name, $text);
+
+
+
     
             // Redirect to another page or display a success message, for example
             return $this->redirectToRoute('cours_liste');
