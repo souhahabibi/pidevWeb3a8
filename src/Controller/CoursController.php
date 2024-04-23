@@ -133,7 +133,7 @@ class CoursController extends AbstractController
           
            $name = 'ESPRAT';
            $text = 'Un nouveau cours a été ajouté : ' . $cours->getNom();
-           //$smsGenerator->SendSms('+21624019297',$name, $text);
+           $smsGenerator->SendSms('+21624019297',$name, $text);
 
 
 
