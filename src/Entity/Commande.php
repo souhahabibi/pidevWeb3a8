@@ -13,7 +13,7 @@ class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:"id_commande")]
    private ?int $idCommande=null;
 
    #[ORM\Column(type: "date")]
@@ -26,17 +26,20 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')] 
     private ?User $idUser=null;
 
-
-    
-    #[ORM\ManyToMany(targetEntity: Produit::class, mappedBy: 'commandes')]
-#[ORM\JoinTable(name: "commande_produit")]
-private Collection $produit;
-
+    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'commandes')]
+    #[ORM\JoinTable(name:"produit_commande")]
+    #[JoinColumn(name:"commande_id", referencedColumnName:"id_commande")]
+    #[InverseJoinColumn(name:"produit_id", referencedColumnName:"id_produit")]
+    private Collection $produits;
 
     public function __construct()
     {
-        $this->produit = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
+
+
+    
+  
 
     public function getIdCommande(): ?int
     {
@@ -82,28 +85,27 @@ private Collection $produit;
     /**
      * @return Collection<int, Produit>
      */
-    public function getProduit(): Collection
+    public function getProduits(): Collection
     {
-        return $this->produit;
+        return $this->produits;
     }
 
     public function addProduit(Produit $produit): static
     {
-        if (!$this->produit->contains($produit)) {
-            $this->produit->add($produit);
-            $produit->addCommande($this);
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
         }
 
         return $this;
-    }
+   }
 
     public function removeProduit(Produit $produit): static
     {
-        if ($this->produit->removeElement($produit)) {
-            $produit->removeCommande($this);
-        }
+       $this->produits->removeElement($produit);
 
         return $this;
     }
+
+   
 
 }

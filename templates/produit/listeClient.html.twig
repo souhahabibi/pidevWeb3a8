@@ -49,7 +49,13 @@
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ produit.nom }}</h5>
                             <p class="card-text"><small class="text-muted">Description: {{ produit.description }}</small></p>
-                            <p class="card-text"><small class="text-muted">Prix: {{ produit.cout }}</small></p>
+           <p class="card-text"><small class="text-muted">Prix initial: {{ produit.prixInitial }}</small></p>
+                            {% if produit.prixPromo is not null %}
+                                <p class="card-text"><small class="text-danger">Prix avec promotion: {{ produit.prixPromo }}</small></p>
+                            {% else %}
+                                <p class="card-text"><small class="text-muted">Pas de promo</small></p>
+                            {% endif %}
+
                             <p class="card-text"><small class="text-muted">Date d'expiration: {{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</small></p>
                             <div class="text-right">
                             <a href="{{ path('app_qr_codes', {'id': produit.idProduit}) }}" class="btn btn-danger">QR Code</a>

@@ -28,6 +28,7 @@ $session->set('panier', $panier);
         foreach($panier as $id=>$quantite)// for
         {
             $produit=$produitRepository->find($id);
+            
             //naaby tab teena
             $data[]=[
                 'produit'=>$produit,  //houny ijib f les donnes taa produits kol

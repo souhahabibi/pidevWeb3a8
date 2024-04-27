@@ -16,6 +16,7 @@ use Knp\Snappy\Pdf;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
  use App\Entity\PdfGeneratorService;
+ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class ProduitController extends AbstractController
 {
     #[Route('/produit', name: 'app_produit')]
@@ -228,7 +229,14 @@ public function listeProduitsTriesParCout(ProduitRepository $produitRepository)
 #[Route('/produitClient/list', name: 'produitsClient_liste')]
 public function listeProduitsClient(ProduitRepository $produitRepository)
 {
+    
     $produits = $produitRepository->findAll();
+    // Appliquer la promotion pour chaque produit
+    foreach ($produits as $produit) {
+        if ($produit instanceof Produit) {
+            $produit->applyPromotionIfNeeded();
+        }
+    }
 
     return $this->render('produit/listeClient.html.twig', [
         'produits' => $produits,
