@@ -4,6 +4,28 @@
 
 {% block body %}
     <h1>Liste des cours</h1>
+    <form action="{{ path('app_cours_search') }}" method="GET">
+        <input type="text" id="query" name="query">
+        <button type="submit">Search</button>
+    </form>
+    </form>
+      <form action="{{ path('app_cours_tri') }}" method="GET">
+        <label for="order">Ordre :</label>
+        <select name="order" id="order">
+            <option value="asc">Croissant</option>
+            <option value="desc">Décroissant</option>
+        </select>
+
+        <label for="field">Champ de tri :</label>
+        <select name="field" id="field">
+            <option value="nom">nom</option>
+          {# <option value="date">Date</option> #}
+            <!-- Ajoutez d'autres options pour les champs de tri si nécessaire -->
+        </select>
+
+        <button type="submit" class="btn btn-primary">Trier</button>
+    </form>
+
     <a href="{{ path('ajouter_cours') }}" class="btn btn-primary">Ajouter un cours</a>
 
     <table class="table">
@@ -17,7 +39,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for cours in cours %}
+            {% for cours in pagination %}
                 <tr>
                     <td>{{ cours.nom }}</td>
                     <td>{{ cours.description }}</td>
@@ -37,4 +59,7 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

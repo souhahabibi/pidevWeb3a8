@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Cours;
 use App\Service\SmsGenerator;
 use App\Form\CoursType;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\CoursRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,30 @@ class CoursController extends AbstractController
         ]);
     }
 
+#[Route('/cours/list', name: 'cours_liste')]
+public function courspag (Request $request, CoursRepository $coursRepository, PaginatorInterface $paginator): Response
+{
+    $pagination = $paginator->paginate(
+        $coursRepository->findAll(), 
+        $request->query->getInt('page', 1), 
+        2
+    );
+
+    return $this->render('cours/liste.html.twig', [
+        'pagination' => $pagination,
+    ]);
+}
+/*
+    #[Route('/cours/list', name: 'cours_liste')]
+    public function listeCours(CoursRepository $coursRepository)
+    {
+        $cours = $coursRepository->findAll();
+    
+        return $this->render('cours/liste.html.twig', [
+            'cours' => $cours,
+        ]);
+    }
+*/
     #[Route('/client', name: 'client_app')]
     public function clientCours(CoursRepository $coursRepository)
     {
@@ -61,28 +86,12 @@ class CoursController extends AbstractController
         return $this->render('coach_base.html.twig', [
             'controller_name' => 'CoursController']);
     }
+   // private $smsGenerator;
 
-
-
-
-
-    #[Route('/cours/list', name: 'cours_liste')]
-    public function listeCours(CoursRepository $coursRepository)
-    {
-        $cours = $coursRepository->findAll();
-    
-        return $this->render('cours/liste.html.twig', [
-            'cours' => $cours,
-        ]);
-    }
-
-
-    private $smsGenerator;
-
-    public function __construct(SmsGenerator $smsGenerator)
+   /* public function __construct(SmsGenerator $smsGenerator)
     {
         $this->smsGenerator = $smsGenerator;
-    }
+    }*/
     
 
     #[Route('/ajoutercours', name: 'ajouter_cours')]
@@ -200,26 +209,82 @@ class CoursController extends AbstractController
     }
 
 
-    #[Route('/cours/{id}', name: 'cours_supprimer')]
-public function supprimerCours(?int $id): Response
-{
-    $entityManager = $this->getDoctrine()->getManager();
-    $cours = $entityManager->getRepository(Cours::class)->find($id);
+ 
 
-    if (!$cours) {
-        throw $this->createNotFoundException('cours non trouvé');
+
+    #[Route('/cours/search', name: 'app_cours_search')]
+    public function search(Request $request, CoursRepository $coursRepository, PaginatorInterface $paginator): Response
+    {
+        $query = $request->query->get('query');
+        if ($query) {
+            $cours = $coursRepository->createQueryBuilder('a')
+                ->where('a.nom LIKE :query')
+                ->setParameter('query', '%' . $query . '%')
+                ->getQuery();
+
+
+            $pagination = $paginator->paginate(
+                $cours, 
+                $request->query->getInt('page', 1), 
+                10 
+            );
+        } else {
+
+            $pagination = null; 
+        }
+
+        return $this->render('cours/liste.html.twig', [
+            'pagination' => $pagination,
+        ]);
     }
 
-    $entityManager->remove($cours);
-    $entityManager->flush();
 
-     // Rediriger vers une page de confirmation ou ailleurs
-     return $this->redirectToRoute('cours_liste');
+    #[Route('/cours/tri', name: 'app_cours_tri')]
+    public function tri(Request $request, CoursRepository $coursRepository, PaginatorInterface $paginator): Response
+    {
+        $order = $request->query->get('order', 'asc'); 
+        $field = $request->query->get('field', 'nom'); 
 
-}
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc'; 
+        }
+
+        if (!in_array($field, ['nom', 'date'])) {
+            $field = 'nom'; 
+        }
+
+        $queryBuilder = $coursRepository->createQueryBuilder('a')
+            ->orderBy('a.' . $field, $order);
+
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1),
+            10 
+        );
+        return $this->render('cours/liste.html.twig', [
+            'pagination' => $pagination,
+
+        ]);
+    }
 
 
-
+    #[Route('/cours/{id}', name: 'cours_supprimer')]
+    public function supprimerCours(?int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $cours = $entityManager->getRepository(Cours::class)->find($id);
+    
+        if (!$cours) {
+            throw $this->createNotFoundException('cours non trouvé');
+        }
+    
+        $entityManager->remove($cours);
+        $entityManager->flush();
+    
+         // Rediriger vers une page de confirmation ou ailleurs
+         return $this->redirectToRoute('cours_liste');
+    
+    }
 
 
 }
