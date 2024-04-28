@@ -15,15 +15,50 @@ use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Imagine\Image\Box;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\LocaleSwitcher;
 class CoursController extends AbstractController
 {
     #[Route('/cours', name: 'app_cours')]
     public function index(): Response
     {
-        return $this->render('cours/index.html.twig', [
+        return $this->render('client_cours.html.twig', [
             'controller_name' => 'CoursController',
         ]);
     }
+  
+    #[Route('/client/cours', name: 'app_translate')]
+    public function translate(TranslatorInterface $translator, Request $request, CoursRepository $coursRepository): Response
+    {
+    $lang = $request->query->get('lang', 'fr');
+
+    $cours = $coursRepository->findAll();
+
+    $translated = [];
+
+    foreach ($cours as $unCours) {
+        $translated[] = [
+            'nom' => $translator->trans($unCours->getNom(), [], null, $lang),
+            'description' => $translator->trans($unCours->getDescription(), [], null, $lang),
+            'niveau' => $translator->trans($unCours->getNiveau(), [], null, $lang),
+            'image' => $unCours->getImage(),
+            'id' => $unCours->getId(),
+        ];
+    }
+
+    return $this->render('client_cours.html.twig', [
+        'translated' => $translated,
+        'labels' => [
+            'nom' => $translator->trans('Nom', [], null, $lang),
+            'description' => $translator->trans('Description', [], null, $lang),
+            'niveau' => $translator->trans('Niveau', [], null, $lang),
+        ],
+    ]);
+}
+
+    
+    
+    
 
 #[Route('/cours/list', name: 'cours_liste')]
 public function courspag (Request $request, CoursRepository $coursRepository, PaginatorInterface $paginator): Response
@@ -58,8 +93,8 @@ public function courspag (Request $request, CoursRepository $coursRepository, Pa
             'cours' => $cours,
         ]);
     }
-
-    #[Route('/client/cours', name: 'client_cours')]
+/*
+    #[Route('/client/cours', name: 'client_cours2')]
     public function clientCours2(CoursRepository $coursRepository)
     {
         $cours = $coursRepository->findAll();
@@ -68,7 +103,7 @@ public function courspag (Request $request, CoursRepository $coursRepository, Pa
             'cours' => $cours,
         ]);
     }
-
+*/
 
     #[Route('/Client_Acceuil', name: 'app_Acceuil')]
     public function Acceuil(): Response
