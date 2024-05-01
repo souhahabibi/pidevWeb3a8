@@ -145,4 +145,5 @@ $session->set('panier', $panier);
      // Afficher une page de confirmation de commande
      return $this->render('panier/passer_commande.html.twig');
  }
+ 
 }

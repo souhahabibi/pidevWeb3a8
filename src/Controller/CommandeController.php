@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 class CommandeController extends AbstractController
 {
-    #[Route('/commande', name: 'app_commande')]
+    #[Route('/commande', name: 'commande')]
     public function addCommande(SessionInterface $session,ProduitRepository $produitRepository,UserRepository $userRepository,EntityManagerInterface $entityManager): Response
     {
         $panier=$session->get('panier',[]);

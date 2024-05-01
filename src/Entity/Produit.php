@@ -59,12 +59,12 @@ class Produit
     #[ORM\JoinColumn(name: 'id_fournisseur', referencedColumnName: 'id_fournisseur')]
     private ?Fournisseur $idFournisseur=null;
 
-    #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produits')]
-private Collection $commandes;
+    //#[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produits')]
+//private Collection $commandes;
 
     public function __construct()
     {
-      $this->commandes = new ArrayCollection();
+      //$this->commandes = new ArrayCollection();
     }
 
 // Ajoutez un nouvel attribut pour stocker le prix initial
@@ -83,14 +83,7 @@ public function setPrixPromo(?float $prixPromo): self
 {
     $this->prixPromo = $prixPromo;
     return $this;
-}
-
-
-
-
-    
-
-   
+} 
     public function getIdProduit(): ?int
     {
         return $this->idProduit;
@@ -222,8 +215,11 @@ public function setPrixPromo(?float $prixPromo): self
     {
         $expirationDate = $this->getDateExpiration();
         $today = new \DateTime();
+        //crée une copie de l'objet $today en utilisant la fonction clone
+        //puis modifie cette copie pour ajouter 3jours à la date actuelle en utilisant la méthode modify()
         $threeDaysLater = (clone $today)->modify('+3 days');
-    
+    //vérifie si la date d'expirationest postérieure ou égale à la date  ($today)
+//veridie aussi antérieure ou égale à la date 3jours plus tard ($threeDaysLater).
         if ($expirationDate >= $today && $expirationDate <= $threeDaysLater) {
             // Appliquer la réduction de 30%
             $currentPrice = $this->getCout();

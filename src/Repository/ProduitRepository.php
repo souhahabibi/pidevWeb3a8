@@ -51,6 +51,8 @@ public function getQuantiteProduitsParFournisseur()
 {
     return $this->createQueryBuilder('p')
         ->select('f.nom as nom, SUM(p.quantite) as quantite')
+         //Effectue une jointure entre l'entité Produit ('p') et l'entité Fournisseur ('f') sur la clé étrangère idFournisseur
+         //Cela permet d'associer chaque produit à son fournisseur correspondant
         ->leftJoin('p.idFournisseur', 'f')
         ->groupBy('f.nom')
         ->getQuery()

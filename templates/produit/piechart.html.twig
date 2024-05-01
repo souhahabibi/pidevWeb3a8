@@ -10,7 +10,9 @@
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
 
+   {# pour dessiner le diagramme circulaire #}
         function drawChart() {
+            {# Convertit les données fournies en tableau de données Google Visualization #}
             var data = google.visualization.arrayToDataTable([
                 ['Fournisseur', 'Quantité'],
                 {% for item in data %}

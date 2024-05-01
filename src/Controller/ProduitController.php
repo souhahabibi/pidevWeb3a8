@@ -267,14 +267,19 @@ public function pieChart(ProduitRepository $produitRepository): Response
 #[Route('/pdf/produit', name: 'generator_service')]
     public function pdfproduit(): Response
     { 
+        // Récupère tous les produits depuis la base de données
         $produit= $this->getDoctrine()
         ->getRepository(Produit::class)
         ->findAll();
+        // Rend la vue Twig en passant les produits en tant que variable 'produit'
         $html =$this->renderView('pdf/index.html.twig', ['produit' => $produit]);
+        // Initialise un nouveau service PdfGeneratorService
         $pdfGeneratorService=new PdfGeneratorService();
+        // Génère le PDF à partir du HTML rendu
         $pdf = $pdfGeneratorService->generatePdf($html);
-
+        // Renvoie le PDF en tant que réponse HTTP
         return new Response($pdf, 200, [
+            //Cela indique au navigateur que le contenu de la réponse est un fichier PDF.
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="document.pdf"',
         ]);
