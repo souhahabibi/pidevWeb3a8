@@ -211,6 +211,7 @@ public function searchClient(Request $request, ProduitRepository $produitReposit
 
     return $this->render('produit/listeClient.html.twig', [
         'produits' => $produits,
+        
     ]);
 }
 //triii
@@ -269,9 +270,6 @@ public function pieChart(ProduitRepository $produitRepository): Response
         $produit= $this->getDoctrine()
         ->getRepository(Produit::class)
         ->findAll();
-
-   
-
         $html =$this->renderView('pdf/index.html.twig', ['produit' => $produit]);
         $pdfGeneratorService=new PdfGeneratorService();
         $pdf = $pdfGeneratorService->generatePdf($html);
