@@ -18,9 +18,7 @@
                             <th scope="col">Capacity</th>
                             <th scope="col">Organizer</th>
                             <th scope="col">Video</th>
-                            <th scope="col">Scores</th>                
-                            <th scope="col">Modify</th>
-                            <th scope="col">Delete</th>
+                            <th scope="col">Actions</th>       
                         </tr>
                     </thead>
                     <tbody>
@@ -29,13 +27,16 @@
                             <th scope="row">{{loop.index}}</th>
                             <td>{{a.nom}}</td>
                             <td>{{ a.date|date('Y-m-d') }}</td>
-                            <td>{{a.description}}</td>
+                            <td style="max-width: 300px;word-wrap: break-word;"><p>{{a.description}}</p></td>
                             <td>{{a.capacite}}</td>
                             <td>{{a.fkOrganisateur.nom}}</td>
                             <td><a href="https://www.youtube.com/watch?v={{a.videourl}}" target="_blank">Video</a></td>
-                            <td><a href="{{ path('app_competition_scores', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Scores</button></a></td>
-                            <td><a href="{{ path('app_competition_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
-                            <td><a href="{{ path('app_competition_delete', {'id': a.id}) }}"><button type="button" class="btn btn-danger m-2">Delete</button></a></td>
+                            <td>
+                            <a href="{{ path('app_competition_scores', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Scores</button></a>
+                            <a href="{{ path('app_competition_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a>
+                            <a href="{{ path('app_competition_delete', {'id': a.id}) }}"><button type="button" class="btn btn-danger m-2">Delete</button></a>
+                            <a href="{{ path('competition_distribution', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Normal Distribution</button></a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

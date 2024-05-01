@@ -10,11 +10,9 @@ Competitions
 {% endblock %}
 
 {% block body %}
-
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <section class="about-page-trainer spad">
     <div class="container">
-
-
 
 
         <div class="row">
@@ -35,11 +33,6 @@ Competitions
                 </div>
             </div>
         </div>
-
-
-
-
-
 
 
         <div class="col">
@@ -77,5 +70,42 @@ Competitions
         </div>
     </div>
 </section>
+{{ knp_pagination_render(list) }}
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center; /* Center the pagination on the page */
+        padding: 20px; /* Add some padding for spacing */
+        list-style: none; /* Removes default list styling */
+    }
+
+    .pagination li {
+        margin: 0 5px; /* Space between each pagination item */
+    }
+
+    .pagination a {
+        font-size: 16px; /* Set font size */
+        color: #333; /* Dark grey color for text */
+        background-color: #f8f9fa; /* Light grey background */
+        border: 1px solid #ddd; /* Subtle border */
+        padding: 8px 16px; /* Padding inside the links */
+        border-radius: 50px; /* Rounded corners for pill-like shape */
+        text-decoration: none; /* No underline */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+    }
+
+    .pagination .active a {
+        color: #fff; /* White text for active page */
+        background-color: red; /* Bootstrap blue for active page */
+        border-color: red; /* Border color same as background */
+    }
+
+    .pagination a:hover {
+        background-color: red; /* Darker blue on hover */
+        color: #fff; /* White text on hover */
+        text-decoration: none; /* Ensure no underline on hover */
+    }
+</style>
+
 
 {% endblock %}

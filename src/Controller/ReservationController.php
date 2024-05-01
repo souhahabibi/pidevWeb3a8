@@ -65,8 +65,8 @@ class ReservationController extends AbstractController
         ->to($client->getEmail()) // Assuming getClient() returns the email
         ->subject('Reservation Confirmation'."for".$competition->getNom())
         ->text('Your reservation has been confirmed.');
-
         $mailer->send($email);
+        
         $exist=1;
 
        $topReservations = $repor->findTopReservationsByCompetition($id);

@@ -89,6 +89,27 @@ class CompetitionRepository extends ServiceEntityRepository
 
         return $resultSet->fetchAllAssociative();
     }
+    public function getAverageScoresByCompetition()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.nom, AVG(r.score) as avgScore')
+            ->join('c.reservations', 'r')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findScoresByCompetition(int $competitionId): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r.score
+            FROM App\Entity\Reservation r
+            WHERE r.fkCompetition = :competitionId AND r.score IS NOT NULL'
+        )->setParameter('competitionId', $competitionId);
+
+        return array_column($query->getScalarResult(), 'score');
+    }
 //    /**
 //     * @return Competition[] Returns an array of Competition objects
 //     */
