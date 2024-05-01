@@ -1,0 +1,50 @@
+{% extends 'client_base.html.twig' %}
+
+{% block title %}
+{{ salle.nom }}
+{% endblock %}
+
+{% block body %}
+{% if salle.lieu %}
+    <div id="map" style="height: 400px;"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <script>
+        // Initialise la carte Leaflet
+        var map = L.map('map').setView([0, 0], 13);
+
+        // Ajoute une couche de tuiles OpenStreetMap à la carte
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Récupère les coordonnées géographiques de l'adresse de la salle
+        var address = "{{ salle.lieu }}";
+        var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    var lat = data[0].lat;
+                    var lon = data[0].lon;
+
+                    // Met à jour la vue de la carte pour centrer et zoomer sur l'emplacement de la salle
+                    map.setView([lat, lon], 13);
+
+                    // Ajoute un marqueur à l'emplacement de la salle
+                    L.marker([lat, lon]).addTo(map)
+                        .bindPopup("{{ salle.nom }}").openPopup();
+                } else {
+                    console.error("Impossible de trouver les coordonnées géographiques pour cette adresse");
+                }
+            })
+            .catch(error => {
+                console.error("Erreur lors de la récupération des coordonnées géographiques:", error);
+            });
+    </script>
+{% else %}
+    <p>L'adresse de la salle n'est pas disponible.</p>
+{% endif %}
+{% endblock %}

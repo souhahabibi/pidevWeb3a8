@@ -1,31 +1,24 @@
 {% extends 'admin_base.html.twig' %}
 
 {% block body %}
-
 <div class="container-fluid pt-4 px-4">
    <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
       <div class="col-12">
         <div class="bg-secondary rounded h-100 p-4">
 
-
-
             <h6 class="mb-4">GYMS Table</h6>
             <a href="{{ path('app_salle_add') }}"> <button type="button" class="btn btn-success m-2">ADD</button></a>
+            <a href="{{ path('app_salle_stats') }}"> <button type="button" class="btn btn-info m-2">Statistics</button></a>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                        
                             <th scope="col">#</th>
                             <th scope="col">image</th>
                             <th scope="col">Nom</th>
                             <th scope="col">description</th>
                             <th scope="col">lieu</th>
-                            <th scope="col">Modify</th>
-                            <th scope="col">Delete</th>
-                            <th scope="col">Abonnements</th>
-                            <th scope="col">Materiels</th>
-                            
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,20 +36,19 @@
                         <td>{{a.nom}}</td>
                         <td>{{a.description}}</td>
                         <td>{{a.lieu}}</td>
-                        <td><a href="{{ path('app_salle_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
-                        <td><a href="{{ path('app_salle_delete', {'id': a.id}) }}"><button type="button" class="btn btn-danger m-2">Delete</button></a></td>
-                        <td><a href="{{ path('app_salle_abonnement', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Abonnements</button></a></td>
-                        <td><a href="{{ path('app_salle_materiel', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Materiels</button></a></td>
+                        <td>
+                        <a href="{{ path('app_salle_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a>
+                        <a href="{{ path('app_salle_delete', {'id': a.id}) }}"><button type="button" class="btn btn-danger m-2">Delete</button></a>
+                        <a href="{{ path('app_salle_abonnement', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Abonnements</button></a>
+                        <a href="{{ path('app_salle_materiel', {'id': a.id}) }}"><button type="button" class="btn btn-info m-2">Materiels</button></a>
+                        <a href="{{ path('export_materiel_pdf', {'gymId': a.id}) }}"><button type="button" class="btn btn-info m-2">PDF</button></a>
+                        </td>
 
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-
-
-
-
         </div>
       </div>
     </div>

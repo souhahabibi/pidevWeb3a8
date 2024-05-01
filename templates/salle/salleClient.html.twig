@@ -40,7 +40,13 @@ GYMs
                         </div>
                         
                         <div class="trainer-social row" style="align-items: center;">
-                            <h6 class="col text-start">{{a.lieu}}</h6>
+                           <h6 class="col text-start">
+    <a href="{{ path('app_salle_map', {'id': a.id}) }}">{{ a.lieu }}</a>
+</h6>
+
+
+
+
                              <a href="{{ path('app_salleClient_materiel', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Materials</a>
                             <a href="{{ path('app_salleClient_abonnement', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Abonnements</a>
                         </div>
@@ -52,6 +58,7 @@ GYMs
         </div>
     </div>
 </section>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 
 <script>
     function search() {

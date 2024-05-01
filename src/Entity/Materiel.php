@@ -2,7 +2,6 @@
 namespace App\Entity;
 use App\Repository\MaterielRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Assert\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass:MaterielRepository::class)]
@@ -20,7 +19,7 @@ class Materiel
 
     #[ORM\Column]
     #[Assert\NotBlank(message: "Machine age is required")]
-    #[Assert\Range( min: 0, max: 50, minMessage: "The machine age must be at least {{ limit }} years", maxMessage: "The machine age cannot exceed {{ limit }} years")]
+    #[Assert\Range( min: 1, max: 50, minMessage: "The machine age must be at least {{ limit }} years", maxMessage: "The machine age cannot exceed {{ limit }} years")]
     private ?int $age = null;
 
     #[ORM\Column]

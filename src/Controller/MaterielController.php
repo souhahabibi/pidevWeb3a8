@@ -1,7 +1,8 @@
 <?php 
 
 namespace App\Controller;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Materiel;
 use App\Form\MaterielType;
 use App\Repository\SalleRepository;
@@ -36,7 +37,7 @@ class MaterielController extends AbstractController
        if ($form->isSubmitted() && $form->isValid())
        {
            $file = $form->get('image')->getData();
-           if ($file)
+           if ($file) 
            {
                $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
@@ -61,13 +62,12 @@ class MaterielController extends AbstractController
     #[Route('/materiel/modify{id}', name: 'app_materiel_modify')]
     public function modify(Request $req,ManagerRegistry $manager,MaterielRepository $repo,$id): Response
     {
-        $materiel = new Materiel();
         $materiel = $repo->find($id);
         $salle = $repo->find($id);
         $form = $this->createForm(MaterielType::class,$materiel);
  
         $em = $manager->getManager();
- 
+   
         $form->handleRequest($req); 
  
         if ($form->isSubmitted() && $form->isValid())
@@ -107,4 +107,38 @@ class MaterielController extends AbstractController
         return $this->redirectToRoute('app_salle_materiel', ['id' => $materiel->getFkIdsalle()->getId()]); 
     }
 
+    #[Route('/materiel/pdf/{gymId}', name: 'export_materiel_pdf')]
+    public function exportMaterialsPdf(MaterielRepository $repository, $gymId, Request $request): Response
+    {
+        $materials = $repository->findBy(['fkIdsalle' => $gymId]);
+    
+        // Create full URL for images
+        $host = $request->getSchemeAndHttpHost();
+    
+        $html = $this->renderView('materiel/pdf.html.twig', [
+            'materials' => $materials,
+            'host' => $host
+        ]);
+    
+        // Configure Dompdf options
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isHtml5ParserEnabled', true);
+        $pdfOptions->set('isRemoteEnabled', true); // Important for loading images via full URL
+    
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+    
+        // Output the generated PDF to Browser
+        $dompdf->stream("materials_gym_".$gymId.".pdf", [
+            "Attachment" => true
+        ]);
+    
+        return new Response('', 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
 } 

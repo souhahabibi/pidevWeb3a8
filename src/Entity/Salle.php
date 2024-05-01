@@ -21,12 +21,12 @@ class Salle
     
     #[ORM\Column(length: 150) ]
     #[Assert\NotBlank(message: "description is required") ] 
-    #[Assert\Length(min: 1,max: 30,minMessage:"The description '{{ value }}' is too short", maxMessage: "The description '{{ value }}' is too long")]
+    #[Assert\Length(min: 1,max: 200,minMessage:"The description '{{ value }}' is too short", maxMessage: "The description '{{ value }}' is too long")]
     private ?string $description = null;
 
     #[ORM\Column(length: 150) ]
     #[Assert\NotBlank(message: "place is required") ] 
-    #[Assert\Length(min: 1,max: 30,minMessage:"The place '{{ value }}' is too short", maxMessage: "The place '{{ value }}' is too long")]
+    #[Assert\Length(min: 1,max: 100,minMessage:"The place '{{ value }}' is too short", maxMessage: "The place '{{ value }}' is too long")]
     private ?string $lieu = null;
    
     #[ORM\Column(length: 150) ]

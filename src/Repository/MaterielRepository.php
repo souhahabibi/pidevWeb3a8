@@ -22,12 +22,21 @@ class MaterielRepository extends ServiceEntityRepository
     }
     public function findMaterielByGymId(int $gymId): array
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.fkIdsalle', 's') // Use the correct association name
-            ->andWhere('s.id = :gymId')
-            ->setParameter('gymId', $gymId)
+        return $this->createQueryBuilder('a') 
+            ->leftJoin('a.fkIdsalle', 's') 
+            ->andWhere('s.id = :gymid') 
+            ->setParameter('gymid', $gymId)
             ->getQuery()
             ->getResult();
+    }
+    public function findSumQuantitesBySalle($salleId)
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.fkIdsalle = :salleId')
+            ->setParameter('salleId', $salleId)
+            ->select('SUM(m.quantite) as totalQuantite')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 //    /**
