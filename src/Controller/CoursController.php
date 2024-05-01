@@ -184,6 +184,10 @@ public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Resp
         $entityManager->flush();
 
         // SMS sending logic remains the same
+        $name = 'ESPRAT';
+        $text = 'Un nouveau cours a été ajouté : ' . $cours->getNom();
+        //$smsGenerator->SendSms('+21624019297',$name, $text);
+        $smsGenerator->SendSms('+21624019297',$name, $text);
 
         // Redirect to another page or display a success message, for example
         return $this->redirectToRoute('cours_liste');
