@@ -16,7 +16,7 @@ class Coupon
 
     #[ORM\Column(name: "nomSociete", type: "string", length: 255)]
     #[Assert\NotBlank(message: "Le nom de la sociéte ne peut pas être vide")]
-    private string $nomsociete;
+    private ?string $nomsociete;
 
     #[ORM\Column(name: "code", type: "integer")]
     #[Assert\NotBlank(message: "Le code du coupon ne peut pas être vide")]
@@ -24,7 +24,7 @@ class Coupon
         pattern: '/^\d{8}$/',
         message: "Le code du coupon doit être un entier de 8 chiffres"
     )]
-    private int $code;
+    private ?int $code;
 
     #[ORM\Column(name: "valeur", type: "integer")]
     #[Assert\NotBlank(message: "La valeur du coupon ne peut pas être vide")]
@@ -33,7 +33,7 @@ class Coupon
         max: 100,
         notInRangeMessage: "La valeur du coupon doit être comprise entre {{ min }} et {{ max }}"
     )]
-    private int $valeur;
+    private ?int $valeur;
 
     #[ORM\Column(name: "dateExpiration", type: "string", length: 255)]
     #[Assert\NotBlank(message: "Date d'expiration ne peut pas être vide")]
@@ -42,11 +42,11 @@ class Coupon
 //        message: "Format de date invalide. Utilisez le format dd-mm-yyyy"
 //    )]
     #[Assert\Date(message: "Date d'expiration invalide")]
-    #[Assert\GreaterThanOrEqual(
-        value: "today",
-        message: "La date d'expiration doit être aujourd'hui ou ultérieure"
-    )]
-    private string $dateexpiration;
+//    #[Assert\GreaterThanOrEqual(
+//        value: "today",
+//        message: "La date d'expiration doit être aujourd'hui ou ultérieure"
+//    )]
+    private ?string $dateexpiration;
 
    
     

@@ -19,7 +19,7 @@ security:
             custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
-                target: app_user_index
+                target: app_login
 
             # Other firewall settings...
     access_control:

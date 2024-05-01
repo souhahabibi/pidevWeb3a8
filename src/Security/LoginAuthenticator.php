@@ -70,15 +70,15 @@ $user = $token->getUser();
 
         // Redirect based on the user's roles
         if (in_array('admin', $roles)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
+            return new RedirectResponse($this->urlGenerator->generate('app_admin_index'));
         } elseif (in_array('coach', $roles)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_user_new'));
+            return new RedirectResponse($this->urlGenerator->generate('app_coach_index'));
         } elseif (in_array('client', $roles)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_user_new'));
+            return new RedirectResponse($this->urlGenerator->generate('app_client_index'));
         }
 
         // Default redirect if no matching role is found
-        return new RedirectResponse($this->urlGenerator->generate('default_dashboard'));
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }
 
 protected function getLoginUrl(Request $request): string

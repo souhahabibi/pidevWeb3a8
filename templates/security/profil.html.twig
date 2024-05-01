@@ -1,0 +1,17 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+    <h1>Mon Profil</h1>
+
+    <dl>
+        <dt>Nom:</dt>
+        <dd>{{ user.nom }}</dd>
+
+        <dt>Email:</dt>
+        <dd>{{ user.email }}</dd>
+
+        <!-- Ajoutez d'autres champs du profil de l'utilisateur ici -->
+    </dl>
+{% endblock %}
