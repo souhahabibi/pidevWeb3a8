@@ -35,8 +35,12 @@ class Cours
     #[ORM\Column(type: "string", length: 255)]
     private ?string $commentaire="";
 
-    #[ORM\Column(type: "string", length: 255)]
-    private ?string $planning = 'CURRENT_TIMESTAMP';
+   # #[ORM\Column(type: "string", length: 255)]
+    #private ?string $planning = 'CURRENT_TIMESTAMP';
+   
+    #[ORM\Column(type: "datetime", columnDefinition: "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")]
+    private ?\DateTimeInterface $planning = null;
+
 
     #[ORM\ManyToOne(inversedBy: "cours")]
     private ?User $user=null;
@@ -107,18 +111,42 @@ class Cours
 
         return $this;
     }
-
+/*
     public function getPlanning(): ?string
     {
         return $this->planning;
+    }*/
+
+    public function __construct()
+    {
+        $this->planning = new \DateTime();
     }
+
+   /* public function getPlanning(): ?string
+{
+    return $this->planning ? $this->planning->format('Y-m-d H:i:s') : null;
+}*/
+
+public function getPlanning(): ?\DateTimeInterface
+{
+    return $this->planning;
+}
+/*
+
 
     public function setPlanning(string $planning): static
     {
         $this->planning = $planning;
 
         return $this;
-    }
+    }*/
+    public function setPlanning(\DateTimeInterface $planning): static
+{
+    $this->planning = $planning;
+
+    return $this;
+}
+
 
     public function getUser(): ?User
     {

@@ -8,6 +8,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\CoursRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Imagine\Gd\Imagine;
@@ -73,6 +74,7 @@ public function courspag (Request $request, CoursRepository $coursRepository, Pa
         'pagination' => $pagination,
     ]);
 }
+
 /*
     #[Route('/cours/list', name: 'cours_liste')]
     public function listeCours(CoursRepository $coursRepository)
@@ -130,67 +132,62 @@ public function courspag (Request $request, CoursRepository $coursRepository, Pa
     
 
     #[Route('/ajoutercours', name: 'ajouter_cours')]
-    public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Response
-    {
-        $cours = new Cours();
-    
-        // Create the form using CoursType
-        $form = $this->createForm(CoursType::class, $cours);
-    
-        // Handle the submission (if any)
-        $form->handleRequest($request);
-    
-        // Check if the form is submitted and valid
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Handle the image upload
-            /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('image')->getData();
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // This ensures that the filename is unique
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-    
-                // Move the file to the directory where images are stored
-                try {
-                    $imageFile->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                }
-    
-                // Update the image path in the Cours entity
-                $cours->setImage($newFilename);
+public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Response
+{
+    $cours = new Cours();
+
+    // Create the form using CoursType
+    $form = $this->createForm(CoursType::class, $cours);
+
+    // Handle the submission (if any)
+    $form->handleRequest($request);
+
+    // Check if the form is submitted and valid
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Convert the "planning" property to a string
+        $planning = $cours->getPlanning();
+        $cours->setPlanning($planning);
+
+        // Handle the image upload
+        /** @var UploadedFile $imageFile */
+        $imageFile = $form->get('image')->getData();
+     
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // This ensures that the filename is unique
+            $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+            // Move the file to the directory where images are stored
+            try {
+                $imageFile->move(
+                    $this->getParameter('images_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Handle exception if something happens during file upload
             }
-    
-            // Get the EntityManager
-            $entityManager = $this->getDoctrine()->getManager();
-    
-            // Persist and flush the entity
-            $entityManager->persist($cours);
-            $entityManager->flush();
-           // Le numéro de téléphone auquel envoyer le SMS
-          
-       
-           
-          
-           $name = 'ESPRAT';
-           $text = 'Un nouveau cours a été ajouté : ' . $cours->getNom();
-           $smsGenerator->SendSms('+21624019297',$name, $text);
 
-
-
-    
-            // Redirect to another page or display a success message, for example
-            return $this->redirectToRoute('cours_liste');
+            // Update the image path in the Cours entity
+            $cours->setImage($newFilename);
         }
-    
-        // If the form is not submitted or not valid, just display the form
-        return $this->render('cours/AjouterCours.html.twig', [
-            'form' => $form->createView(),
-        ]);
+
+        // Persist and flush the entity
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($cours);
+        $entityManager->flush();
+
+        // SMS sending logic remains the same
+
+        // Redirect to another page or display a success message, for example
+        return $this->redirectToRoute('cours_liste');
     }
+
+    // If the form is not submitted or not valid, just display the form
+    return $this->render('cours/AjouterCours.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
     
     
 
@@ -320,6 +317,101 @@ public function courspag (Request $request, CoursRepository $coursRepository, Pa
          return $this->redirectToRoute('cours_liste');
     
     }
+
+
+    #[Route('/calendar', name: 'app_calendar')]
+    public function index10(): Response
+    {
+        return $this->render('calendar.html.twig', [
+            'controller_name' => 'CoursController',
+        ]);
+    }
+
+
+    #[Route('/calendar_index', name: 'app_calendar')]
+    public function index20(CoursRepository $coursRepository,Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $events = $coursRepository->findAll();
+
+        $rdvs = [
+        ];
+
+        foreach($events as $event){
+            
+            
+            $rdvs[] = [
+                'id' => $event->getId(),
+                'title' =>$event->getNom(),
+                'start' => $event->getPlanning()->format('Y-m-d H:i:s'),
+                //'end' => date_modify($event->getPlanning(),"30 minutes")->format('Y-m-d H:i:s'),
+               
+
+            ];
+        }
+
+        $data = json_encode($rdvs);
+        
+        // Fetching all Cours entities from the database
+        $cours = $entityManager->getRepository(Cours::class)->findAll();
+
+        return $this->render('calendar_index.html.twig', [
+            'courss' => $cours,
+            'data'=>$data,
+            // Passing the fetched Cours entities to the Twig template
+        ]);
+    }
+
+
+    // Calender -------------------------
+      /**
+     * @Route("/api/{id}/edit", name="api_event_edit", methods={"PUT"})
+     */
+    public function majEvent(?Cours $cours, Request $request, ManagerRegistry $doctrine)
+    {
+        // On récupère les données
+        $donnees = json_decode($request->getContent());
+
+        // if(
+        //     isset($donnees->title) && !empty($donnees->title) &&
+        //     isset($donnees->start) && !empty($donnees->start) &&
+        //     isset($donnees->description) && !empty($donnees->description) &&
+        //     isset($donnees->backgroundColor) && !empty($donnees->backgroundColor) &&
+        //     isset($donnees->borderColor) && !empty($donnees->borderColor) &&
+        //     isset($donnees->textColor) && !empty($donnees->textColor)
+        // ){
+            // Les données sont complètes
+            // On initialise un code
+            $code = 200;
+
+            // On vérifie si l'id existe
+            if(!$cours){
+                // On instancie un rendez-vous
+                $cours = new Cours;
+
+                // On change le code
+                $code = 201;
+            }
+
+            // On hydrate l'objet avec les données
+            $cours->setPlanning((new DateTime($donnees->start))->format('Y-m-d H:i:s'));
+
+            $em =  $doctrine->getManager();;
+            $em->persist($cours);
+            $em->flush();
+
+            // On retourne le code
+            return new Response('Ok', $code);
+        // }else{
+        //     // Les données sont incomplètes
+        //     return new Response('Données incomplètes', 404);
+        // }
+
+
+        return $this->redirectToRoute('app_calendar');
+    }
+
+
 
 
 }
