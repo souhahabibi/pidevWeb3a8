@@ -3,8 +3,14 @@
 {% block title %}
 {{ salle.nom }}
 {% endblock %}
+{% block page %}
+ GYM localisation
+{% endblock %}
 
 {% block body %}
+<h4 style="text-align: center;"><img src="{{ asset('uploads/images/map.png') }}" alt="Open Image" style="width: 40px; height: 40px; margin-right: 5px;"> La localisation de la salle de sport {{ salle.nom }} :</h4>
+<hr>
+
 {% if salle.lieu %}
     <div id="map" style="height: 400px;"></div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

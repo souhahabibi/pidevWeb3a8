@@ -4,7 +4,7 @@ Abonnements
 {% endblock %}
 
 {% block page %}
-{{ list[0].fkIdsalle.nom }} > Abonnements
+
 {% endblock %}
 
 
@@ -26,7 +26,7 @@ Abonnements
                 <!-- Enhanced styling for the subscription boxes -->
                 <div class="single-trainer-item" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 1px solid #e3e3e3;">
                     <div class="trainer-social">
-                        <h6>Duration: {{ a.duree }} Months</h6>
+                        <h6>            <img src="{{ asset('uploads/images/hourglass.png') }}" alt="Open Image" style="width: 40px; height: 40px; margin-right: 5px;"> {{ a.duree }} Months</h6>
                     </div>
                     <div class="trainer-text">
                         {% set discount = valeur > 0 ? valeur / 100 : 0 %}
@@ -35,7 +35,7 @@ Abonnements
 
 <div class="trainer-social" style="font-weight: bold;">
  {% if discount > 0 %}
-    <h6 style="color: #4caf50;">Votre solde : -{{ discount * 100 }}%</h6>
+    <h6 style="color: #4caf50;"> <img src="{{ asset('uploads/images/coupon.png') }}" alt="Open Image" style="width: 40px; height: 40px; margin-right: 5px;">: -{{ discount * 100 }}%</h6>
 {% endif %}
 <hr> </hr>
 <h5>

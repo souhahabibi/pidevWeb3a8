@@ -9,6 +9,17 @@ GYMs
 {% endblock %}
 
 {% block body %}
+{% set openingHours = {
+    'Monday': ['8 AM', '8 PM'],
+    'Tuesday': ['8 AM', '8 PM'],
+    'Wednesday': ['8 AM', '8 PM'],
+    'Thursday': ['8 AM', '8 PM'],
+    'Friday': ['8 AM', '8 PM'],
+    'Saturday': ['7 AM', '4 PM'],
+    'Sunday': ['7 AM', '4 PM']
+} %}
+{% set currentDay = "now"|date('l') %}
+{% set currentTime = "now"|date('H:i') %}
 
 <section class="about-page-trainer spad">
     <div class="container">
@@ -26,30 +37,54 @@ GYMs
         <div class="col">
             {% for a in list %}
             <div class="col-lg-3 col-sm-6">
-                <div class="single-trainer-item row" style="min-width: 1150px; min-height: 230px; max-width: 1150px; max-height: 230px; border-radius: 1px; border: 1px solid gray;">
-            
-                    <div style="padding-top:10px; padding-left: 20px;" class="row">
-                        <img src="{{ asset('uploads/images/' ~ a.image) }}" alt="Salle Image" style="max-width:300px; max-height:200px;min-width:300px;min-height:200px;">
+                <div class="single-trainer-item row" style="min-width: 1150px; min-height: 230px; max-width: 1150px; max-height: 230px; border-radius: 1px; border: 1px solid gray; position: relative;">
+                    {% set isOpen = false %}
+                    {% if openingHours[currentDay] is defined %}
+                        {% set openingTime = openingHours[currentDay][0]|date("H:i") %}
+                        {% set closingTime = openingHours[currentDay][1]|date("H:i") %}
+                        {% if currentTime >= openingTime and currentTime <= closingTime %}
+                            {% set isOpen = true %}
+                        {% endif %}
+                    {% endif %}
+                    <div class="row">
+                        <div style="padding-top:10px; padding-left: 20px;">
+                            <img src="{{ asset('uploads/images/' ~ a.image) }}" alt="Salle Image" style="max-width:300px; max-height:200px;min-width:300px;min-height:200px;">
+                        </div>
                     </div>
-            
+                    
                     <div class="trainer-text col" style="display: flex; flex-direction: column; justify-content: space-between;">
                         <div>
                             <h5>{{a.nom}}</h5>
                             
                             <span style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-height: 60px;">{{a.description}}</span>
+                        
                         </div>
                         
                         <div class="trainer-social row" style="align-items: center;">
                            <h6 class="col text-start">
-    <a href="{{ path('app_salle_map', {'id': a.id}) }}">{{ a.lieu }}</a>
-</h6>
+                                <a href="{{ path('app_salle_map', {'id': a.id}) }}">{{ a.lieu }}</a>
+                            </h6>
 
-
-
-
-                             <a href="{{ path('app_salleClient_materiel', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Materials</a>
+                            <a href="{{ path('app_salleClient_materiel', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Materials</a>
                             <a href="{{ path('app_salleClient_abonnement', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Abonnements</a>
                         </div>
+                        
+                       <div class="status" style="position: absolute; top: 10px; right: 20px;">
+
+    {% if isOpen %}
+ <div style="display: inline-flex; align-items: center;">
+            <img src="{{ asset('uploads/images/open.png') }}" alt="Open Image" style="width: 40px; height: 40px; margin-right: 5px;">
+            <span style="color: green; font-size: 18px; font-weight: bold;">Open</span>
+        </div>
+            {% else %}
+         <div style="display: inline-flex; align-items: center;">
+            <img src="{{ asset('uploads/images/closed.png') }}" alt="Closed Image" style="width: 40px; height: 40px; margin-right: 5px;">
+            <span style="color: red; font-size: 18px; font-weight: bold;">Closed</span>
+        </div>
+    {% endif %}
+</div>
+
+
                     </div>
                 </div>
             </div>
