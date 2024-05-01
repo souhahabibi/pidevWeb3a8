@@ -31,31 +31,38 @@ class CoursController extends AbstractController
     #[Route('/client/cours', name: 'app_translate')]
     public function translate(TranslatorInterface $translator, Request $request, CoursRepository $coursRepository): Response
     {
-    $lang = $request->query->get('lang', 'fr');
-
-    $cours = $coursRepository->findAll();
-
-    $translated = [];
-
-    foreach ($cours as $unCours) {
-        $translated[] = [
-            'nom' => $translator->trans($unCours->getNom(), [], null, $lang),
-            'description' => $translator->trans($unCours->getDescription(), [], null, $lang),
-            'niveau' => $translator->trans($unCours->getNiveau(), [], null, $lang),
-            'image' => $unCours->getImage(),
-            'id' => $unCours->getId(),
+        $lang = $request->query->get('lang', 'fr');
+    
+        $cours = $coursRepository->findAll();
+    
+        $translated = [];
+    
+        foreach ($cours as $unCours) {
+            $translated[] = [
+                'nom' => $translator->trans($unCours->getNom(), [], null, $lang),
+                'description' => $translator->trans($unCours->getDescription(), [], null, $lang),
+                'niveau' => $translator->trans($unCours->getNiveau(), [], null, $lang),
+                'image' => $unCours->getImage(),
+                'id' => $unCours->getId(),
+            ];
+        }
+    
+        // Translate additional phrases
+        $translations = [
+            'voir_calendrier' => $translator->trans('Voir le Calendrier', [], null, $lang),
+            'voir_exercices' => $translator->trans('Voir les Exercices', [], null, $lang),
         ];
+    
+        return $this->render('client_cours.html.twig', [
+            'translated' => $translated,
+            'labels' => [
+                'nom' => $translator->trans('Nom', [], null, $lang),
+                'description' => $translator->trans('Description', [], null, $lang),
+                'niveau' => $translator->trans('Niveau', [], null, $lang),
+            ],
+            'translations' => $translations, // Pass the translated phrases to the template
+        ]);
     }
-
-    return $this->render('client_cours.html.twig', [
-        'translated' => $translated,
-        'labels' => [
-            'nom' => $translator->trans('Nom', [], null, $lang),
-            'description' => $translator->trans('Description', [], null, $lang),
-            'niveau' => $translator->trans('Niveau', [], null, $lang),
-        ],
-    ]);
-}
 
     
     
