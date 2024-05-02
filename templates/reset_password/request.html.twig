@@ -1,21 +1,76 @@
+{% block title %}{% endblock %}
 
-{% block title %}Reset your password{% endblock %}
+{% block css %}
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            color: #212529; /* Dark gray text */
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .alert-danger {
+            color: #721c24; /* Dark red text */
+            background-color: #f8d7da; /* Light red background */
+            border-color: #f5c6cb; /* Light red border */
+            margin-bottom: 1rem;
+            font-size: 16px;
+        }
+
+        h1 {
+            font-size: 2rem; /* 32px */
+            margin-bottom: 1.5rem;
+            color: #212529; /* Dark gray text */
+        }
+
+        small {
+            font-size: 0.875rem; /* 14px */
+            color: #6c757d; /* Gray text */
+        }
+
+        .form-control {
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #a61010; /* Dark blue button */
+            border-color: #83888d; /* Dark blue border */
+            color: #fff; /* White text */
+        }
+
+        .btn-primary:hover {
+            background-color: #c51818; /* Darker blue hover color */
+            border-color: #818d9a; /* Darker blue hover border */
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                <h1 class="text-center mb-4">Reset your password</h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address, and we will send you a
-                link to reset your password.
-            </small>
+                {{ form_start(requestForm, {'attr': {'class': 'form'}}) }}
+                <div class="mb-3">
+                    {{ form_row(requestForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email address'}}) }}
+                </div>
+                <div>
+                    <small>
+                        Enter your email address, and we will send you a link to reset your password.
+                    </small>
+                </div>
+
+                <button class="btn btn-primary btn-block">Send password reset email</button>
+                {{ form_end(requestForm) }}
+            </div>
         </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </div>
 {% endblock %}

@@ -39,7 +39,7 @@
                 <td>{{ user.niveau }}</td>
                 <td>{{ user.role }}</td>
                 <td>{{ user.mailcode }}</td>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+                <td>{{ user.isVerified ? 'True' : 'False' }}</td>
                 <td>
                     <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>

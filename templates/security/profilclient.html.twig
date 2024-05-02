@@ -1,20 +1,11 @@
-{% extends 'client_base.html.twig' %}
+{% extends 'client_base.html.twig'%}
 
-{% block title %}Mon Profil{% endblock %}
+{% block title %}Edit Profile{% endblock %}
 
 {% block body %}
-    <h1>Mon Profil</h1>
+    <h1>Edit Profile</h1>
 
-    <dl>
-        <dt>Nom:</dt>
-        <dd>{{ user.nom }}</dd>
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
-        <dt>Email:</dt>
-        <dd>{{ user.email }}</dd>
 
-        <dt>Mot de passe:</dt>
-        <dd>{{ user.motdepasse }}</dd>
-
-        <!-- Ajoutez d'autres champs du profil de l'utilisateur ici -->
-    </dl>
 {% endblock %}

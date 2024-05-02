@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @method string getUserIdentifier()
  */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface , PasswordAuthenticatedUserInterface
 {
 
@@ -30,14 +32,14 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
     #[Assert\Email(message: 'Invalid email format')]
     private string $email;
 
-    #[ORM\Column(name: "motDePasse", type: "string", length: 255, nullable: false)]
+    #[ORM\Column(name: "motDePasse", type: "string", length: 255, nullable: true)]
     #[Assert\NotBlank(message: 'Password cannot be blank')]
     #[Assert\Length(min: 8, minMessage: 'Password must be at least 8 characters long')]
     #[Assert\Regex(
         pattern: '/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/',
         message: 'Password must contain at least one uppercase letter, one digit, and one special character'
     )]
-    private string $motdepasse;
+    private ?string $motdepasse;
 
     #[ORM\Column(name: "specialite", type: "string", length: 255, nullable: true)]
     private ?string $specialite;
@@ -69,7 +71,7 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
     #[ORM\Column(name: "mailcode", type: "string", length: 255, nullable: true)]
     private ?string $mailcode;
 
-    #[ORM\Column(name: "is_verifIed", type: "boolean", nullable: true)]
+    #[ORM\Column(name: "is_verified", type: "boolean", nullable: true)]
     private ?bool $isVerified;
 
     public function getId(): ?int
@@ -240,7 +242,7 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
 return $this->email;
     }
@@ -249,4 +251,9 @@ return $this->email;
     {
         // TODO: Implement @method string getUserIdentifier()
     }
+
+//    public function isVerified(): bool
+//    {
+//        return $this->isVerified;
+//    }
 }
