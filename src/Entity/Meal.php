@@ -21,6 +21,7 @@ class Meal
     #[Assert\NotBlank(message:"You need to fill all the fields")]
     #[Assert\Length(min:3,minMessage:" 3 characters minimum")]
     #[Assert\Length(max:15)]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le nom doit être une chaîne alphabétique.")]
     private ?string $name = null;
 
     #[ORM\Column(name:"image_url",length: 255,nullable:false)]
@@ -37,6 +38,10 @@ class Meal
     #[Assert\NotBlank(message:"You need to fill all the fields")]
     #[Assert\Positive(message:"Please enter a valid number")]
     private ?int $calories = null;
+
+   
+    #[ORM\OneToMany(targetEntity:Reviewmeal::class, mappedBy:"idmeal")]
+    private $Reviews;
 
     public function getId(): ?int
     {
@@ -90,6 +95,33 @@ class Meal
 
         return $this;
     }
+
+   /* public function getReviews(): Collection
+    {
+        return $this->Reviews;
+    }
+
+    public function addMealRe(Reviewmeal $Reviews): self
+    {
+        if (!$this->Reviews->contains($Reviews)) {
+            $this->Reviews[] = $Reviews;
+            $Reviews->setIdmeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMealRe(Reviewmeal $Reviews): self
+    {
+        if ($this->Reviews->removeElement($Reviews)) {
+            // set the owning side to null (unless already changed)
+            if ($Reviews->getIdmeal() === $this) {
+                $Reviews->setIdmeal(null);
+            }
+        }
+
+        return $this;
+    }*/
 
 
 }

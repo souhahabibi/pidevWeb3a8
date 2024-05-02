@@ -3,18 +3,22 @@
 {% block title %}Ingredients index{% endblock %}
 
 {% block body %}
+<div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
     <h1>Ingredients </h1>
+    <a href="{{ path('app_ingredients_new') }}"class="btn btn-danger">Create new ingredient</a>
 
+    <div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
                 
-                <th>Name</th>
-                <th>Calories</th>
-                <th>TotalFat</th>
-                <th>Protein</th>
-                <th>Imgurl</th>
-                <th>actions</th>
+                <th scope="col">Name</th>
+                <th scope="col">Calories</th>
+                <th scope="col">TotalFat</th>
+                <th scope="col">Protein</th>
+                <th scope="col">Imgurl</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +46,8 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
+</div>
+</div>
 
-    <a href="{{ path('app_ingredients_new') }}"class="btn btn-danger">Create new ingredient</a>
 {% endblock %}

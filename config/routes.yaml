@@ -1,3 +1,15 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+client_app:
+    path: /client
+    controller: App\Controller\RegimeController::clientByRegimes
+
+app_meal_client:
+    path: /meal/client/menu/show
+    controller: App\Controller\MealController::indexmealclient
+
+app_regime_index:
+    path: /regime/
+    controller: App\Controller\RegimeController::index
+

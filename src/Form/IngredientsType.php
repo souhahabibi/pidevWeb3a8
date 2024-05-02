@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 class IngredientsType extends AbstractType
 {
@@ -23,9 +23,21 @@ class IngredientsType extends AbstractType
                 'label' => 'Image',
                 'required' => false, // La rend facultative
                 'mapped' => false,
-            ])
-            ->add('save',SubmitType::class)
-        ;
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Veuillez télécharger une image.',
+                    ]),
+                    new Assert\File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide.',
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

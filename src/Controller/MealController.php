@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Meal;
 use App\Entity\Ingredients;
 use App\Entity\IngredientMeal;
+use App\Entity\Reviewmeal;
+use App\Form\ReviewmealType;
+use App\Repository\ReviewmealRepository;
 use App\Form\MealType;
 use App\Repository\MealRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +19,9 @@ use App\Repository\IngredientsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-
+use App\Repository\IngredientMealRepository; 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/meal')]
 class MealController extends AbstractController
@@ -48,18 +53,28 @@ class MealController extends AbstractController
             $filename = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move($this->getParameter('upload_directory'), $filename);
             $meal->setImageUrl($filename);
-
-            $email = (new Email())
-            ->from('mailtrap@demomailtrap.com')
-            ->to('selmi_yosri@outlook.fr') // Primary recipient
-            ->subject('Your subject here')
-            ->text('This is the text version of the email.')
-            ->html('<p>This is the HTML version of the email.</p>');
-
             $entityManager->persist($meal);
             $entityManager->flush();
-            $mailer->send($email);
+     //maiiil
+     // Récupérer les détails du meal
+$nomMeal = $meal->getName();
+$recipeMeal = $meal->getRecipe();
+$caloriesMeal= $meal->getCalories();
 
+// Construire le corps de l'e-mail avec les informations du meal
+$emailBody = "<p>Un nouveau meal a été ajouté :</p>";
+$emailBody .= "<p><strong>Nom du repas :</strong> $nomMeal</p>";
+$emailBody .= "<p><strong>Recipe :</strong> $recipeMeal</p>";
+$emailBody .= "<p><strong>Calories :</strong> $caloriesMeal</p>";
+            $email = (new Email())
+            ->from('selmi_yosri@outlook.fr')
+            ->to('yosri.selmi369@gmail.com') // Primary recipient
+            ->subject('new meal ')
+            ->html($emailBody );
+
+            
+            $mailer->send($email);
+                
             return $this->redirectToRoute('app_meal_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -148,6 +163,107 @@ class MealController extends AbstractController
         $entityManager->flush();
     
         return $this->redirectToRoute('app_meal_show_ingredient_ingredient', ['id' => $id], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/client/menu/show', name: 'app_meal_client', methods: ['GET','POST'])]
+    public function indexmealclient(Request $request, MealRepository $mealRepository,PaginatorInterface $paginator): Response
+    {
+        $meals = $mealRepository->findAll();
+        $meals = $paginator->paginate(
+            $meals, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+        4 /*limit per page*/
+        );
+      
+        return $this->render('meal/menu.html.twig', [
+            'meals' => $meals,
+        ]);
+    }
+
+    #[Route('/client/ingredients/show/{id}', name: 'show_ingredients_client', methods: ['GET'])]
+public function showClientIngredients($id, MealRepository $mealRepository, IngredientMealRepository $ingredientMealRepository): Response
+{
+    $meal = $mealRepository->find($id);
+
+    if (!$meal) {
+        throw $this->createNotFoundException('Meal not found');
+    }
+
+    // Fetch the ingredients associated with the meal
+    $ingredientMeals = $ingredientMealRepository->findByMealId($id);
+
+    return $this->render('ingredients/showingredientclient.html.twig', [
+        'meal' => $meal,
+        'ingredientMeals' => $ingredientMeals,
+    ]);
+}
+
+    #[Route('/client/pdf/show/{id}', name: 'pdf')]
+    public function pdfgenrator(MealRepository $mealRepository, $id, IngredientMealRepository $ingredientMealRepository): Response
+    {
+        
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
+        
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $meal=$mealRepository->find($id);
+        // Define the path to the image
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/uploads/image/' . $meal->getImageUrl();
+        $ingredientBase64Images = [];
+
+        $ingredientMeals = $ingredientMealRepository->findByMealId($id);
+        $imageContent = file_get_contents($imagePath);
+        $base64Image = base64_encode($imageContent);
+
+        foreach ($ingredientMeals as $ingredientMeal) {
+            $imageUrl = $ingredientMeal->getIngredient()->getImgUrl();
+            $imagePathIngre = $this->getParameter('kernel.project_dir') . '/public/uploads/image/' . $imageUrl;
+
+            if (file_exists($imagePath)) {
+                // Read the image and encode it to base64
+                $imageContentIng = file_get_contents($imagePathIngre);
+                $base64ImageIng = base64_encode($imageContentIng);
+
+                // Store base64 data along with the ingredient
+                $ingredientBase64Images[] = [
+                    'ingredient' => $ingredientMeal,
+                    'base64Image' => $base64ImageIng,
+                ];
+            } else {
+                throw new FileNotFoundException("File not found: " . $imagePathIngre);
+            }
+        }
+
+        
+        
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('meal/pdf.html.twig', [
+            'meal' => $meal,
+            'base64Image' => $base64Image,
+            'ingredientBase64Images' => $ingredientBase64Images,
+            
+        ]);
+        
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A3', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        return new Response (
+            $dompdf->stream('mealPdf', ["Attachment" => false]),
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/pdf']
+        );
+        // Output the generated PDF to Browser (force download)
+      
+        
     }
 
 } 

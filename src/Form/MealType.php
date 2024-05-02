@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Form;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Meal;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,21 @@ class MealType extends AbstractType
                 'label' => 'Image',
                 'required' => false, // La rend facultative
                 'mapped' => false,
-            ])
+                'constraints' => [
+                        new Assert\NotBlank([
+                            'message' => 'Veuillez télécharger une image.',
+                        ]),
+                        new Assert\File([
+                            'maxSize' => '1024k',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png',
+                                'image/gif',
+                            ],
+                            'mimeTypesMessage' => 'Veuillez télécharger une image valide.',
+                        ]),
+                    ],
+                ])
             ->add('recipe')
             ->add('calories')
         ;

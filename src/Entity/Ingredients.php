@@ -19,6 +19,7 @@ class Ingredients
     #[Assert\NotBlank(message:"You need to fill all the fields")]
     #[Assert\Length(min:4,minMessage:" 4 characters minimum")]
     #[Assert\Length(max:15)]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le nom doit être une chaîne alphabétique.")]
     private ?string $name = null;
    
 

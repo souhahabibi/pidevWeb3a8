@@ -2,17 +2,22 @@
 
 {% block title %}Meal index{% endblock %}
 {% block body %}
-    <h1>Meals </h1>
 
+ <div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+    <h4 class="mb-7">Meals </h4>
+    <a href="{{ path('app_meal_new') }}"class="btn btn-primary">Create new meal</a>
+
+    <div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
             
-                <th>Name</th>
-                <th>Image</th>
-                <th>Recipe</th>
-                <th>Calories</th>
-                <th>actions</th>
+                <th scope="col">Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Recipe</th>
+                <th scope="col">Calories</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody id="myTable">
@@ -33,7 +38,7 @@
                     <a href="{{ path('app_meal_show', {'id': meal.id}) }}"class="btn btn-primary">show</a><br><br>
                 
                   
-                    <a href="{{ path('app_meal_show_ingredient_ingredient', {'id': meal.id}) }}"class="btn btn-danger">add ingredient</a>
+                    <a href="{{ path('app_meal_show_ingredient_ingredient', {'id': meal.id}) }}"class="btn btn-warning m-2"">add ingredient</a>
                  
                 </td>
             </tr>
@@ -44,11 +49,16 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
+
 <div class="container py-5">
   <div class="d-flex justify-content-center">
 {{ knp_pagination_render(meals) }}
 
 </div>
 </div>
-    <a href="{{ path('app_meal_new') }}"class="btn btn-primary">Create new meal</a>
+</div>
+</div>
+
+    
 {% endblock %}

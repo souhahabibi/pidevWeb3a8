@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\sms\SmsSender;
 use App\Entity\Regime;
 use App\Entity\User;
 use App\Form\RegimeType;
@@ -34,7 +35,7 @@ class RegimeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_regime_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SmsSender $smsGenerator): Response
     {
         $regime = new Regime();
         $form = $this->createForm(RegimeType::class, $regime);
@@ -46,6 +47,10 @@ class RegimeController extends AbstractController
             $regime->setClientId($user);
             $entityManager->persist($regime);
             $entityManager->flush();
+
+            $name = 'ESPRAT';
+            $text = 'Un nouveau regime a été ajouté  ';
+            $smsGenerator->SendSms('+21695359282',$name, $text);
 
             return $this->redirectToRoute('app_regime_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -109,17 +114,6 @@ class RegimeController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Regime::class);
         $regime = $repository->findAll();
 
-        /* you can also inject "FooRepository $repository" using autowire */
-
-       /* $count = $repository->count();
-        dd($count); */
-
-           /*  $countbydate= $repository->createQueryBuilder('a')
-            ->select('SUBSTRING(datefin,1,10) As datedufin, COUNT(a) as count')
-            ->groupby('datedufin')
-            ->getQuery()
-            ->getResult(); */
-       //
       
        $count= $repository->createQueryBuilder('u')
             ->select('count(u.goal)')
