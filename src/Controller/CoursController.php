@@ -374,55 +374,6 @@ public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Resp
     }
 
 
-    // Calender -------------------------
-      /**
-     * @Route("/api/{id}/edit", name="api_event_edit", methods={"PUT"})
-     */
-    public function majEvent(?Cours $cours, Request $request, ManagerRegistry $doctrine)
-    {
-        // On récupère les données
-        $donnees = json_decode($request->getContent());
-
-        // if(
-        //     isset($donnees->title) && !empty($donnees->title) &&
-        //     isset($donnees->start) && !empty($donnees->start) &&
-        //     isset($donnees->description) && !empty($donnees->description) &&
-        //     isset($donnees->backgroundColor) && !empty($donnees->backgroundColor) &&
-        //     isset($donnees->borderColor) && !empty($donnees->borderColor) &&
-        //     isset($donnees->textColor) && !empty($donnees->textColor)
-        // ){
-            // Les données sont complètes
-            // On initialise un code
-            $code = 200;
-
-            // On vérifie si l'id existe
-            if(!$cours){
-                // On instancie un rendez-vous
-                $cours = new Cours;
-
-                // On change le code
-                $code = 201;
-            }
-
-            // On hydrate l'objet avec les données
-            $cours->setPlanning((new DateTime($donnees->start))->format('Y-m-d H:i:s'));
-
-            $em =  $doctrine->getManager();;
-            $em->persist($cours);
-            $em->flush();
-
-            // On retourne le code
-            return new Response('Ok', $code);
-        // }else{
-        //     // Les données sont incomplètes
-        //     return new Response('Données incomplètes', 404);
-        // }
-
-
-        return $this->redirectToRoute('app_calendar');
-    }
-
-
 
 
 }
