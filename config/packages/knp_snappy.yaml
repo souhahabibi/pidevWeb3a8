@@ -1,0 +1,10 @@
+knp_snappy:
+    pdf:
+       
+        enabled: true
+        binary: '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"'  # Chemin vers l'exécutable wkhtmltopdf
+        options: []
+    image:
+        enabled: true
+        binary: '%env(WKHTMLTOIMAGE_PATH)%'
+        options: []

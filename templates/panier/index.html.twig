@@ -1,0 +1,201 @@
+{% extends 'client_base.html.twig' %}
+{% block title %}Panier{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        
+        .swiper-slide {
+            width: 250px; /* Largeur des éléments de la liste */
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px; /* Réduire l'espacement */
+            margin-right: 10px; /* Espacement entre les éléments */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .swiper-slide img {
+            max-width: 150px; /* Réduire la taille de l'image */
+            height: auto; /* Hauteur automatique pour conserver les proportions */
+            margin-bottom: 10px; /* Réduire l'espacement */
+            align-self: center; /* Centrer l'image horizontalement */
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Style du bouton "Commander" */
+        .btn-primary {
+            background-color: #28a745; /* Couleur verte */
+            border-color: #28a745; /* Couleur de bordure verte */
+            width: calc(50% - 5px); /* Largeur des boutons */
+            margin-right: 5px; /* Espacement entre les boutons */
+            font-size: 14px; /* Réduire la taille de la police */
+            padding: 5px 8px; /* Réduire le remplissage */
+        }
+        .btn-primary:hover {
+            background-color: #218838; /* Couleur verte plus foncée au survol */
+            border-color: #218838; /* Couleur de bordure verte plus foncée au survol */
+        }
+        /* Style du bouton "Supprimer" */
+        .btn-delete {
+            background-color: green; /* Couleur verte */
+            color: white; /* Couleur du texte en blanc */
+            border: none; /* Pas de bordure */
+            padding: 5px 8px; /* Réduire le remplissage */
+            border-radius: 5px; /* Coins arrondis */
+            cursor: pointer; /* Curseur pointer */
+            transition: background-color 0.3s ease; /* Transition fluide */
+            font-size: 14px; /* Réduire la taille de la police */
+        }
+        .btn-delete:hover {
+            background-color: #218838; /* Couleur verte plus foncée au survol */
+        }
+        /* Style des flèches de navigation */
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #fff; /* Couleur du texte en blanc */
+            font-size: 18px; /* Taille de la police */
+            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent noir */
+            width: 30px; /* Largeur */
+            height: 30px; /* Hauteur */
+            border-radius: 50%; /* Bordure arrondie */
+            display: flex; /* Affichage en mode flex */
+            align-items: center; /* Alignement vertical */
+            justify-content: center; /* Alignement horizontal */
+            position: absolute; /* Position absolue */
+            top: 50%; /* Position à 50% du haut */
+            transform: translateY(-50%); /* Décalage de moitié de la hauteur */
+            z-index: 10; 
+        }
+        .swiper-button-prev {
+            left: 10px; /* Positionnement à gauche */
+        }
+        .swiper-button-next {
+            right: 10px; /* Positionnement à droite */
+        }
+        /* Style du bouton "Passer Commande" */
+        .btn-passer-commande {
+            background-color: darkgreen;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            font-size: 16px; /* Ajuster la taille de la police */
+            position: absolute; /* Positionnement absolu */
+            bottom: 20px; /* À 20 pixels du bas */
+            left: 50%; /* Au milieu */
+            transform: translateX(-50%); /* Centrage horizontal */
+        }
+        .btn-passer-commande:hover {
+            background-color: green;
+        }
+        /* Style de l'affichage du total */
+        .total-wrapper {
+            background-color: lightgreen;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .total-title {
+            color: green;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .total-amount {
+            color: green;
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<!-- Div pour contenir la liste des produits -->
+   <div class="swiper-container">
+    <div class="swiper-wrapper">
+        {% for itm in data %}
+            <div class="swiper-slide">
+                <!-- Contenu de chaque diapositive -->
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="flex-grow: 1;">
+                        {% if itm.produit.image %}
+                            <img src="{{ asset('adminSalle/img/' ~ itm.produit.image) }}" alt="{{ itm.produit.nom }}">
+                        {% else %}
+                            <span>Aucune image</span>
+                        {% endif %}
+                    </div>
+                    <div style="flex-grow: 2;">
+                        <div>
+                            <h2>{{ itm.produit.nom }}</h2>
+                            <p class="product-price">{{ itm.produit.cout }} DT</p>
+                        </div>
+                        <div class="button-container">
+                            <div class="product-quantity">
+                                <a href="{{ path('augmenter_quantite_panier', {'id': itm.produit.idProduit}) }}" class="btn btn-primary btn-quantity">+</a>
+                                <span class="quantity">{{ itm.quantite }}</span>
+                                <a href="{{ path('minimiser_quantite_panier', {'id': itm.produit.idProduit }) }}" class="btn btn-primary btn-quantity">-</a>
+                            </div>
+                            <a href="{{ path('supprimer_produit_panier', {'id': itm.produit.idProduit}) }}" class="btn btn-danger btn-delete">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Flèches de navigation -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+
+    <!-- Affichage du total général avec mise en page -->
+    <div class="total-wrapper">
+        <h3 class="total-title">Le total de la commande est :</h3>
+        <h2 class="total-amount">{{total}} DT</h2> <!-- Initialiser le total à 0 -->
+    </div>
+    <!-- Bouton pour passer commande -->
+    <div class="command-button">
+      <a href="{{ path('passer_commande') }}" class="btn btn-danger"> Passer commande</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // Initialiser Swiper.js avec la direction horizontale
+        var swiper = new Swiper('.swiper-container', {
+            direction: 'horizontal', // Direction horizontale
+            slidesPerView: 'auto', // Nombre d'éléments à afficher à la fois
+            spaceBetween: 20, // Espacement entre chaque diapositive
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            on: {
+                init: function () {
+                    updateTotal(); // Mettre à jour le total lors de l'initialisation
+                },
+            },
+        });
+
+        // Fonction pour mettre à jour le total de la commande
+        function updateTotal() {
+            var totalGeneral = 0;
+            var products = document.querySelectorAll('.swiper-slide');
+            products.forEach(function (product) {
+                var price = parseFloat(product.querySelector('.product-price').innerText);
+                var quantity = parseInt(product.querySelector('.quantity').innerText);
+                totalGeneral += price * quantity;
+            });
+            document.querySelector('.total-amount').innerText = totalGeneral.toFixed(2) + ' DT'; // Afficher le total avec deux décimales
+        }
+    </script>
+{% endblock %}

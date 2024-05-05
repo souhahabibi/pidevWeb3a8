@@ -1,0 +1,85 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+    <h1>Liste des produits</h1>
+    <a href="{{ path('produit_ajouter') }}" class="btn btn-primary mr-2">Ajouter un produit</a>
+    <a href="{{ path('generator_service') }}" class="btn btn-primary px-3 py-1">Telecharger PDF</a>
+    <a href="{{ path('prod_piechart') }}">
+        <img src="{{ asset('adminSalle/img/statistiques.png') }}" alt="Statistiques" class="btn-img" width="40" height="40">
+    </a>
+
+    <div class="row justify-content-end">
+        <div class="col-lg-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search " oninput="search()">
+        </div>
+        <div class="col-lg-8"></div>
+    </div>
+
+    {% if produits is empty %}
+        <p>Aucun produit trouvé.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Quantité</th>
+                    <th>Coût</th>
+                    <th>Date d'expiration</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Fournisseur</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit.nom }}</td>
+                        <td>{{ produit.quantite }}</td>
+                        <td>{{ produit.cout }}</td>
+                        <td>{{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ produit.description }}</td>
+                        <td>
+                            {% if produit.image %}
+                                <img src="{{ asset('adminSalle/img/' ~ produit.image) }}" alt="Image du produit" style="max-width: 100px; max-height: 100px;">
+                            {% else %}
+                                Pas d'image
+                            {% endif %}
+                        </td>
+                        <td>{{ produit.idFournisseur }}</td>
+                        <td>
+                            <a href="{{ path('modifier_produit', {'id': produit.idProduit}) }}" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path('produit_supprimer', {'id': produit.idProduit}) }}" class="btn btn-primary" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<script>
+    function search() {
+        // Récupère la valeur de la recherche
+        let input = document.getElementById("searchInput").value.toUpperCase();
+
+        // Récupère tous les éléments à filtrer
+        let items = document.querySelectorAll(".table tbody tr");
+
+        // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
+            let name = item.querySelector("td:first-of-type").textContent.toUpperCase();
+            let description = item.querySelector("td:nth-of-type(5)").textContent.toUpperCase();
+            let cost = item.querySelector("td:nth-of-type(3)").textContent.toUpperCase();
+
+            if (name.indexOf(input) > -1 || description.indexOf(input) > -1 || cost.indexOf(input) > -1) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock %}

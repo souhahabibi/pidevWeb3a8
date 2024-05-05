@@ -40,8 +40,8 @@
                         <li><a href="{{path('app_Acceuil')}}">Home</a></li>
                         <li><a href="./diet.html">Diet</a></li>
                         <li><a href="./courses.html">Courses</a></li>
-                        <li><a href="./products.html">Products</a></li>
-                        <li><a href="{{path('app_competition_Client')}}">Competitions</a> </li>
+                        <li><a href="{{path('app_competition_Client')}}">Competitions</a> </li>             
+                         <li><a href="{{ path('produitsClient_liste') }}">Products</a></li>
                         <li><a href="./gyms.html">Gyms</a></li>
                         <li><a href="./profile.html"></i> Profile</a></li>
                     </ul>
@@ -52,23 +52,11 @@
     </header>
     <!-- Header End -->
 
-    <!-- Site Breadcrumb Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="{{asset('clientSalle/img/about-breadcrumb-bg.jpg')}}">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="site-text">
-                        <h2>{% block title %}XX title XX{% endblock %}</h2>
-                        <div class="site-breadcrumb">
-                            <a href="./home.html" class="sb-item">Home</a>
-                            <span class="sb-item">{% block page %}XX page XX{% endblock %}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   
     <!-- Site Breadcrumb End -->
+{% block breadcrumb %}
+{% endblock %}
+
 
     <!-- Blog Section Begin -->
     <section class="blog-section spad">

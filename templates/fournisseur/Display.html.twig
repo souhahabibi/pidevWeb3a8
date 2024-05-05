@@ -1,0 +1,71 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Liste des Fournisseurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des Fournisseurs</h1>
+    <a href="{{ path('app_fournisseur_add') }}" class="btn btn-primary">Ajouter Fournisseur</a>
+
+    <div class="row justify-content-end">
+        <div class="col-lg-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search " oninput="search()">
+        </div>
+        <div class="col-lg-8"></div>
+    </div>
+
+    {% if fournisseurs is empty %}
+        <p>Aucun fournisseur trouvé.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Numéro</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fournisseur in fournisseurs %}
+                    <tr>
+                        <td>{{ fournisseur.nom }}</td>
+                        <td>{{ fournisseur.prenom }}</td>
+                        <td>{{ fournisseur.numero }}</td>
+                        <td>{{ fournisseur.type }}</td>
+                        <td>
+                            <a href="{{ path('edit_fournisseur', {'id': fournisseur.idFournisseur}) }}" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path('delete_fournisseur', {'id': fournisseur.idFournisseur}) }}" class="btn btn-primary" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <script>
+    function search() {
+        // Récupère la valeur de la recherche
+        let input = document.getElementById("searchInput").value.toUpperCase();
+
+        // Récupère tous les éléments à filtrer
+        let items = document.querySelectorAll(".table tbody tr");
+
+        // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
+            let nom = item.querySelector("td:nth-of-type(1)").textContent.toUpperCase();
+            let prenom = item.querySelector("td:nth-of-type(2)").textContent.toUpperCase();
+            let numero = item.querySelector("td:nth-of-type(3)").textContent.toUpperCase();
+            let type = item.querySelector("td:nth-of-type(4)").textContent.toUpperCase();
+
+            if (nom.indexOf(input) > -1 || prenom.indexOf(input) > -1 || numero.indexOf(input) > -1 || type.indexOf(input) > -1) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        }
+    }
+</script>
+
+{% endblock %}

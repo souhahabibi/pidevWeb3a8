@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Produits</title>
+    <!-- Ajoutez ici les styles CSS nécessaires pour le PDF -->
+    <style type="text/css">
+        * {
+            font-family: Verdana, Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: center;
+        }
+        thead {
+            background-color: lightblue;
+        }
+        tfoot tr td {
+            font-weight: bold;
+        }
+        tfoot {
+            font-size: small;
+        }
+        img.logo {
+            width: 200px; /* Ajustez la taille du logo selon vos besoins */
+        }
+        /* Ajoutez d'autres styles CSS si nécessaire */
+    </style>
+</head>
+
+<body>
+<div>
+    <!-- Ajoutez le chemin de votre image de logo -->
+    <img src="{{ absolute_url(asset('img/logo.png')) }}" alt="Logo" class="logo">
+</div>
+<hr>
+
+{% for produit in produits %}
+    <table>
+        <thead>
+        <tr>
+            <th>Labels</th>
+            <th>Information</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">Nom</th>
+            <td>{{ produit.nom }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Quantité</th>
+            <td>{{ produit.quantite }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Coût</th>
+            <td>{{ produit.cout }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Description</th>
+            <td>{{ produit.description }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Date d'expiration</th>
+            <td>{{ produit.dateExpiration ? produit.dateExpiration|date('Y-m-d') : 'N/A' }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br> <!-- Ajoutez une marge entre les tables -->
+{% endfor %}
+
+<hr>
+<div>
+    <p style="text-align: center;">PDF généré le {{ "now"|date("d/m/Y H:i") }}</p>
+</div>
+
+</body>
+</html>
