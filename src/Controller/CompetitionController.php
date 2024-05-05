@@ -60,7 +60,7 @@ class CompetitionController extends AbstractController
             $em = $manager->getManager();
             $em->persist($competition);
             $em->flush();
-
+            //$this->sendSmsAction("a new competition has been Added : ".$competition->getNom(),'+21623061687');
             // Optionally, add a flash message to indicate successful addition
             $this->addFlash('success', 'Competition added successfully without any inappropriate language.');
 
@@ -113,12 +113,10 @@ class CompetitionController extends AbstractController
     {
         $statistics = $competitionRepository->getAverageReservationsPerDayOfWeek();
         $monthlyStats = $competitionRepository->getAverageReservationsPerMonth();
-        $monthlyReservationsByOrganizer = $competitionRepository->getMonthlyReservationsByOrganizer();
 
         return $this->render('competition/stat.html.twig', [
             'statistics' => $statistics,
             'monthlyStats' => $monthlyStats,
-            'monthlyReservationsByOrganizer' => $monthlyReservationsByOrganizer,
 
         ]);
     }

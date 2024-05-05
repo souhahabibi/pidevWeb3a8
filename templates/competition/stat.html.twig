@@ -75,44 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
         options: { scales: { y: { beginAtZero: true } } }
     });
 
-    // Initialize Monthly Reservations by Organizer Chart
-    // Initialize Monthly Reservations by Organizer Chart with corrected color scheme and troubleshooting adjustments
-var ctxOrganizer = document.getElementById('reservationsByOrganizerChart').getContext('2d');
-var monthlyReservationsByOrganizer = {{ monthlyReservationsByOrganizer|json_encode|raw }};
-
-var organizers = [...new Set(monthlyReservationsByOrganizer.map(stat => stat.organizerName))];
-var colors = ['#4BC0C0', '#FF6384', '#36A2EB', '#FFCE56', '#9966FF']; // Example color hex codes
-
-var datasets = organizers.map((organizer, index) => {
-    var color = colors[index % colors.length]; // Cycle through colors for each organizer
-    var data = monthlyReservationsByOrganizer
-        .filter(stat => stat.organizerName === organizer)
-        .map(stat => ({x: `2023-${stat.month.toString().padStart(2, '0')}-01`, y: stat.avgReservations})); // Ensuring date format is correct
-
-    return {
-        label: organizer,
-        data: data,
-        backgroundColor: color,
-        borderColor: color,
-        borderWidth: 1,
-        fill: false,
-    };
-});
-
-new Chart(ctxOrganizer, {
-    type: 'line', // Using a line chart here
-    data: { datasets: datasets },
-    options: {
-        scales: {
-            y: { beginAtZero: true },
-            x: {
-                type: 'time',
-                time: { unit: 'month', displayFormats: { month: 'MMM YYYY' } },
-                title: { display: true, text: 'Month' }
-            },
-        }
-    }
-});
 
 });
 
