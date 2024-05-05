@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReservationRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
@@ -13,6 +14,9 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Can't be Empty")]
+    #[Assert\Positive(message: "Score must be a positive number.")]
+    #[Assert\Range(min: 0,max: 100,notInRangeMessage: 'Score must be greater than 0 and less than 101.',)]
     private ?int $score = null;
 
     #[ORM\ManyToOne(inversedBy: "reservations")]

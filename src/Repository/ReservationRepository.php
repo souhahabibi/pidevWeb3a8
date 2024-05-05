@@ -20,7 +20,38 @@ class ReservationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Reservation::class);
     }
-
+    public function findByCompetition($competitionId)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.fkCompetition = :competitionId')
+            ->setParameter('competitionId', $competitionId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findTopReservationsByCompetition($competitionId)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.fkCompetition = :compId')
+            ->setParameter('compId', $competitionId)
+            ->orderBy('r.score', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+    public function clientHasReservation($clientId, $competitionId)
+    {
+        $result = $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->where('r.fkClient = :clientId')
+            ->andWhere('r.fkCompetition = :competitionId')
+            ->setParameter('clientId', $clientId)
+            ->setParameter('competitionId', $competitionId)
+            ->getQuery()
+            ->getSingleScalarResult();
+        
+        return $result > 0;
+    }
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */

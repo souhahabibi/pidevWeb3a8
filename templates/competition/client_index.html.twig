@@ -1,0 +1,111 @@
+{# templates/competition/client_index.html.twig #}
+
+{% extends 'client_base.html.twig' %}
+{% block title %}
+Competitions
+{% endblock %}
+
+{% block page %}
+ Competitions
+{% endblock %}
+
+{% block body %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<section class="about-page-trainer spad">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="section-title ">
+                        <h2>Search Bar</h2>
+                        <div   style="display: flex; flex-direction: column; justify-content: space-between;padding-left: 50px;">
+                            {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+                            {{ form_label(form.name,"Name") }}
+                            {{ form_widget(form.name) }} 
+                            {{ form_label(form.ongoing,"Ongoing") }}
+                            {{ form_widget(form.ongoing) }} 
+                            {{ form_widget(form.search) }}
+                            {{form_end(form)}}
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col">
+            {% for a in list %}
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-trainer-item row" style="min-width: 1150px; min-height: 230px; max-width: 1150px; max-height: 230px; border-radius: 1px; border: 1px solid gray;">
+            
+                    <div style="padding-top:10px; padding-left: 20px;" class="row">
+                        {% set videoId = a.videourl|split('?')[0] %}
+                        <div class="service-video set-bg" data-setbg="https://img.youtube.com/vi/{{ videoId }}/maxresdefault.jpg" style="width: 350px; height: 200px;">
+                            <div class="play-btn">
+                                <a href="https://www.youtube.com/watch?v={{a.videourl}}" class="service-video-popup"><i class="fa fa-play"></i></a>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="trainer-text col" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h5>{{a.nom}}</h5>
+                            <span style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-height: 60px;">{{a.description}}</span>
+                        </div>
+                        
+                        <div class="trainer-social row" style="align-items: center;">
+                            <h6 class="col text-start">Capacity:{{a.capacite}}</h6>
+                            <h6 class="col text-center">Date:{{ a.date|date('Y-m-d') }}</h6>
+                            <a href="{{ path('app_competition_view', {'id': a.id}) }}" class="primary-btn text-end" style="color:white; width:220px;">View Competition</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            {% else %}
+            <div>No competitions found</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{{ knp_pagination_render(list) }}
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center; /* Center the pagination on the page */
+        padding: 20px; /* Add some padding for spacing */
+        list-style: none; /* Removes default list styling */
+    }
+
+    .pagination li {
+        margin: 0 5px; /* Space between each pagination item */
+    }
+
+    .pagination a {
+        font-size: 16px; /* Set font size */
+        color: #333; /* Dark grey color for text */
+        background-color: #f8f9fa; /* Light grey background */
+        border: 1px solid #ddd; /* Subtle border */
+        padding: 8px 16px; /* Padding inside the links */
+        border-radius: 50px; /* Rounded corners for pill-like shape */
+        text-decoration: none; /* No underline */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+    }
+
+    .pagination .active a {
+        color: #fff; /* White text for active page */
+        background-color: red; /* Bootstrap blue for active page */
+        border-color: red; /* Border color same as background */
+    }
+
+    .pagination a:hover {
+        background-color: red; /* Darker blue on hover */
+        color: #fff; /* White text on hover */
+        text-decoration: none; /* Ensure no underline on hover */
+    }
+</style>
+
+
+{% endblock %}
