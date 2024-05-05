@@ -1,0 +1,38 @@
+{% extends 'client_base.html.twig' %}
+{% block title %}
+MATERIELS
+{% endblock %}
+
+{% block page %}
+ MATERIELS
+{% endblock %}
+
+{% block body %}
+
+<!-- Gallery Section Begin -->
+<section class="gallery-section spad">
+    <div class="container">
+        <div class="row gallery-filter">
+            {% for material in list %}
+            <div class="col-lg-3 col-md-6 mix all">
+                <!-- Gallery item with added shadow and border for better separation -->
+                <div class="gallery-item" style="background-color: #f0f0f0; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; border-radius: 8px; overflow: hidden;">
+                    <div class="gi-img" style="height: 250px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <!-- Image styling adjusted to maintain aspect ratio and fill the container -->
+                        <img src="{{ asset('uploads/images/' ~ material.image) }}" alt="{{ material.nom }}" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <div class="gi-text" style="padding: 10px;">
+                        <h5>{{ material.nom }}</h5>
+                        <p style="color: red;">Quantity: {{ material.quantite }}</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No materials found for this gym.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Gallery Section End -->
+
+{% endblock %}

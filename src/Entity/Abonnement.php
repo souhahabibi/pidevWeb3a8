@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AbonnementRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AbonnementRepository::class)] 
 class Abonnement
@@ -14,15 +15,24 @@ class Abonnement
     private ?int $id = null;
     
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Quantity is required")]
+    #[Assert\Type(type: "integer", message: "Quantity must be an integer")]
+    #[Assert\Range(min: 1, max: 9999, minMessage: "Quantity must be at least 1", maxMessage: "Quantity cannot exceed 9999")]
     private ?int $montant = null;
     
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Quantity is required")]
+    #[Assert\Type(type: "integer", message: "Quantity must be an integer")]
+    #[Assert\Range(min: 1, max: 9999, minMessage: "Quantity must be at least 1", maxMessage: "Quantity cannot exceed 9999")]
     private ?int $duree = null;
 
     #[ORM\Column(length: 150) ]
+    #[Assert\NotBlank(message: "name is required") ] 
+    #[Assert\Length(min: 1,max: 30,minMessage:"The name '{{ value }}' is too short", maxMessage: "The name '{{ value }}' is too long")]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'abonnement') ]
+    #[ORM\JoinColumn(name: 'FK_idSalle')]
     private ?Salle $fkIdsalle = null;
 
 
@@ -83,148 +93,3 @@ class Abonnement
 
 }
 
-namespace App\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Materiel
- *
- * @ORM\Table(name="materiel", indexes={@ORM\Index(name="FK_idSalle", columns={"FK_idSalle"})})
- * @ORM\Entity
- */
-class Materiel
-{
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=false)
-     */
-    private $nom;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="age", type="integer", nullable=false)
-     */
-    private $age;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="quantite", type="integer", nullable=false)
-     */
-    private $quantite;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="prix", type="integer", nullable=false)
-     */
-    private $prix;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=false)
-     */
-    private $image;
-
-    /**
-     * @var \Salle
-     *
-     * @ORM\ManyToOne(targetEntity="Salle")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="FK_idSalle", referencedColumnName="id")
-     * })
-     */
-    private $fkIdsalle;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getAge(): ?int
-    {
-        return $this->age;
-    }
-
-    public function setAge(int $age): static
-    {
-        $this->age = $age;
-
-        return $this;
-    }
-
-    public function getQuantite(): ?int
-    {
-        return $this->quantite;
-    }
-
-    public function setQuantite(int $quantite): static
-    {
-        $this->quantite = $quantite;
-
-        return $this;
-    }
-
-    public function getPrix(): ?int
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(int $prix): static
-    {
-        $this->prix = $prix;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    public function getFkIdsalle(): ?Salle
-    {
-        return $this->fkIdsalle;
-    }
-
-    public function setFkIdsalle(?Salle $fkIdsalle): static
-    {
-        $this->fkIdsalle = $fkIdsalle;
-
-        return $this;
-    }
-
-
-}

@@ -20,6 +20,18 @@ class AbonnementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Abonnement::class);
     }
+    public function findAbonnementsByGymId(int $gymId): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.fkIdsalle', 's') // Use the correct association name
+            ->andWhere('s.id = :gymId')
+            ->setParameter('gymId', $gymId)
+            ->getQuery()
+            ->getResult();
+    }
+    
+
+
 
 //    /**
 //     * @return Abonnement[] Returns an array of Abonnement objects
