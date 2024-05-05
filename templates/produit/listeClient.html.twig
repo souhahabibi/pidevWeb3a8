@@ -1,23 +1,9 @@
 {% extends 'client_base.html.twig' %}
 
-{% block breadcrumb %}
-<section class="breadcrumb-section set-bg mb-4" data-setbg="{{asset('clientSalle/img/about-breadcrumb-bg.jpg')}}">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="site-text">
-                    <h2>{% block title %}OUR PRODUCTS{% endblock %}</h2>
-                    <div class="site-breadcrumb">
-                        <a href="./home.html" class="sb-item">Home</a>
-                        <span class="sb-item">{% block page %}products{% endblock %}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
-
+{% block title %}
+OUR PRODUCTS
+ {% endblock %}
+ {% block page %}products{% endblock %}
 {% block body %}
 <a href="{{ path('app_panier') }}">
         <img src="{{ asset('clientSalle/img/panier.png') }}" alt="panier" class="btn-img" width="40" height="40">

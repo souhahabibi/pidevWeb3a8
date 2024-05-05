@@ -40,12 +40,12 @@
             <div class="nav-menu">
                 <nav class="mainmenu mobile-menu">
                     <ul>
-                        <li class="active"><a href="./index.html">Home</a></li>
+                        <li><a href="{{path('app_Acceuil')}}">Home</a></li>
                         <li><a href="./diet.html">Diet</a></li>
                         <li><a href="./courses.html">Courses</a></li>
-                        <li>  <a href="{{ path('produitsClient_liste') }}" class="dropdown-item">Products</a></li>
-                        <li><a href="./competitions.html">Competitions</a> </li>
-                        <li><a href="./gyms.html">Gyms</a></li>
+                        <li><a href="{{path('app_competition_Client')}}">Competitions</a> </li>             
+                         <li><a href="{{ path('produitsClient_liste') }}">Products</a></li>
+                        <li><a href="{{ path('app_salleClient') }}">Gyms</a></li>
                         <li><a href="./profile.html"></i> Profile</a></li>
                     </ul>
                 </nav>

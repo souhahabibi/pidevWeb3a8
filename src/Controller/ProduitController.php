@@ -65,7 +65,7 @@ class ProduitController extends AbstractController
                     // Générez un nom de fichier unique
                     $newFilename = md5(uniqid()) . '.' . $imageFile->guessExtension();
                     // Déplacez le fichier téléchargé vers le répertoire approprié
-                    $imageFile->move($this->getParameter('images_directory'), $newFilename);
+                    $imageFile->move($this->getParameter('images_directory_p'), $newFilename);
                     // Redimensionnez l'image si nécessaire (ajoutez cette partie si nécessaire)
                     // Mettez à jour le chemin de l'image dans l'entité Produit
                     $produit->setImage($newFilename);
@@ -139,7 +139,7 @@ public function modifierProduit(Request $request, int $id): Response
             $nouveauNomFichier = uniqid().'.'.$nouvelleImage->guessExtension();
             try {
                 $nouvelleImage->move(
-                    $this->getParameter('images_directory'),
+                    $this->getParameter('images_directory_p'),
                     $nouveauNomFichier
                 );
 
@@ -151,7 +151,7 @@ public function modifierProduit(Request $request, int $id): Response
 
                 // Supprimer l'ancienne image si nécessaire
                 if ($ancienCheminImage) {
-                    unlink($this->getParameter('images_directory').'/'.$ancienCheminImage);
+                    unlink($this->getParameter('images_directory_p').'/'.$ancienCheminImage);
                 }
             } catch (FileException $e) {
                 // Gérer l'exception si le fichier ne peut pas être déplacé
