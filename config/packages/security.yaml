@@ -23,7 +23,6 @@ security:
 
             # Other firewall settings...
     access_control:
-    # Remove the role check for login route
-    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Remove the role check for login route
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     # Other access control rules...
-

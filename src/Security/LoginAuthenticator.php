@@ -54,7 +54,7 @@ new RememberMeBadge(),
 );
 }
 
-public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
 //{
 //if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
 //return new RedirectResponse($targetPath);
@@ -63,7 +63,7 @@ public function onAuthenticationSuccess(Request $request, TokenInterface $token,
 //return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
 //}
 {
-$user = $token->getUser();
+    $user = $token->getUser();
 
         // Get the user's roles
         $roles = $user->getRoles();
