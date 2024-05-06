@@ -59,7 +59,7 @@ class UserController extends AbstractController
     #[Route('/client', name: 'app_client_index', methods: ['GET'])]
     public function index3(UserRepository $userRepository): Response
     {
-        return $this->render('client_index.html.twig', [
+        return $this->render('client_base.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }

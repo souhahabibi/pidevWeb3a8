@@ -65,25 +65,21 @@
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Salles</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a href="button.html" class="dropdown-item">Salle</a>
-                    <a href="typography.html" class="dropdown-item">Abonnements</a>
-                    <a href="element.html" class="dropdown-item">Materiels</a>
+                    <a href="{{path('app_salleAdmin')}}" class="dropdown-item">Salle</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Competitions</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a href="button.html" class="dropdown-item">Competitions</a>
-                    <a href="typography.html" class="dropdown-item">Organisateurs</a>
-                    <a href="element.html" class="dropdown-item">Reservations</a>
+                    <a href="{{path('app_competition_Admin')}}" class="dropdown-item">Competitions</a>
+                    <a href="{{path('app_organisateur')}}" class="dropdown-item">Organisateurs</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Produits</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a href="button.html" class="dropdown-item">Produits</a>
-                    <a href="typography.html" class="dropdown-item">Fournisseurs</a>
-                    <a href="element.html" class="dropdown-item">Commandes</a>
+                    <a href="{{ path('produits_liste') }}" class="dropdown-item">Produits</a>
+                    <a href="{{ path('fournisseur_liste') }}" class="dropdown-item">Fournisseurs</a>
                 </div>
             </div>
 
@@ -115,12 +111,11 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                     <a href="{{ path('app_profil') }}" class="dropdown-item">My Profile</a>
-                    <a href="#" class="dropdown-item">Settings</a>
                     <a href="{{ path('app_logout') }}" class="dropdown-item">Log Out</a>
                 </div>
             </div>
         </div>
-    </nav>
+    </nav>sy
     <!-- Navbar End -->
 
 

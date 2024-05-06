@@ -37,7 +37,7 @@ GYMs
         <div class="col">
             {% for a in list %}
             <div class="col-lg-3 col-sm-6">
-                <div class="single-trainer-item row" style="min-width: 1150px; min-height: 230px; max-width: 1150px; max-height: 230px; border-radius: 1px; border: 1px solid gray; position: relative;">
+                <div class="single-trainer-item row" style="min-width: 1150px; min-height: 230px; max-width: 1150px; max-height: 230px; border-radius: 1px; border: 1px solid grey; position: relative;">
                     {% set isOpen = false %}
                     {% if openingHours[currentDay] is defined %}
                         {% set openingTime = openingHours[currentDay][0]|date("H:i") %}
