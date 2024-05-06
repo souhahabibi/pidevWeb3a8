@@ -1,0 +1,36 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Pie Chart{% endblock %}
+
+{% block body %}
+    <div id="piechart-container" style="width: 600px; height: 400px; margin: 0 auto; background-color: black;"></div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+   {# pour dessiner le diagramme circulaire #}
+        function drawChart() {
+            {# Convertit les données fournies en tableau de données Google Visualization #}
+            var data = google.visualization.arrayToDataTable([
+                ['Fournisseur', 'Quantité'],
+                {% for item in data %}
+                    ['{{ item.fournisseur }}', {{ item.quantite }}],
+                {% endfor %}
+            ]);
+
+            var options = {
+                title: 'Répartition des produits par fournisseur',
+                is3D: true,
+                backgroundColor: 'black',
+                titleTextStyle: {color: 'white'},
+                legendTextStyle: {color: 'white'},
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart-container'));
+
+            chart.draw(data, options);
+        }
+    </script>
+{% endblock %}

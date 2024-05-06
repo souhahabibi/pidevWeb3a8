@@ -21,6 +21,19 @@ class FournisseurRepository extends ServiceEntityRepository
         parent::__construct($registry, Fournisseur::class);
     }
 
+    //recherche
+    public function search($searchTerm)
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.nom LIKE :searchTerm')
+            ->orWhere('f.prenom LIKE :searchTerm')
+            ->orWhere('f.numero LIKE :searchTerm')
+            ->orWhere('f.type LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
+    
 //    /**
 //     * @return Fournisseur[] Returns an array of Fournisseur objects
 //     */

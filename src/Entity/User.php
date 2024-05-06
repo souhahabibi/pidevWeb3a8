@@ -4,28 +4,53 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)] 
-class User
+/**
+ * @method string getUserIdentifier()
+ */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface , PasswordAuthenticatedUserInterface
 {
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(name: "id", type: "integer", nullable: false)]
     private int $id;
 
     #[ORM\Column(name: "nom", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: 'Nom cannot be blank')]
     private string $nom;
 
     #[ORM\Column(name: "email", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: 'Email cannot be blank')]
+    #[Assert\Email(message: 'Invalid email format')]
     private string $email;
 
-    #[ORM\Column(name: "motDePasse", type: "string", length: 255, nullable: false)]
-    private string $motdepasse;
+    #[ORM\Column(name: "motDePasse", type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank(message: 'Password cannot be blank')]
+    #[Assert\Length(min: 8, minMessage: 'Password must be at least 8 characters long')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/',
+        message: 'Password must contain at least one uppercase letter, one digit, and one special character'
+    )]
+    private ?string $motdepasse;
 
     #[ORM\Column(name: "specialite", type: "string", length: 255, nullable: true)]
     private ?string $specialite;
 
-    #[ORM\Column(name: "numero", type: "integer", nullable: false)]
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Phone number cannot be blank")]
+    #[Assert\Range(
+        min: 10000000,
+        max: 99999999,
+        notInRangeMessage: "Phone number must be exactly 8 digits"
+    )]
     private int $numero;
 
     #[ORM\Column(name: "recommandation", type: "string", length: 3, nullable: false)]
@@ -46,7 +71,7 @@ class User
     #[ORM\Column(name: "mailcode", type: "string", length: 255, nullable: true)]
     private ?string $mailcode;
 
-    #[ORM\Column(name: "is_verifIed", type: "boolean", nullable: true)]
+    #[ORM\Column(name: "is_verified", type: "boolean", nullable: true)]
     private ?bool $isVerified;
 
     public function getId(): ?int
@@ -198,4 +223,37 @@ class User
         return $this;
     }
 
+    public function getRoles(): array
+    {
+        return explode(",", $this->role);
+    }
+
+    public function getPassword() : ?string
+    {
+        return $this->motdepasse;
+    }
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUsername(): string
+    {
+return $this->email;
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
+    }
+
+//    public function isVerified(): bool
+//    {
+//        return $this->isVerified;
+//    }
 }

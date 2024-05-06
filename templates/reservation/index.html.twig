@@ -1,0 +1,35 @@
+{% extends 'admin_base.html.twig' %}
+{% block body %}
+ <div class="container-fluid pt-4 px-4">
+   <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
+    <div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Reservations Table</h6>
+            <a href="{{ path('app_competition_Admin') }}"> <button type="button" class="btn btn-success m-2">Return</button></a>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">Scores</th>
+                            <th scope="col">Modify</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in list %}
+                        <tr>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{a.fkClient.nom}}</td>
+                            <td>{{a.score}}</td>
+                            <td><a href="{{ path('app_reservation_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
