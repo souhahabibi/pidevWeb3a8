@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RegimeRepository;
 
+
 #[ORM\Entity(repositoryClass:RegimeRepository::class)]
 class Regime
 {
@@ -15,28 +16,42 @@ class Regime
     private ?int $id = null;
 
     
-    #[ORM\Column]
-    private ?DateTime $startdate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
+    #[Assert\GreaterThan("today" ,message:"Input Date must be in the future")]
+    private ?\DateTimeInterface $startdate = null;
 
     
     
-    #[ORM\Column]
-    private ?DateTime $enddate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
+    #[Assert\GreaterThan("today" ,message:"Input Date must be in the future")]
+    private ?\DateTimeInterface $enddate = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
     private ?int $duration = null;
 
     
     #[ORM\Column] 
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
+    #[Assert\Length(min:7,minMessage:" 7 characters minimum")]
+    #[Assert\Length(max:40)]
     private ?string $description = null;
 
   
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You cannot leave this field Empty")]
     private ?string $goal = null;
+
+  
+    #[ORM\Column]
+    private ?bool $verified = false;
 
    
     #[ORM\ManyToOne(inversedBy: 'regimes')]
-    private ?User $clientid = null;
+    #[ORM\JoinColumn(name:"clientId", referencedColumnName:"id", nullable:true)]
+    private ?User $clientId ;
 
     public function getId(): ?int
     {
@@ -103,14 +118,27 @@ class Regime
         return $this;
     }
 
-    public function getClientid(): ?User
+    public function getVerified(): ?bool
     {
-        return $this->clientid;
+        return $this->verified;
     }
 
-    public function setClientid(?User $clientid): static
+    public function setVerified(?bool $verified): static
     {
-        $this->clientid = $clientid;
+        $this->verified = $verified;
+
+        return $this;
+    }
+
+
+    public function getClientId(): ?User
+    {
+        return $this->clientId;
+    }
+
+    public function setClientId(?User $clientId): static
+    {
+        $this->clientId = $clientId;
 
         return $this;
     }

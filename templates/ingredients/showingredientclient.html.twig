@@ -1,0 +1,51 @@
+{% extends 'client_base.html.twig' %}
+{% block title %} ingredients {% endblock %}
+
+{% block body %}
+
+   
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div style=padding:50px;">
+            <div class="container-fluid">
+               <div class="row page-titles">
+					<ol class="breadcrumb">
+					</ol>
+                </div>
+                <div class="row">
+            {% for ingredientMeal in ingredientMeals %}
+                    <div class="col-lg-12 col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row m-b-30">
+                                    <div class="col-md-5 col-xxl-12">
+                                        <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+                                            <div class="new-arrivals-img-contnent">
+                                                <img class="img-fluid" src="{{ asset('uploads/image/' ~ ingredientMeal.ingredient.imgurl ) }}" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 col-xxl-12">
+                                        <div class="new-arrival-content position-relative">
+                                            <h4><a>{{ ingredientMeal.ingredient.name }}</a></h4>
+                                            <div class="comment-review star-rating">
+                                                
+												<p class="price">calories:{{ ingredientMeal.ingredient.calories }}</p><br>
+                                                <p class="price">totalFat:{{ ingredientMeal.ingredient.totalFat }}</p><br>
+                                                <p class="price">protein:{{ ingredientMeal.ingredient.protein }}</p><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+					{% endfor %}
+					
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+{% endblock %}

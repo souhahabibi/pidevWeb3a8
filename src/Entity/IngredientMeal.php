@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ORM\Entity(repositoryClass:IngredientMealRepository::class)]
+
 class IngredientMeal
 {
    
@@ -29,12 +30,12 @@ class IngredientMeal
 
     public function getIngredient(): ?Ingredients
     {
-        return $this->ingredient;
+        return $this->ingredients;
     }
 
-    public function setIngredient(?Ingredients $ingredient): static
+    public function setIngredient(?Ingredients $ingredients): static
     {
-        $this->ingredient = $ingredient;
+        $this->ingredients = $ingredients;
 
         return $this;
     }

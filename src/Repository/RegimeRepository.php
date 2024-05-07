@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Regime;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +36,21 @@ class RegimeRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
+
+/**
+     * Find regimes by a specific client.
+     *
+     * @param User $client
+     * @return Regime[] Returns an array of Regime objects
+     */
+    public function findByClient(User $client): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.clientId = :client')
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Regime
 //    {

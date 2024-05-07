@@ -1,0 +1,48 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}
+Regime index
+{% endblock %}
+
+{% block body %}
+    <h1>Regime index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+               
+                <th>Startdate</th>
+                <th>Enddate</th>
+                <th>Duration</th>
+                <th>Description</th>
+                <th>Goal</th>
+                <th>Client</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for regime in regimes %}
+            <tr>
+              
+                <td>{{ regime.startdate|date("m/d/Y")  }}</td>
+                <td>{{ regime.enddate|date("m/d/Y")  }}</td>
+                <td>{{ regime.duration }}</td>
+                <td>{{ regime.description }}</td>
+                <td>{{ regime.goal }}</td>
+                <td>{{ regime.clientId.nom }}</td>
+                <td>
+                    <a href="{{ path('app_regime_show', {'id': regime.id}) }}">show</a>
+                    {% if regime.getVerified() != true %}
+                <a  href="{{ path('regime-validate', {id: regime.id}) }}">Validate</a>
+                {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

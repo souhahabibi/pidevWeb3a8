@@ -1,0 +1,56 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}Ingredients index{% endblock %}
+
+{% block body %}
+    <h1>Ingredients you can add to {{ meal.name}}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Name</th>
+                <th>Calories</th>
+                <th>TotalFat</th>
+                <th>Protein</th>
+                <th>Imgurl</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ingredient in ingredients %}
+        
+            <tr>
+              
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.calories }}</td>
+                <td>{{ ingredient.totalFat }}</td>
+                <td>{{ ingredient.protein }}</td>
+                <td>{% if ingredient.imgurl %}
+                            <img src="{{ asset('uploads/image/' ~ ingredient.imgurl) }}" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}</td>
+                <td>
+                      {% set ingredientExists = false %}
+                    {% for addedIng in addedIng %}
+                        {% if addedIng.ingredients.id == ingredient.id %}
+                            {% set ingredientExists = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if ingredientExists %}
+                        <a href="{{ path('app_meal_add_ingredient_ingredient', {'id': meal.id, 'ingredintId': ingredient.id}) }}">Remove ingredient</a>
+                    {% else %}
+                        <a href="{{ path('app_meal_add_ingredient_ingredient', {'id': meal.id, 'ingredintId': ingredient.id}) }}">Add ingredient</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

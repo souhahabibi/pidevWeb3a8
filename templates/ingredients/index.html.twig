@@ -1,0 +1,53 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}Ingredients index{% endblock %}
+
+{% block body %}
+<div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+    <h1>Ingredients </h1>
+    <a href="{{ path('app_ingredients_new') }}"class="btn btn-danger">Create new ingredient</a>
+
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th scope="col">Name</th>
+                <th scope="col">Calories</th>
+                <th scope="col">TotalFat</th>
+                <th scope="col">Protein</th>
+                <th scope="col">Imgurl</th>
+                <th scope="col">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ingredient in ingredients %}
+            <tr>
+               
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.calories }}</td>
+                <td>{{ ingredient.totalFat }}</td>
+                <td>{{ ingredient.protein }}</td>
+                <td>{% if ingredient.imgurl %}
+                            <img src="{{ asset('uploads/image/' ~ ingredient.imgurl) }}" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}</td>
+                <td>
+                    <a href="{{ path('app_ingredients_show', {'id': ingredient.id}) }}"class="btn btn-danger">show</a>
+                    <a href="{{ path('app_ingredients_edit', {'id': ingredient.id}) }}"class="btn btn-danger">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+{% endblock %}

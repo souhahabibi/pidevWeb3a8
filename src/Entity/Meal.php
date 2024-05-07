@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MealRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass:MealRepository::class)]
@@ -17,17 +18,30 @@ class Meal
   
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Length(min:3,minMessage:" 3 characters minimum")]
+    #[Assert\Length(max:15)]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le nom doit être une chaîne alphabétique.")]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $imgurl = null;
+    #[ORM\Column(name:"image_url",length: 255,nullable:false)]
+    private ?string  $imageUrl;
 
   
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Length(min:30,minMessage:" 100 characters minimum")]
+    #[Assert\Length(max:200)]
     private ?string $recipe = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"You need to fill all the fields")]
+    #[Assert\Positive(message:"Please enter a valid number")]
     private ?int $calories = null;
+
+   
+    #[ORM\OneToMany(targetEntity:Reviewmeal::class, mappedBy:"idmeal")]
+    private $Reviews;
 
     public function getId(): ?int
     {
@@ -82,17 +96,32 @@ class Meal
         return $this;
     }
 
-    public function getImgurl(): ?string
+   /* public function getReviews(): Collection
     {
-        return $this->imgurl;
+        return $this->Reviews;
     }
 
-    public function setImgurl(string $imgurl): static
+    public function addMealRe(Reviewmeal $Reviews): self
     {
-        $this->imgurl = $imgurl;
+        if (!$this->Reviews->contains($Reviews)) {
+            $this->Reviews[] = $Reviews;
+            $Reviews->setIdmeal($this);
+        }
 
         return $this;
     }
+
+    public function removeMealRe(Reviewmeal $Reviews): self
+    {
+        if ($this->Reviews->removeElement($Reviews)) {
+            // set the owning side to null (unless already changed)
+            if ($Reviews->getIdmeal() === $this) {
+                $Reviews->setIdmeal(null);
+            }
+        }
+
+        return $this;
+    }*/
 
 
 }
