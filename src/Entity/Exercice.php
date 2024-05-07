@@ -10,13 +10,16 @@ class Exercice
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $ide=null;
+    #[ORM\Column(name: "idE")]
+    private ?int $idE=null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le nom doit être une chaîne alphabétique.")]
     private ?string $nom=null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
     private ?string $etape=null;
 
     #[ORM\Column(type: "string", length: 255)]
@@ -24,16 +27,18 @@ class Exercice
 
 
     
-    #[ORM\ManyToOne(inversedBy: "exercices")]
-    private ?Cours $id=null;
+    #[ORM\ManyToOne(targetEntity:Cours::class, inversedBy: "exercice")]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "id")]
+
+    private ?Cours $cours=null;
     
-    #[ORM\ManyToOne(inversedBy: "exercices")]
+    #[ORM\ManyToOne(inversedBy: "exercice")]
     private ?User $user=null;
 
 
-    public function getIde(): ?int
+    public function getIdE(): ?int
     {
-        return $this->ide;
+        return $this->idE;
     }
 
     public function getNom(): ?string
@@ -82,6 +87,18 @@ class Exercice
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getCours(): ?Cours
+    {
+    return $this->cours;
+    }
+
+    public function setCours(?Cours $cours): self
+    {
+    $this->cours = $cours;
+
+    return $this;
     }
 
     public function getUser(): ?User

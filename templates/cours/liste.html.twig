@@ -1,0 +1,121 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}Liste des cours{% endblock %}
+
+{% block body %}
+    <h1>Liste des cours</h1>
+    <form action="{{ path('app_cours_search') }}" method="GET">
+        <input type="text" id="query" name="query">
+        <button type="submit">Search</button>
+    </form>
+    </form>
+      <form action="{{ path('app_cours_tri') }}" method="GET">
+        <label for="order">Ordre :</label>
+        <select name="order" id="order">
+            <option value="asc">Croissant</option>
+            <option value="desc">Décroissant</option>
+        </select>
+
+        <label for="field">Champ de tri :</label>
+        <select name="field" id="field">
+            <option value="nom">nom</option>
+          {# <option value="date">Date</option> #}
+            <!-- Ajoutez d'autres options pour les champs de tri si nécessaire -->
+        </select>
+
+        <button type="submit" class="btn btn-primary">Trier</button>
+    </form>
+
+    <a href="{{ path('ajouter_cours') }}" class="btn btn-primary">Ajouter un cours</a>
+
+    <style>
+    .modal-header {
+    background-color: #fff;
+    color: #007bff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px;
+}
+
+/* Modal Body /
+.modal-body {
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/ Modal Footer */
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 15px;
+}
+    .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination a {
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 0 4px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.pagination a.active,
+.pagination a:hover {
+    background-color: #f1f1f1;
+}
+
+.pagination span.current {
+    background-color: #5f76e8;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 0 4px;
+}
+
+.pagination a.disabled {
+    color: #ddd;
+    pointer-events: none;
+}
+    </style>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Niveau</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cours in pagination %}
+                <tr>
+                    <td>{{ cours.nom }}</td>
+                    <td>{{ cours.description }}</td>
+                    <td>{{ cours.niveau }}</td>
+                    <td>
+                        {% if cours.image %}
+                            <img src="{{ asset('adminSalle/img/' ~ cours.image) }}" alt="Image du cours" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('modifier_cours', {'id': cours.id}) }}" class="btn btn-primary">Modifier</a>
+                        <a href="{{ path('cours_supprimer', {'id': cours.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

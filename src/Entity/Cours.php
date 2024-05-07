@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CoursRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass:CoursRepository::class)]
 class Cours
 {
@@ -16,19 +19,28 @@ class Cours
     private ?string $image=null;
 
     #[ORM\Column(type: "string", length: 255)]
-    private ?string $nom=null;
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le nom doit être une chaîne alphabétique.")]
+    private ?string $nom = null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z\s]+$/", message: "Le description doit être une chaîne alphabétique.")]
     private ?string $description=null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message:"Veuillez sélectionner un niveau.")]
     private ?string $niveau=null;
 
     #[ORM\Column(type: "string", length: 255)]
-    private ?string $commentaire=null;
+    private ?string $commentaire="";
 
-    #[ORM\Column(type: "string", length: 255)]
-    private ?string $planning = 'CURRENT_TIMESTAMP';
+   # #[ORM\Column(type: "string", length: 255)]
+    #private ?string $planning = 'CURRENT_TIMESTAMP';
+   
+    #[ORM\Column(type: "datetime", columnDefinition: "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")]
+    private ?\DateTimeInterface $planning = null;
+
 
     #[ORM\ManyToOne(inversedBy: "cours")]
     private ?User $user=null;
@@ -99,18 +111,42 @@ class Cours
 
         return $this;
     }
-
+/*
     public function getPlanning(): ?string
     {
         return $this->planning;
+    }*/
+
+    public function __construct()
+    {
+        $this->planning = new \DateTime();
     }
+
+   /* public function getPlanning(): ?string
+{
+    return $this->planning ? $this->planning->format('Y-m-d H:i:s') : null;
+}*/
+
+public function getPlanning(): ?\DateTimeInterface
+{
+    return $this->planning;
+}
+/*
+
 
     public function setPlanning(string $planning): static
     {
         $this->planning = $planning;
 
         return $this;
-    }
+    }*/
+    public function setPlanning(\DateTimeInterface $planning): static
+{
+    $this->planning = $planning;
+
+    return $this;
+}
+
 
     public function getUser(): ?User
     {

@@ -1,0 +1,41 @@
+{% extends 'client_base.html.twig' %}
+
+{% block title %}ESPRAT | Courses{% endblock %}
+
+{% block body %}
+<form action="{{ path('app_translate') }}" method="get">
+    <select name="lang">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+    </select>
+    <input type="submit" value="Choisir la langue">
+</form>
+
+<div class="text-center">
+    <a href="{{ path('app_calendar') }}" class="btn btn-primary">{{ translations.voir_calendrier }}</a>
+</div>
+
+{% for cours in translated %}
+<div class="tab-pane fade-in active" id="class-1" role="tabpanel">
+    <div class="single-class-item">
+        <div class="row">
+            <div class="col-lg-6" align="center">
+                <img src="{{ asset('adminSalle/img/' ~ cours.image) }}" height="80%" width="80%" alt="">
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="class-text">
+                    <h3>{{ labels.nom }}: {{ cours.nom }} </h3><br>
+                    <h3>{{ labels.description }}: {{ cours.description}}</h3><br>
+                    <h3>{{ labels.niveau }}: {{ cours.niveau}}</h3>
+                    <br>
+                    <div class="col-lg-6">
+                        <a href="{{ path('client_exercices', {'courseId': cours.id}) }}">{{ translations.voir_exercices }} <i class="fa fa-long-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br><br>
+{% endfor %}
+{% endblock %}
