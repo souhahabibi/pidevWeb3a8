@@ -167,7 +167,7 @@ public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Resp
             // Move the file to the directory where images are stored
             try {
                 $imageFile->move(
-                    $this->getParameter('images_directory'),
+                    $this->getParameter('images_directory_p'),
                     $newFilename
                 );
             } catch (FileException $e) {
@@ -230,7 +230,7 @@ public function ajoutercours(Request $request, SmsGenerator $smsGenerator): Resp
                 // Move the file to the directory where images are stored
                 try {
                     $imageFile->move(
-                        $this->getParameter('images_directory'),
+                        $this->getParameter('images_directory_p'),
                         $newFilename
                     );
                 } catch (FileException $e) {

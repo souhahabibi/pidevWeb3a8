@@ -71,7 +71,7 @@ public function clientCours2(ExerciceRepository $exerciceRepository, int $course
                 // Move the file to the directory where images are stored
                 try {
                     $imageFile->move(
-                        $this->getParameter('images_directory'),
+                        $this->getParameter('images_directory_p'),
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -129,7 +129,7 @@ public function clientCours2(ExerciceRepository $exerciceRepository, int $course
                 // Move the file to the directory where images are stored
                 try {
                     $imageFile->move(
-                        $this->getParameter('images_directory'),
+                        $this->getParameter('images_directory_p'),
                         $newFilename 
                     
                     );
