@@ -1,0 +1,66 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
+        <div class="col-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Materials Distribution</h6>
+                <canvas id="barChart" style="max-height: 400px; width: 100%;"></canvas>
+            </div>
+            <div class="bg-secondary rounded h-100 p-4 mt-4">
+                <h6 class="mb-4">Price Proportions by Material</h6>
+                <canvas id="pieChart" style="max-height: 400px; width: 100%;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bar Chart Setup
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ barChartData|map(data => data.salle)|json_encode|raw }},
+            datasets: [{
+                label: 'Quantity of Materials',
+                data: {{ barChartData|map(data => data.quantites)|json_encode|raw }},
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Pie Chart Setup
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ pieChartData|map(data => data.label)|json_encode|raw }},
+            datasets: [{
+                data: {{ pieChartData|map(data => data.value)|json_encode|raw }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    // Additional colors can be added here
+                ]
+            }]
+        }
+    });
+});
+</script>
+{% endblock %}

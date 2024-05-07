@@ -1,0 +1,46 @@
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                <h1 class="text-center mb-4">Reset your password</h1>
+
+                {{ form_start(resetForm, {'attr': {'class': 'form'}}) }}
+                <div class="mb-3">
+                    {{ form_row(resetForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'New Password'}}) }}
+                </div>
+
+                <button class="btn btn-primary btn-block">Reset password</button>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <style>
+        .form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .alert-danger {
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #a51414; /* Blue color */
+            border-color: #a7afb7; /* Blue color */
+            color: #fff; /* White text */
+        }
+
+        .btn-primary:hover {
+            background-color: #b61717; /* Darker blue hover color */
+            border-color: #8a979f; /* Darker blue hover color */
+        }
+    </style>
+{% endblock %}

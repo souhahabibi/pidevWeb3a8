@@ -1,0 +1,27 @@
+{% extends 'admin_base.html.twig' %}
+{% block body %}
+ <div class="container-fluid pt-4 px-4">
+    <div class="row g-4" style="padding-left: 50px;">
+        <div class="col-sm-12 col-xl-10">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h5 class="mb-4">Add Organizer</h5>
+                {{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}
+                    <div class="mb-3">
+                        {{ form_label(f.nom,"Name") }}
+                        {{ form_widget(f.nom) }}
+                        {{ form_errors(f.nom) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(f.numero,"Phone number") }}
+                        {{ form_widget(f.numero) }}
+                        {{ form_errors(f.numero) }}
+                    </div>
+                    <div style="padding-left: 350px;">
+                        {{ form_widget(f.Submit) }}
+                    </div>
+                {{form_end(f)}}
+            </div>
+        </div>
+    </div>
+ </div>
+{% endblock %}

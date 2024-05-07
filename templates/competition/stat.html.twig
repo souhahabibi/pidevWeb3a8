@@ -1,0 +1,82 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
+        <!-- Statistics Chart -->
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Average Reservations per Day</h6>
+                <canvas id="statisticsChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Monthly Stats Chart -->
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Average Reservations per Month</h6>
+                <canvas id="monthlyStatsChart"></canvas>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Statistics Chart
+    var ctx = document.getElementById('statisticsChart').getContext('2d');
+    var statisticsRaw = {{ statistics|json_encode|raw }};
+    var statistics = statisticsRaw.map(stat => ({
+        dayOfWeekString: stat.dayOfWeek,
+        avgReservationsPerCompetition: stat.avgReservationsPerCompetition
+    }));
+    var labels = statistics.map(stat => stat.dayOfWeekString);
+    var data = statistics.map(stat => stat.avgReservationsPerCompetition);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Reservations per Day',
+                data: data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { scales: { y: { beginAtZero: true } } }
+    });
+
+    // Initialize Monthly Stats Chart
+    var ctxMonthly = document.getElementById('monthlyStatsChart').getContext('2d');
+    var monthlyStatsRaw = {{ monthlyStats|json_encode|raw }};
+    var monthlyStats = monthlyStatsRaw.map(stat => ({
+        month: stat.month,
+        avgReservationsPerCompetition: stat.avgReservationsPerCompetition
+    }));
+    var labelsMonthly = monthlyStats.map(stat => new Date(0, stat.month - 1).toLocaleString('en-US', {month: 'long'}));
+    var dataMonthly = monthlyStats.map(stat => stat.avgReservationsPerCompetition);
+
+    new Chart(ctxMonthly, {
+        type: 'bar',
+        data: {
+            labels: labelsMonthly,
+            datasets: [{
+                label: 'Average Reservations per Month',
+                data: dataMonthly,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { scales: { y: { beginAtZero: true } } }
+    });
+
+
+});
+
+</script>
+{% endblock %}
