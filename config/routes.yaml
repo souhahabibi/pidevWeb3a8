@@ -1,0 +1,24 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+client_app:
+    path: /client
+    controller: App\Controller\RegimeController::clientByRegimes
+
+app_meal_client:
+    path: /meal/client/menu/show
+    controller: App\Controller\MealController::indexmealclient
+
+app_regime_index:
+    path: /regime/
+    controller: App\Controller\RegimeController::index
+
+# config/routes.yaml
+
+produit_supprimer:
+    path: '/produit/supprimer/{id}'
+    controller: 'App\Controller\ProduitController::supprimerProduit'
+
+produits_tries_par_cout:
+    path: '/produitClient/liste-tri-cout'
+    controller: 'App\Controller\ProduitController::listeProduitsTriesParCout'

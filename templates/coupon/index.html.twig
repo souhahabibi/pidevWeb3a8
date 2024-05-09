@@ -1,0 +1,67 @@
+{% extends 'admin_base.html.twig'%}
+
+
+{% block title %}Liste coupons{% endblock %}
+{% block body %}
+    <h1>Liste des coupons </h1>
+    <input id="searchInput">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nomsociete</th>
+            <th>Code</th>
+            <th>Valeur</th>
+            <th>Dateexpiration</th>
+            <th>User</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for coupon in coupons %}
+        <div  data-search="{{ coupon.nomsociete }} {{ coupon.code }} {{ coupon.valeur }} {{ coupon.dateexpiration }} {{ coupon.user.nom }}" >
+
+            <tr>
+                <td>{{ coupon.id }}</td>
+                <td>{{ coupon.nomsociete }}</td>
+                <td>{{ coupon.code }}</td>
+                <td>{{ coupon.valeur }}</td>
+                <td>{{ coupon.dateexpiration }}</td>
+                <td>{{ coupon.user.nom }}</td>
+                <td>
+                    <a href="{{ path('app_coupon_show', {'id': coupon.id}) }}">show</a>
+                    <a href="{{ path('app_coupon_edit', {'id': coupon.id}) }}">edit</a>
+                </td>
+
+
+
+            </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+        </div>
+        </tbody>
+
+    </table>
+
+    <a href="{{ path('app_coupon_new') }}">Create new</a>
+
+    <script>
+        function filterTable() {
+            const filter = document.getElementById('searchInput').value.toUpperCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const content = row.textContent.toUpperCase();
+                const isVisible = content.includes(filter);
+                row.classList.toggle('d-none', !isVisible);
+            });
+
+
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', filterTable);
+    </script>
+{% endblock %}

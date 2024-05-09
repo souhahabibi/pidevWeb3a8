@@ -1,0 +1,38 @@
+{% extends 'coach_base.html.twig' %}
+
+{% block title %}Meal {% endblock %}
+
+{% block body %}
+    <h1>Meal</h1>
+
+    <table class="table">
+        <tbody>
+           
+            <tr>
+                <th>Name</th>
+                <td>{{ meal.name }}</td>
+            </tr>
+            <tr>
+                <th>Imgurl</th>
+                <td>{% if meal.imageUrl %}
+                 <img src="{{ asset('uploads/image/' ~ meal.imageUrl) }}"  style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Recipe</th>
+                <td>{{ meal.recipe }}</td>
+            </tr>
+            <tr>
+                <th>Calories</th>
+                <td>{{ meal.calories }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_meal_index') }}"class="btn btn-danger">back to list</a>
+    <a href="{{ path('app_meal_edit', {'id': meal.id}) }}"class="btn btn-danger">edit</a>
+
+    {{ include('meal/_delete_form.html.twig') }}
+{% endblock %}

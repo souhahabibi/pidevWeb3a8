@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Source">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/themify-icons-font.zip!/" />
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/bootstrap-4.4.1-dist.zip!/" />
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/SlickNav-master.zip!/" />
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/Magnific-Popup-master.zip!/" />
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/sass.zip!/" />
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/font-awesome-4.7.0.zip!/" />
+      <root url="jar://$PROJECT_DIR$/public/clientSalle/Source/OwlCarousel2-2.3.4.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

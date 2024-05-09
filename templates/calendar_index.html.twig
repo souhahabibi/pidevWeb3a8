@@ -1,0 +1,46 @@
+{% extends 'client_base.html.twig' %}
+
+{% block title %}Cours Calendar{% endblock %}
+
+{% block body %}
+
+{# {{dump(data)}} #}
+{# calendar #}
+ <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+<script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendrier')
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+           headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+                end: 'dayGridMonth,timeGridWeek'
+            },
+          editable: true,
+        events: {{ data|raw }},
+          eventResizableFromStart: true
+        })
+        
+        calendar.render()
+      })
+
+    </script>
+<div id="calendrier"></div>
+
+
+
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #calendrier{
+            margin-top : 10px;
+            width: 90%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'admin_base.html.twig' %}
+{% block body %}
+ <div class="container-fluid pt-3 px-3">
+   <div class="row  bg-secondary rounded align-items-center justify-content-center mx-0">
+    {{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <table class="table-responsive">
+        <tr>
+            <td></td>
+            <td><h1>MODIFY SCORE</h1></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{ form_label(f.fkClient,"Name") }}</td>
+            <td>{{ form_widget(f.fkClient) }}</td>
+            <td>{{ form_errors(f.fkClient) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(f.fkCompetition,"Competition") }}</td>
+            <td>{{ form_widget(f.fkCompetition) }}</td>
+            <td>{{ form_errors(f.fkCompetition) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(f.score,"Score") }}</td>
+            <td>{{ form_widget(f.score) }}</td>
+            <td>{{ form_errors(f.score) }}</td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+    </table>
+    <div style="padding-left: 500px;">
+    {{ form_widget(f.Submit) }}
+    </div>
+    {{form_end(f)}}
+  </div>
+ </div>
+{% endblock %}

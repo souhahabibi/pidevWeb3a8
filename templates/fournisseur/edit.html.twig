@@ -1,0 +1,100 @@
+{# edit.html.twig #}
+
+{% extends 'admin_base.html.twig' %}
+{% block title %}Modifier Fournisseur{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .white-text {
+            color: white;
+        }
+
+        .white-background {
+            background-color: white;
+        }
+
+        .custom-input {
+            border: 1px solid #ced4da; /* Ajoute une bordure grise */
+            border-radius: .25rem; /* Ajoute un arrondi aux coins */
+        }
+
+        /* Style pour le focus */
+        .custom-input:focus {
+            border-color: #dc3545; /* Change la couleur de la bordure au focus */
+            box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.25); /* Ajoute une ombre au focus */
+        }
+
+        /* Centrer le contenu */
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Pour centrer verticalement */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-12 text-center">
+                <h1>Modifier Fournisseur</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+               {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+               <div class="mb-3 row align-items-center">
+                    <div class="col-md-3">
+                        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label white-text'}}) }}
+                    </div>
+                    <div class="col-md-9">
+                        {{ form_widget(form.nom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        {% if form_errors(form.nom) %}
+                            <span class="text-danger">{{ form_errors(form.nom) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <div class="col-md-3">
+                        {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label white-text'}}) }}
+                    </div>
+                    <div class="col-md-9">
+                        {{ form_widget(form.prenom, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        {% if form_errors(form.prenom) %}
+                            <span class="text-danger">{{ form_errors(form.prenom) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                    <div class="col-md-3">
+                        {{ form_label(form.numero, 'Numéro', {'label_attr': {'class': 'form-label white-text'}}) }}
+                    </div>
+                     <div class="col-md-9">
+                        {{ form_widget(form.numero, {'attr': {'class': 'form-control white-background white-text custom-input'}}) }}
+                        {% if form_errors(form.numero) %}
+                            <span class="text-danger">{{ form_errors(form.numero) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                    <div class="col-md-3">
+                        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label white-text'}}) }}
+                    </div>
+                    <div class="col-md-9">
+                        {{ form_widget(form.type, {'attr': {'class': 'form-select white-background white-text custom-input'}}) }}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="{{ asset('adminSalle/img/fournisseur.jpg') }}" alt="Description de l'image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block body %}
+
+<div class="container-fluid pt-4 px-4">
+   <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
+      <div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+
+
+
+            <h6 class="mb-4">MATERIELS Table</h6>
+            <a href="{{ path('app_materiel_add', {'id': id}) }}">
+                <button type="button" class="btn btn-success m-2">ADD</button>
+            </a>          
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        
+                            <th scope="col">#</th>
+                            <th scope="col">image</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">age</th>
+                            <th scope="col">quantite</th>
+                            <th scope="col">prix</th>
+                            <th scope="col">Modify</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in list %}
+                        <tr>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>
+                                {% if a.image is not null %}
+                                <img src="{{ asset('uploads/images/' ~ a.image) }}" alt="Salle Image" style="max-width:300px; max-height:200px;min-width:300px;min-height:200px;">
+                                {% else %}
+                                <!-- Handle case where no image is available -->
+                                <span>No image available</span>
+                                {% endif %}
+                            </td>
+                        <td>{{a.nom}}</td>
+                        <td>{{a.age}}</td>
+                        <td>{{a.quantite}}</td>
+                        <td>{{a.prix}}</td>
+
+                        <td><a href="{{ path('app_materiel_modify', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Modify</button></a></td>
+                        <td><a href="{{ path('app_materiel_delete', {'id': a.id}) }}"><button type="button" class="btn btn-warning m-2">Delete</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

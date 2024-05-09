@@ -1,0 +1,13 @@
+
+{% extends 'admin_base.html.twig'%}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body %}
+    <form method="post" action="{{ path('app_user_edit', {'id': user.id}) }}">
+        {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    </form>
+
+
+{% endblock %}

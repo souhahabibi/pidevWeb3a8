@@ -1,0 +1,16 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="row align-items-center">
+    <div class="col-md-5">
+  {{ form_widget(form) }}
+<div class="text-danger">
+    {{ form_errors(form) }}
+</div>
+        <button class="btn">{{ button_label|default('Save') }}</button>
+ </div>
+    <div class="col-md-5">
+        <div class="text-center image-container">
+            <img src="{{ asset('adminSalle/img/ingredientsel.jpg') }}" alt="Description de l'image" class="img-fluid">
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

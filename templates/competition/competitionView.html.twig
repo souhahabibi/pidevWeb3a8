@@ -1,0 +1,86 @@
+{% extends 'client_base.html.twig' %}
+
+{% block title %}
+    {{ competition.nom }} - Competitions
+{% endblock %}
+
+{% block page %}
+    <nav aria-label="breadcrumb">
+            <li class="breadcrumb-item " aria-current="page">{{ competition.nom }}</li>
+       
+    </nav>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .embed-responsive-item {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .competition-details-content h2,
+        .competition-details-content p {
+            font-size: 1.2rem; /* Adjust the font size as necessary */
+        }
+        .competition-details-content p {
+            line-height: 1.6; /* Improve readability */
+        }
+        .event-info ul {
+            font-size: 1.1rem;
+        }
+        .leaderboard h4, .sidebar-title {
+            font-size: 1.5rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<!-- Competition Details Section Begin -->
+<section class="competition-details-section spad pt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="competition-details-content">
+                    <h2 class="title mb-4">{{ competition.nom }}</h2>
+                    <div class="embed-responsive embed-responsive-16by9 mb-4">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ competition.videourl }}" allowfullscreen></iframe>
+                    </div>
+                    <p class="competition-description">{{ competition.description }}</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="event-info mb-3">
+                        <h4 class="sidebar-title">Event Info</h4>
+                        <ul class="info-list">
+                            <li><i class="fa fa-calendar"></i> {{ competition.date|date('Y-m-d') }}</li>
+                            <li><i class="fa fa-users"></i> Capacity: {{ competition.capacite }}</li>
+                        </ul>
+                    </div>
+                    {% set today = "now"|date("Y-m-d") %}
+                    {% if competition.date|date("Y-m-d") > today %}
+                        {% if exist == 0 %}
+                            <a href="{{ path('app_reservation_add', {'id': competition.id}) }}" class="btn btn-success btn-block mb-2">Join Competition</a>
+                        {% else %}
+                            <a href="{{ path('app_reservation_delete', {'id': competition.id}) }}" class="btn btn-danger btn-block mb-2">Exit Competition</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if competition.date|date("Y-m-d") < today %}
+            <div class="leaderboard mt-5">
+                <h4 class="text-center mb-4">Leaderboard</h4>
+                <div class="list-group">
+                    {% for reservation in topReservations %}
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            {{ reservation.fkClient.nom }}
+                            <span class="badge bg-primary rounded-pill">{{ reservation.score }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+<!-- Competition Details Section End -->
+{% endblock %}

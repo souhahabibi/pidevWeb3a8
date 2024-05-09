@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="PONIGYM Template">
+    <meta name="keywords" content="PONIGYM, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PONIGYM | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{asset('clientSalle/css/bootstrap.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('clientSalle/css/font-awesome.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('clientSalle/css/themify-icons.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('clientSalle/css/owl.carousel.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('clientSalle/css/magnific-popup.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('clientSalle/css/slicknav.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('clientSalle/css/style.css')}}" type="text/css">
+</head>
+
+<body>
+
+
+<!-- Header Section Begin -->
+<header class="header-section header-normal">
+    <div class="container">
+        <div class="logo">
+            <a href="./index.html">
+                <img src="{{asset('clientSalle/img/logo-normal.png')}}" alt="" width="180px" height="60px">
+            </a>
+        </div>
+        <div class="nav-menu">
+            <nav class="mainmenu mobile-menu">
+                <ul>
+                    <li><a href="{{path('app_Acceuil')}}">Home</a></li>
+                    <li><a href="#">Diet</a>
+                             <ul class="dropdown">
+                                 <li><a href="{{path('client_app')}}">BMI calculator</a></li>
+                                 <li><a href="{{path('app_meal_client')}}">meals</a></li>
+                                 <li><a href="{{path('app_regime_index')}}">your Diet</a></li>
+                               </ul></li>
+                    <li><a href="{{path('app_translate')}}">Courses</a></li>
+                    <li><a href="{{path('app_competition_Client')}}">Competitions</a> </li>
+                    <li><a href="{{ path('produitsClient_liste') }}">Products</a></li>
+                    <li><a href="{{ path('app_salleClient') }}">Gyms</a></li>
+                    <li><a href="{{ path('app_profilclient') }}"></i> Profile</a></li>
+
+                    <li><a href="{{ path('app_logout') }}"></i>Log Out</a></li>
+                    
+
+                </ul>
+            </nav>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+    </div>
+</header>
+<!-- Header End -->
+
+
+<!-- Site Breadcrumb End -->
+<section class="breadcrumb-section set-bg mb-4" data-setbg="{{asset('clientSalle/img/about-breadcrumb-bg.jpg')}}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="site-text">
+                    <h2>{% block title %}{% endblock %}</h2>
+                    <div class="site-breadcrumb">
+                        <a href="{{path('app_Acceuil')}}" class="sb-item">Home</a>
+                        <span class="sb-item">{% block page %}{% endblock %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Blog Section Begin -->
+<section class="blog-section spad">
+
+
+    {% block body %}
+    {% endblock %}
+
+
+</section>
+<!-- Blog Section End -->
+
+<!-- Footer Section Begin -->
+<footer class="footer-section">
+    <div class="register normal-register">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="copyright">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                    <div class="footer-widget">
+                        <ul>
+                            <li class="active">Privacy Policy</li>
+                            <li>Terms Of Service</li>
+                            <li>Careers</li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+<!-- Js Plugins -->
+<script src="{{asset('clientSalle/js/jquery-3.3.1.min.js')}}"></script>
+<script src="{{asset('clientSalle/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('clientSalle/js/jquery.magnific-popup.min.js')}}"></script>
+<script src="{{asset('clientSalle/js/mixitup.min.js')}}"></script>
+<script src="{{asset('clientSalle/js/jquery.slicknav.js')}}"></script>
+<script src="{{asset('clientSalle/js/owl.carousel.min.js')}}"></script>
+<script src="{{asset('clientSalle/js/main.js')}}"></script>
+</body>
+
+</html>
